@@ -1,0 +1,79 @@
+
+    <meta charset="utf-8">
+    <title><?php echo $title; ?>-<?php echo $main_title; ?></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="<?php echo $meta_title; ?>" />
+    <meta name="description" content="<?php echo $meta_description; ?>" />
+    <meta name="keywords" content="<?php echo $meta_keywords; ?>" /> 
+    <?php
+    if (isset($static_css_files)) {        
+        foreach ($static_css_files as $css) {
+            $arrParams = [];
+            if (isset($css[1])) {
+                $arrParams = $css[1];
+            }
+            echo $_view->_css($css[0], $arrParams);
+        }
+    }
+    ?>
+    <?php
+    if (isset($csses)) {        
+        foreach ($csses as $css) {
+            $arrParams = [];
+            if (isset($css[1])) {
+                $arrParams = $css[1];
+            }
+            echo $_view->_css($css[0], $arrParams);
+        }
+    }
+    ?>
+    <!--[if lt IE 9]>
+    <?php
+    $jsStatic=[["js/libs/html5shiv.js"],["js/libs/respond.min.js"]];
+    foreach ($jsStatic as $js) {
+        $arrParams = [];
+        if (isset($js[1])) {
+            $arrParams = $js[1];
+        }
+        echo $_view->_js($js[0], $arrParams);
+    }    
+    ?>
+    <![endif]-->
+    <script type="text/javascript">
+        var _SITE_ = <?php echo json_encode($_SITE_); ?>;
+        var _USER_ = <?php if (empty($_U)): ?>false<?php else: ?><?php echo "'".$_U['businessId']."'"; ?><?php endif; ?>;
+    </script>
+    <?php
+    if (isset($static_js_files)) {
+        foreach ($static_js_files as $js) {
+            $arrParams = [];
+            if (isset($js[1])) {
+                $arrParams = $js[1];
+            }
+            echo $_view->_js($js[0], $arrParams);
+        }
+    }
+    ?>
+    <?php
+    if (isset($jses)) {
+        foreach ($jses as $js) {
+            $arrParams = [];
+            if (isset($js[1])) {
+                $arrParams = $js[1];
+            }
+            echo $_view->_js($js[0], $arrParams);
+        }
+    }
+    ?>
+    <?php
+    if (isset($back_static_js_files)) {
+        foreach ($back_static_js_files as $js_file) {
+            $arrParams = [];
+            if (isset($js_file[1])) {
+                $arrParams = $js_file[1];
+            }
+            echo $_view->seg($js_file[0], $arrParams);
+        }
+    }
+    ?>

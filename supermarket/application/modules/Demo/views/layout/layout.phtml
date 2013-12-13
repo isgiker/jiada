@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <?php
+        $headData = [
+            'title' => '天天特价后台管理系统',
+            'main_title' => '系统登录',
+            'meta_title' => '',
+            'meta_description' => '',
+            'meta_keywords' => '',            
+            'static_css_files' => [
+                ['css/admin/bootstrap.css'],
+                ['css/admin/bootstrap-theme.css'],
+                ['css/admin/busniess_theme.css'],
+                ['css/admin/alert.css'],
+                ['css/admin/jNotify.jquery.css']
+            ],
+            'static_js_files' => [
+                ['js/libs/jquery.min.js'],
+                ['js/libs/jNotify.jquery.js'],
+                ['js/libs/jquery.alert.js'],
+                ['js/libs/jquery.artDialog.js?skin=aero.css'],
+                ['js/libs/plugins/iframeTools.js'],
+                ['js/libs/jquery.validate.js'],
+                ['js/admin/form.js'],
+                ['js/libs/bootstrap/bootstrap.min.js']
+            ]
+        ];
+        if(isset($_D['metaInfo'])){
+            $headData = array_merge($headData,$_D['metaInfo']);
+        }        
+        echo $_view->seg(APPLICATION_PATH.DS.'views/layout/html_header.phtml', $headData);
+    ?> 
+  </head>
+    <body>
+        <?php
+        echo $_ActionContent;
+        ?>
+    </body>
+</html>

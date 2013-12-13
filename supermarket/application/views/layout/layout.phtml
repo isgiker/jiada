@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title><?php echo $meta_title; ?></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/bootstrap-responsive.min.css" />
+        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/fullcalendar.css" />
+        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/matrix-style.css" />
+        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/matrix-media.css" />
+        <link href="//static.jiada.local/supermarket-admin/font-awesome/css/font-awesome.css" rel="stylesheet" />
+        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/jquery.gritter.css" />
+    </head>
+    <body>
+        <!--Header-part-->
+        <div id="header">
+            <h1><a href="dashboard.html">Matrix Admin</a></h1>
+        </div>
+        <!--close-Header-part--> 
+
+
+        <!--top-Header-menu-->
+        <?php include_once APPLICATION_PATH . DS . 'views/layout/layout_header.phtml'; ?>
+
+        <!--close-top-Header-menu-->
+        <!--start-top-serch-->
+        <div id="search">
+            <input type="text" placeholder="Search here..."/>
+            <button type="submit" class="tip-bottom" title="Search"><i class="icon-search icon-white"></i></button>
+        </div>
+        <!--close-top-serch-->
+        <!--sidebar-menu-->
+        <?php include_once APPLICATION_PATH . DS . 'views/layout/layout_left.phtml'; ?>
+        <!--main-container-part-->
+        <div id="content">
+            <!--breadcrumbs-->
+            <div id="content-header">
+                <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
+            </div>
+            <!--End-breadcrumbs-->
+
+            <!--Action boxes-->
+            <div class="container-fluid">
+                <?php
+                echo $_ActionContent;
+                ?>
+            </div>
+        </div>
+
+        <!--end-main-container-part-->
+        <!--Footer-part-->
+        <?php include_once APPLICATION_PATH . DS . 'views/layout/layout_footer.phtml'; ?>
+
+    </body>
+</html>

@@ -1,0 +1,199 @@
+@charset "UTF-8";
+.c_nav_toggle {
+    background-color: #BBBBBB;
+    border-left: 1px solid #999999;
+    border-right: 1px solid #999999;
+    cursor: w-resize;
+    min-width: 2px;
+    width: 2px;
+	float: left;
+	height:100%
+}
+.c_nav_toggle:hover {
+    background-color: #333333;
+}
+
+.v_reportview_panels {
+    background-color: #F6F6F6;
+    margin: 0;
+    padding: 0;
+    vertical-align: top;
+    width: 198px;
+	float: left;
+	height:100%;
+}
+.v_reportview_content {
+    background-color: #FFFFFF;
+    padding: 0;
+    vertical-align: top;
+	height: 800px;
+    overflow: auto;
+    position: relative;
+	
+    padding: 0;
+    vertical-align: top;
+}
+.c_reporttoolbar {
+    -moz-border-radius: 4px 4px 4px 4px;
+    background-color: #EEEEEE;
+    border: 1px solid #BBBBBB;
+    height: 30px;
+	line-height: 30px;
+    list-style: none outside none;
+    margin: 5px 0 0;
+    padding: 0;
+    position: relative;
+
+}
+
+.yuangong_text {
+	width:71%;
+}
+
+/*分类管理-分类树样式*/
+.categoryTree{
+	margin-top: 18px;
+	margin-bottom: 10px;
+	border: 1px solid #999999;
+	width:20%;
+	float: left;
+}
+.categoryTree .treeHeader {
+	background: none repeat scroll 0 0 #999999;
+    width: 100%;
+}
+.categoryTree .treeHeader h3 {
+	color: #FFFFFF;
+    font-size: 14px;
+    margin: 0;
+    padding: 6px 8px;
+}
+.categoryInfo {
+	width:70%;
+	float: right;
+	margin-right: 50px;
+}
+
+/*tabs 样式*/
+
+.ui-tabs .ui-tabs-nav li a:hover,.ui-tabs .ui-tabs-nav li a:focus {
+	background: none repeat scroll 0 0 #2A7AD2 !important;
+    padding-top: 6px;
+    text-decoration: none;
+}
+
+/*休息页样式*/
+.main_content {
+	-moz-border-radius: 4px 4px 4px 4px;
+	border: 1px solid #BBBBBB;
+	height: 400px;
+	margin: 5px 0 0;
+}
+.rest {
+	margin-top: 140px;
+	text-align: center;
+}
+.rest_btn:hover, .rest_btn:focus, .rest_btn:active {
+    -moz-box-shadow: 0 0 5px rgba(82, 168, 236, 0.5);
+    border: 1px solid #329ECC !important;
+    opacity: 0.9;
+    outline: medium none;
+}
+
+.rest_btn {
+	-moz-border-radius: 4px 4px 4px 4px;
+	background: -moz-linear-gradient(center bottom , #CCCCCC 20%, #FFFFFF 80%) repeat scroll 0 0 transparent;
+    border: 1px solid #CCCCCC !important;
+    color: #777777 !important;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Tahoma,Arial,sans-serif;
+    font-weight: bold;
+    padding: 5px 10px;
+    position: relative;
+    text-decoration: none;
+	text-align: center;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.9);
+	height:50px;
+	line-height:50px;
+	width:80px;
+	margin-left: 20px;
+}
+.rest_info {
+	color:red;
+	margin-bottom:30px;
+}
+
+/***颜色样式定义***/
+.gray {
+    color: #999999;
+}
+.green {
+    color: #30A810;
+}
+.red {
+    color: #FF0000;
+}
+.intro {
+    color: #184294;
+}
+.blue {
+    color: #184294;
+}
+.dark {
+    color: #888888;
+}
+.white {
+    color: #FFFFFF;
+}
+.orange {
+    color: #FF6600;
+}
+
+/***分页样式***/
+.pagination {
+    border: 0 solid #CCCCCC;
+    display: block;
+    height: 40px;
+}
+.pagination ul {
+    float: right;
+    padding-top: 10px;
+}
+.pagination span.sum {
+    border-bottom: 1px solid #999999;
+    color: #888888;
+    float: left;
+}
+.pagination ul li {
+    color: #444444;
+    display: inline;
+    float: left;
+    font-size: 12px;
+    line-height: 20px;
+    margin: 0 3px;
+    padding: 0 0 8px;
+}
+.pagination ul li a {
+    -moz-border-radius: 5px 5px 5px 5px;
+    border: 1px solid #CCCCCC;
+    color: #333333;
+    float: left;
+    padding: 0 5px;
+    text-decoration: none;
+}
+.pagination ul li a:hover {
+    background: none repeat scroll 0 0 #DDDDDD;
+    text-decoration: none;
+}
+.pagination ul li.current {
+    font-weight: 700;
+}
+.pagination ul li.current a {
+    background: none repeat scroll 0 0 #CCCCCC;
+}
+.pagination ul li.previous a, .pagination ul li.next a, .pagination ul li.previous a:hover, .pagination ul li.next a:hover {
+    background: none repeat scroll 0 0 transparent;
+    border: medium none;
+    padding: 0;
+}
