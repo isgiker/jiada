@@ -1,30 +1,33 @@
 <?php
+
 /**
  * Filter is a class for filtering input from any data source
  */
 class Core_Filter {
-    
-    public static function _cleanVar($var, $mask = 0, $type=null) {
+
+    public static function _cleanVar($var, $mask = 0, $type = null) {
         // Static input filters for specific settings
-        static $noHtmlFilter = null;
-        static $safeHtmlFilter = null;
+//        static $noHtmlFilter = null;
+//        static $safeHtmlFilter = null;
 
         // If the no trim flag is not set, trim the variable
-        if (!($mask & 1) && is_string($var)) {
+        if ($mask == 0) {
             $var = trim($var);
         }
 
         // Now we handle input filtering
-        if ($mask & 2) {
+        if ($mask == 1) {
             // If the allow raw flag is set, do not modify the variable
             $var = $var;
-        } else {
-            self::_clean($var, $type);
+        }
+        
+        if ($type != 'none') {
+            $var = self::_clean($var, $type);
         }
         return $var;
     }
 
-    public static function _clean($source, $type='string') {
+    public static function _clean($source, $type) {
         // Handle the type constraint
         switch (strtoupper($type)) {
             case 'INT' :
@@ -84,13 +87,13 @@ class Core_Filter {
 
 
             default :
-                $result = (string) $source;
+                $result = $source;
                 break;
         }
-//        print_r($result);exit;
+
         return $result;
     }
-    
+
     /**
      * mysql_escape_string会比addslashes更安全
      * mysql_escape_string会分析哪些在字符串需要进行处理，
@@ -124,6 +127,8 @@ class Core_Filter {
                 foreach ($content as $key => $value) {
                     $content[$key] = addslashes($value);
                 }
+            } elseif (is_numeric($content) || !$content) {
+                return $content;
             } else {
                 //if $content is not an array
                 $content = addslashes($content);

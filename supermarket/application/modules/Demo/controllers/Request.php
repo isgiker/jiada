@@ -8,12 +8,17 @@
  */
 class RequestController extends Core_Basic_Controllers {
 
+    /**
+     * 封装request测试
+     * @return boolean
+     * @example http://supermarket.jiada.local/demo/request/index/?get='as234.345 |get/'as234.345
+     */
     public function indexAction() {
         //1. fetch query
 //        $get = $this->getParam("get", "default value");
 
-        $get = $this->getInt("get");
-        
+        $get = $this->getQuery("get",0,'none');
+        print_r($get);exit;
         return false;
     }
 
