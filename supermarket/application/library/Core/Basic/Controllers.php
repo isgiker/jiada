@@ -18,42 +18,25 @@ class Core_Basic_Controllers extends Yaf_Controller_Abstract {
     }
 
     /**
-     * 监测是否异步请求
+     * 是否为Ajax请求
+     * 这个方法取决于请求报头：HTTP_X_REQUESTED_WITH，一些Javascript库在做Ajax请求时候不设置这个报文头
      */
     public function isAjax() {
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && "XMLHttpRequest" === $_SERVER['HTTP_X_REQUESTED_WITH']) {
-
-            return true;
-        } else {
-
-            return false;
-        }
+        return $this->getRequest()->isXmlHttpRequest();
     }
 
     /**
      * 监测是否post
      */
     public function isPost() {
-        if ($_SERVER['REQUEST_METHOD'] === "POST") {
-
-            return true;
-        } else {
-
-            return false;
-        }
+       return $this->getRequest()->isPost();
     }
 
     /**
      * 监测是否get
      */
     public function isGet() {
-        if ($_SERVER['REQUEST_METHOD'] === "GET") {
-
-            return true;
-        } else {
-
-            return false;
-        }
+        return $this->getRequest()->isGet();
     }
 
     public function err($code = "", $msg = "") {
@@ -132,10 +115,15 @@ class Core_Basic_Controllers extends Yaf_Controller_Abstract {
      * Retrieve POST variable
      * @param type $key the variable name
      * @param type $value if this parameter is provide, this will be returned if the varialbe can not be found
-     * @param type $type int|float|word|string|none
-     * @return string
+     * @param type $type int|float|word|string|none|array
+     * @return array|string
      */
-    public function getPost($key, $value, $type='none') {
+    public function getPost($key=null, $value=null, $type='none') {
+        if(!$key){
+            $arr = $this->getRequest()->getPost();
+            $var = Core_Filter::_addslashes($arr);
+            return $var;
+        }
         $var = $this->getRequest()->getPost($key, $value);
         if (!$var) {
             return $value;

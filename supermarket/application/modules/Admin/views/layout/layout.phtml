@@ -11,6 +11,11 @@
         <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/matrix-media.css" />
         <link href="//static.jiada.local/supermarket-admin/font-awesome/css/font-awesome.css" rel="stylesheet" />
         <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/jquery.gritter.css" />
+
+        <!--form common input begin-->
+        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/uniform.css" />
+        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/select2.css" />
+        <!--form common input end-->
     </head>
     <body>
         <!--Header-part-->
@@ -21,7 +26,7 @@
 
 
         <!--top-Header-menu-->
-        <?php include_once APPLICATION_PATH . DS . 'views/layout/layout_header.phtml'; ?>
+        <?php include_once 'layout_header.phtml'; ?>
 
         <!--close-top-Header-menu-->
         <!--start-top-serch-->
@@ -31,19 +36,19 @@
         </div>
         <!--close-top-serch-->
         <!--sidebar-menu-->
-        <?php include_once APPLICATION_PATH . DS . 'views/layout/layout_left.phtml'; ?>
+        <?php include_once 'layout_left.phtml'; ?>
         <!--main-container-part-->
         <div id="content">
             <!--Action boxes-->
             <?php
-                echo $_ActionContent;
-                ?>
+            echo $_ActionContent;
+            ?>
             <!--End Action boxes-->
         </div>
 
         <!--end-main-container-part-->
         <!--Footer-part-->
-        <?php include_once APPLICATION_PATH . DS . 'views/layout/layout_footer.phtml'; ?>
+        <?php include_once 'layout_footer.phtml'; ?>
 
     </body>
 </html>

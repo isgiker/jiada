@@ -125,13 +125,13 @@ class Core_Filter {
             //if $content is an array
             if (is_array($content)) {
                 foreach ($content as $key => $value) {
-                    $content[$key] = addslashes($value);
+                    $content[$key] = addslashes(trim($value));
                 }
             } elseif (is_numeric($content) || !$content) {
-                return $content;
+                return trim($content);
             } else {
                 //if $content is not an array
-                $content = addslashes($content);
+                $content = addslashes(trim($content));
             }
         } else {
             //if magic_quotes_gpc=On do nothing
