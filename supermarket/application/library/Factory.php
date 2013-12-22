@@ -66,5 +66,5 @@ class Factory {
 //        $data = $adapter->fetchRow($sql);
 //        print_r($data);
     }
-
+    
 }

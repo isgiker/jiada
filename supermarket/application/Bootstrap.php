@@ -15,13 +15,13 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
     public function _initConfig() {
         //把配置保存起来
         $this->_config = $arrConfig = Yaf_Application::app()->getConfig('development');
-        Yaf_Registry::set('config', $arrConfig);
+        Yaf_Registry::set('_CONFIG', $arrConfig);
 
         /**
          * loading and setting config option;
          */
         $this->_settingConfig = new Yaf_Config_Ini(CONFIG_PATH . DS . 'setting.ini', 'development');
-        Yaf_Registry::set('settingConfig', $this->_settingConfig);
+        Yaf_Registry::set('_SETTINGCONFIG', $this->_settingConfig);
 
         //Set Debug
         error_reporting($this->_settingConfig->setting->errorLevel);

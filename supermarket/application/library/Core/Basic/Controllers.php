@@ -172,7 +172,7 @@ class Core_Basic_Controllers extends Yaf_Controller_Abstract {
                 break;
         }
 
-        if (isset($input[$name]) && $input[$name] != null) {
+        if (isset($input["$name"]) && $input["$name"] != null) {
             // Get the variable from the input hash and clean it
             $var = Core_Filter::_cleanVar($input[$name], $mask, $type);
             $var = Core_Filter::_addslashes($var);
@@ -182,7 +182,7 @@ class Core_Basic_Controllers extends Yaf_Controller_Abstract {
             
         }
 
-        return $var;
+        return @$var;
     }
 
     /**
@@ -301,6 +301,27 @@ class Core_Basic_Controllers extends Yaf_Controller_Abstract {
                 $domain = $_setting['cookie_domain'];
             setcookie($name, $val, $time, $path, $domain, 0);
         }
+    }
+    
+    /**
+     *  显示分页
+     */
+    public function showPagination($total) {
+        //设置每页显示条数;
+        $limit = $this->model->limit;
+
+        //显示全部;
+        if (!$limit) {
+            $limit = $total;
+        }
+
+        //创建分页;
+        if ($total == '' || !is_numeric($total)) {
+             $total = 0;
+        }
+        $page = new Pagination_Default(array('total' => $total, 'perpage' => $limit));
+        $style = 1;
+        return '<div class="pagination" style="margin:0px;">'.$page->show($style).'</div>';
     }
 
 }

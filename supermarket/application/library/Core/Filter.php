@@ -125,7 +125,9 @@ class Core_Filter {
             //if $content is an array
             if (is_array($content)) {
                 foreach ($content as $key => $value) {
-                    $content[$key] = addslashes(trim($value));
+                    if (!is_array($value)) {
+                        $content[$key] = addslashes(trim($value));
+                    }
                 }
             } elseif (is_numeric($content) || !$content) {
                 return trim($content);
