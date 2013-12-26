@@ -4,6 +4,12 @@ class Core_Basic_Controllers extends Yaf_Controller_Abstract {
 
     public $_layout = false;
     protected $_layoutVars = array();
+    
+    public function __call($name, $arguments) {
+        if(method_exists($this->getRequest()->getControllerName(), $name)){
+            return $this->$name($arguments);
+        }        
+    }
 
     /**
      * 加载Layout模板
@@ -99,7 +105,7 @@ class Core_Basic_Controllers extends Yaf_Controller_Abstract {
      * @return string
      * @example 路由如下请求URL: http://www.domain.com/module/controller/action/name1/value1/name2/value2/ 路由结束后将会得到俩个路由参数, name1和name2, 值分别是value1, value2.
      */
-    public function getParam($key, $value, $type='none') {
+    public function getParam($key, $value=null, $type='none') {
         $var = $this->getRequest()->getParam($key, $value);
         if (!$var) {
             return $value;
