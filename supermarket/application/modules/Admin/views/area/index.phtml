@@ -1,0 +1,75 @@
+<!--breadcrumbs-->
+<div id="content-header">
+    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="tip-bottom">区域管理</a> <a href="#" class="current">列表</a> </div>
+    <h1>区域管理</h1>
+</div>
+<div class="container-fluid">
+    <hr>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <form name="jform" id="jform" action="" method="post" class="form-horizontal">
+                    <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+
+                        <span style="display: block;padding-top: 3px;margin-right: 5px;float: right;"><button type="submit" name="jsubmit" value="edit" class="btn" >编辑</button></span> </div>
+                    <div class="widget-content ">
+                        <div class="search">
+                            <span>
+                                <select name="public" class="span2">
+                                    <option value="all" <?php if($post['public']==''){echo ' selected';}else{echo '';}?>>显示所有</option>
+                                    <option value="1" <?php if(isset($post['public']) && $post['public']==1){echo ' selected';}else{echo '';}?>>已公开</option>
+                                </select>
+                            </span>
+                            
+                            <span><button type="submit" name="jsubmit" value="search" class="btn" >搜索</button></span>
+                        </div>
+                        
+                        <table class="table table-bordered table-striped with-check">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                                    <th>区域名称</th>
+                                    <th>拼音</th>
+                                    <th>排序</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                if (is_array($data) && !empty($data)) {
+                                    foreach ($data as $key => $item) {
+                                        ?>
+                                        <tr>
+                                            <td><input type="checkbox" name="checkIds[]" value="<?php echo $item['areaId']; ?>"/></td>
+                                            <td><a href="/admin/area/edit/areaId/<?php echo $item['areaId']; ?>"><?php echo $item['areaName']; ?></a></td>
+                                            <td><?php echo $item['pinyin']; ?></td>
+                                            <td><?php echo $item['sort']; ?></td>
+                                            <td><?php if($item['public']==1){ echo '已公开';}else{ echo '未公开';} ?></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <tr>
+                                        <td colspan="5">无数据！</td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5"><?php echo $pagination; ?></td>
+                                </tr>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+

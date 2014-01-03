@@ -135,5 +135,62 @@ class File_Image {
         }
         
     }
+    
+    /**
+     * 生成缩略图
+     * @param type $im 图片对象，应用函数之前，你需要用imagecreatefromjpeg()读取图片对象，如果PHP环境支持PNG，GIF，也可使用imagecreatefromgif()，imagecreatefrompng()；
+     * @param type $maxwidth 定义生成图片的最大宽度（单位：像素）
+     * @param type $maxheight 生成图片的最大高度（单位：像素）
+     * @param type $name 生成的图片名
+     * @param type $filetype 最终生成的图片类型（.jpg/.png/.gif）
+     */
+    public function resizeImage($im, $maxwidth, $maxheight, $name, $filetype) {
+        $infos = getimagesize($im);
+
+        $pic_width = $infos[0];
+        $pic_height = $infos[1];
+        $filetype=$infos[2];
+        if (($maxwidth && $pic_width > $maxwidth) || ($maxheight && $pic_height > $maxheight)) {
+            if ($maxwidth && $pic_width > $maxwidth) {
+                $widthratio = $maxwidth / $pic_width;
+                $resizewidth_tag = true;
+            }
+
+            if ($maxheight && $pic_height > $maxheight) {
+                $heightratio = $maxheight / $pic_height;
+                $resizeheight_tag = true;
+            }
+
+            if ($resizewidth_tag && $resizeheight_tag) {
+                if ($widthratio < $heightratio)
+                    $ratio = $widthratio;
+                else
+                    $ratio = $heightratio;
+            }
+
+            if ($resizewidth_tag && !$resizeheight_tag)
+                $ratio = $widthratio;
+            if ($resizeheight_tag && !$resizewidth_tag)
+                $ratio = $heightratio;
+
+            $newwidth = $pic_width * $ratio;
+            $newheight = $pic_height * $ratio;
+
+            if (function_exists("imagecopyresampled")) {
+                $newim = imagecreatetruecolor($newwidth, $newheight);
+                imagecopyresampled($newim, $im, 0, 0, 0, 0, $newwidth, $newheight, $pic_width, $pic_height);
+            } else {
+                $newim = imagecreate($newwidth, $newheight);
+                imagecopyresized($newim, $im, 0, 0, 0, 0, $newwidth, $newheight, $pic_width, $pic_height);
+            }
+
+            $name = $name . $filetype;
+            imagejpeg($newim, $name);
+            imagedestroy($newim);
+        } else {
+            $name = $name . $filetype;
+            imagejpeg($im, $name);
+        }
+    }
 
 }

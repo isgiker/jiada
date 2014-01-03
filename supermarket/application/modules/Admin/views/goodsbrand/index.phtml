@@ -1,0 +1,83 @@
+<!--breadcrumbs-->
+<div id="content-header">
+    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="/Admin/Goodsbrand/index/cateId/<?php echo $cateId;?>" class="tip-bottom">商品品牌</a> <a href="#" class="current">列表</a> </div>
+    <h1>商品品牌管理</h1>
+</div>
+<div class="container-fluid">
+    <hr>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                
+                    <div class="widget-title">
+                        <span class="icon"> <i class="icon-th"></i> </span>
+                        <span class="submenu right"><button type="submit" name="jsubmit" value="del" class="btn" >删除</button></span>
+                        <span class="submenu right"><button type="submit" name="jsubmit" value="search" class="btn" onclick="location.href='/Admin/Goodsbrand/add/cateId/<?php echo $cateId;?>';">添加品牌</button></span>
+                    </div>
+                    <div class="widget-content ">
+                        <form name="jform" id="jform" action="" method="post" class="form-horizontal">
+                        <div class="search">
+                            <span>
+                                <select name="status" class="span2">
+                                    <option value="all" <?php if($post['status']==''){echo ' selected';}else{echo '';}?>>显示所有</option>
+                                    <option value="1" <?php if(isset($post['status']) && $post['status']==1){echo ' selected';}else{echo '';}?>>已公开</option>
+                                </select>
+                            </span>
+                            
+                            <span><button type="submit" name="jsubmit" value="search" class="btn" >搜索</button></span>
+                            
+                        </div>
+                        
+                        
+                        <table class="table table-bordered table-striped with-check">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                                    <th>品牌名称</th>
+                                    <th>拼音</th>
+                                    <th>所属分类</th>
+                                    <th>商品类型</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                if (is_array($data) && !empty($data)) {
+                                    foreach ($data as $key => $item) {
+                                        ?>
+                                        <tr>
+                                            <td><input type="checkbox" name="checkIds[]" value="<?php echo $item['brandId']; ?>"/></td>
+                                            <td><a href="/admin/goodsbrand/edit/brandId/<?php echo $item['brandId']; ?>"><?php echo $item['brandName']; ?></a></td>
+                                            <td><?php echo $item['pinyin']; ?></td>
+                                            <td><?php echo $item['cateName']; ?></td>
+                                            <td><?php echo $item['childCateType']; ?></td>
+                                            <td><?php if($item['status']==1){ echo '已公开';}else{ echo '未公开';} ?></td>
+                                        </tr>
+                                        <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <tr>
+                                        <td colspan="6">无数据！</td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6"><?php echo $pagination; ?></td>
+                                </tr>
+
+                            </tfoot>
+                        </table>
+                        </form>
+                    </div>
+                
+            </div>
+
+
+        </div>
+    </div>
+</div>
+

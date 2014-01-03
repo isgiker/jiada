@@ -1,0 +1,128 @@
+<!--breadcrumbs-->
+<div id="content-header">
+    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="/Admin/Goods/index" class="tip-bottom">商品</a> <a href="#" class="current">添加</a> </div>
+    <h1>商品管理</h1>
+</div>
+
+<!--End-breadcrumbs-->
+<div class="container-fluid">
+    <hr>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                
+                <div class="widget-title">
+                    <ul class="nav nav-tabs">
+                        <li><a href="/Admin/Goods/edit/goodsId/<?php echo $goodsId; ?>">基本信息</a></li>
+                        <li  class="active"><a href="/Admin/Goods/packpic/goodsId/<?php echo $goodsId; ?>">包装图片</a></li>
+                        <li><a href="#tab3">商品详情</a></li>
+                    </ul>
+                </div>
+                <div class="widget-content nopadding tab-content">
+                    <div id="tab1" class="tab-pane">
+                        .......
+                    </div>
+                    <div id="tab2" class="tab-pane active">
+
+
+
+
+                        <table>
+                            <tr>
+                                <td>
+                                    <h4>当前图片</h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <?php
+                                    $packPic = @$goodsInfo['packPic'];
+                                    if ($packPic) {
+                                        $packPic = explode(',', $packPic);
+                                        foreach ($packPic as $pic) {
+                                            ?>
+                                            <img width="60px" height="60px" src="//static.jiada.local/plugin/jcrop/img/default.jpg" />
+                                            <?php
+                                        }
+                                    } else {
+                                        //如果没有图片，输出默认图;
+                                        ?>
+                                        <img width="60px" height="60px" src="//static.jiada.local/plugin/jcrop/img/default.jpg" />
+                                        <?php
+                                    }
+                                    ?>
+
+                                </td>
+                                <td>
+                                    <div class="error red"><?php echo $uploadErrorMsg;?></div>
+                                    
+                                </td>
+                                <td>
+                                    <button type="submit" name="jsubmit" value="selectFiles" class="btn btn-success" onclick="upfiles.click();
+                                                return false;">选择图片</button>
+                                    
+                                </td>
+                                <td>
+                                   
+                                    <form action="" method="post" id="filesForm" enctype="multipart/form-data">
+
+                                        <span style="display: none;visibility: hidden;width: 0px;">
+                                            <input type="file" name="files[]" multiple="multiple" id="upfiles" />
+                                        </span>
+                                        
+                                    </form>
+                                    <button type="submit" name="jsubmit" value="save" class="btn btn-success" onclick="$('#filesForm').trigger('submit');">开始上传</button>
+                                </td>
+                            </tr>
+                        </table>
+                        <p><hr style="margin:0px;height:1px;border:0px;background-color:#D5D5D5;color:#D5D5D5;"/></p>
+                        <table id="jcropTable">
+
+                            <tr>
+                                <td>
+                                    <h4>原图</h4>
+                                </td>
+                                <td colspan="3">
+                                    <h4>切图预览</h4>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img id="target" width="600px" src="//static.jiada.local/plugin/jcrop/img/default.jpg" />
+                                </td>
+                                <td align="center" valign="bottom">
+                                    <div  class="preview360 jcropBox" style="display:none;"><img id="preview360"  src="//static.jiada.local/plugin/jcrop/img/default.jpg"></div>
+                                </td>
+                                <td align="center" valign="bottom">
+                                    <div  class="preview160 jcropBox"><img id="preview160"  src="//static.jiada.local/plugin/jcrop/img/default.jpg"></div>
+                                </td>
+                                <td align="center" valign="bottom">
+                                    <div  class="preview60 jcropBox"><img id="preview60"  src="//static.jiada.local/plugin/jcrop/img/default.jpg"></div>
+                                </td>
+
+
+                            </tr>
+
+
+
+
+                        </table>
+
+
+                    </div>
+                    <div id="tab3" class="tab-pane">
+                        ...
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+</div>

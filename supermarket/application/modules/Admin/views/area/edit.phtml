@@ -1,0 +1,98 @@
+
+<!--breadcrumbs-->
+<div id="content-header">
+    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="tip-bottom">区域管理</a> <a href="#" class="current">添加</a> </div>
+    <h1>区域管理</h1>
+</div>
+
+<!--End-breadcrumbs-->
+<div class="container-fluid">
+    <hr>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+                    <h5>Area-info</h5>
+                </div>
+                <div class="widget-content nopadding">
+                    <form action="" method="post" class="form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label">父分类 :</label>
+                            <div class="controls">
+                                <select name="parentId" class="span5">
+                                    <option value="0" selected>--顶级--</option>
+                                    <?php echo $treeArea;?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">区域名称 :</label>
+                            <div class="controls">
+                                <input type="text" name="areaName" <?php echo $this->_view->getInputAttrs($rules, 'areaName') ?> id="areaName" value="<?php if(isset($areaInfo['areaName'])) echo $areaInfo['areaName']?>" class="span5" placeholder="北京 北京周边 燕郊" />
+                                <div class="col-md-8 col-md-offset-3 showmsg">
+                                    <?php
+                                    if (isset($error['areaName'])) {
+                                        $this->_view->showValidateError($error['areaName']);
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">拼音 :</label>
+                            <div class="controls">
+                                <input type="text" name="pinyin" <?php echo $this->_view->getInputAttrs($rules, 'pinyin') ?> id="pinyin" value="<?php if(isset($areaInfo['areaName'])) echo $areaInfo['pinyin']?>" class="span5" placeholder="beijing zhoubian yanjiao" />
+                                <div class="col-md-8 col-md-offset-3 showmsg">
+                                    <?php
+                                    if (isset($error['pinyin'])) {
+                                        $this->_view->showValidateError($error['pinyin']);
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">排序 :</label>
+                            <div class="controls">
+                                <input type="text" name="sort" <?php echo $this->_view->getInputAttrs($rules, 'sort') ?> id="sort" value="<?php if(isset($areaInfo['areaName'])) echo $areaInfo['sort']?>" class="span5" placeholder="数字0123..." />
+                                <div class="col-md-8 col-md-offset-3 showmsg">
+                                    <?php
+                                    if (isset($error['sort'])) {
+                                        $this->_view->showValidateError($error['sort']);
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">是否公开 :</label>
+                            <div class="controls">
+                                <label>
+                                    <input type="radio" name="public" value="1" checked <?php if(isset($areaInfo['public'])){ if($areaInfo['public']==1){echo ' checked';}else{ echo ' ';}}?>/>
+                                    是
+                                </label>
+                                <label>
+                                    <input type="radio" name="public" value="0" <?php if(isset($areaInfo['public'])){ if($areaInfo['public']==0){echo ' checked';}else{ echo ' ';}}?>/>
+                                    否 
+                                </label>
+                            </div>
+                        </div>
+                        
+
+
+                        <div class="form-actions">
+                            <input type="hidden" name="areaId" id="areaId" value="<?php if(isset($areaInfo['areaId'])) echo $areaInfo['areaId']?>" class="span5" placeholder="" />
+                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="reset" class="btn btn-primary">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,86 @@
+<!--breadcrumbs-->
+<div id="content-header">
+    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="tip-bottom">商品分类</a> <a href="#" class="current">列表</a> </div>
+    <h1>商品分类管理</h1>
+</div>
+<div class="container-fluid">
+    <hr>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <form name="jform" id="jform" action="" method="post" class="form-horizontal">
+                    <div class="widget-title"> <span class="icon"> <i class="icon-th"></i> </span>
+
+                        <span style="display: block;padding-top: 3px;margin-right: 5px;float: right;"><button type="submit" name="jsubmit" value="del" class="btn" >删除</button></span> </div>
+                    <div class="widget-content ">
+                        <div class="search">
+                            <span>
+                                <select name="status" class="span2">
+                                    <option value="all" <?php if($post['status']==''){echo ' selected';}else{echo '';}?>>显示所有</option>
+                                    <option value="1" <?php if(isset($post['status']) && $post['status']==1){echo ' selected';}else{echo '';}?>>已公开</option>
+                                </select>
+                            </span>
+                            
+                            <span><button type="submit" name="jsubmit" value="search" class="btn" >搜索</button></span>
+                        </div>
+                        
+                        <table class="table table-bordered table-striped with-check">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                                    <th>商品分类名称</th>
+                                    <th>拼音</th>
+                                    <th>排序</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                if (is_array($data) && !empty($data)) {
+                                    foreach ($data as $key => $item) {
+                                        ?>
+                                        <tr>
+                                            <td><input type="checkbox" name="checkIds[]" value="<?php echo $item['cateId']; ?>"/></td>
+                                            <td><a href="/admin/goodscate/edit/cateId/<?php echo $item['cateId']; ?>"><?php echo $item['cateName']; ?></a></td>
+                                            <td><?php echo $item['pinyin']; ?></td>
+                                            <td><?php echo $item['sort']; ?></td>
+                                            <td><?php if($item['status']==1){ echo '已公开';}else{ echo '未公开';} ?></td>
+                                            <td class="span3">
+                                                <?php
+                                                if($item['parentId']>0 && $item['childNums']){
+                                                    ?>
+                                                <a href="/admin/goodsbrand/add/cateId/<?php echo $item['cateId']; ?>">添加</a>|<a href="/admin/goodsbrand/index/cateId/<?php echo $item['cateId']; ?>">查看</a>品牌
+                                                <a href="/admin/goodsattr/add/cateId/<?php echo $item['cateId']; ?>">添加</a>|<a href="/admin/goodsattr/index/cateId/<?php echo $item['cateId']; ?>">查看</a>商品属性
+                                                        <?php
+                                                }
+                                                ?>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <tr>
+                                        <td colspan="6">无数据！</td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6"><?php echo $pagination; ?></td>
+                                </tr>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+

@@ -44,7 +44,50 @@ class Core_Basic_Controllers extends Yaf_Controller_Abstract {
     public function isGet() {
         return $this->getRequest()->isGet();
     }
+    
+    /**
+     * js跳转
+     * @param type $url
+     * @param type $msg
+     * @param type $flag
+     */
+    public function jsLocation($msg, $url, $flag=true) {
+        echo "<script>";
+        if ($msg)
+            echo "alert('{$msg}');";
+        if ($url)
+            echo "window.location.href='{$url}'";
+        echo "</script>";
+        if ($flag)
+            exit;
+    }
 
+    /**
+     * 输出请求成功的json数据
+     * data：返回的数据对象
+     * url:请求成功后需要跳转的地址
+     */
+    public function ok($data = '', $url = '', $msg = null) {
+        $strResult = json_encode(array(
+            'result' => 'ok',
+            'code' => 200,
+            'data' => $data,
+            'msg' => $msg,
+            'url' => $url
+        ));
+        $strCb = $this->getRequest()->getQuery('cb');
+        if (!empty($strCb)) {
+            $strResult = $strCb . '(' . $strResult . ');';
+        }
+        header('Content-type: application/x-javascript;charset=UTF-8');
+        echo $strResult;
+        exit;
+    }
+    /**
+     * 输出请求失败的json数据
+     * code：错误码
+     * msg:错误信息
+     */
     public function err($code = "", $msg = "") {
         $strResult = json_encode(array(
             'result' => 'err',
@@ -58,6 +101,38 @@ class Core_Basic_Controllers extends Yaf_Controller_Abstract {
         header('Content-type: application/x-javascript;charset=UTF-8');
         echo $strResult;
         exit;
+    }
+    
+    /**
+     * 用于接口
+     * @param type $msg
+     * @param type $errorCode
+     * @return json
+     */
+    public function errorMessage($msg = 'fail', $errorCode = null) {
+        $errorCode = $errorCode ? $errorCode : 404;
+        $returnResult = array(
+            'result' => array(
+                'status' => false,
+                'message' => $msg,
+                'code' => $errorCode
+            )
+        );
+        return json_encode($returnResult);
+    }
+
+    
+    public function returnData($data = null) {
+        $returnResult = array(
+            'result' => array(
+                'status' => true,
+                'message' => 'success',
+                'code' => 200
+            )
+        );
+        if ($data)
+            $returnResult['data'] = $data;
+        return json_encode($returnResult);
     }
     
     /**
@@ -106,7 +181,7 @@ class Core_Basic_Controllers extends Yaf_Controller_Abstract {
      * @example 路由如下请求URL: http://www.domain.com/module/controller/action/name1/value1/name2/value2/ 路由结束后将会得到俩个路由参数, name1和name2, 值分别是value1, value2.
      */
     public function getParam($key, $value=null, $type='none') {
-        $var = $this->getRequest()->getParam($key, $value);
+        $var = @$this->getRequest()->getParam($key, $value);
         if (!$var) {
             return $value;
         }
@@ -139,6 +214,10 @@ class Core_Basic_Controllers extends Yaf_Controller_Abstract {
         $var = Core_Filter::_addslashes($var);
             
         return $var;
+    }
+    
+    public function getFiles(){
+        return $this->getRequest()->getFiles();
     }
 
     function getVar($name, $default = null, $hash = 'default', $type = 'none', $mask = 0) {
