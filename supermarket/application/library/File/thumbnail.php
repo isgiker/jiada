@@ -23,7 +23,7 @@ class File_Thumbnail {
     //临时创建的图象 
     var $im;
 
-    function File_Thumbnail($img, $wid, $hei, $c, $dstpath) {
+    function exe($img, $wid, $hei, $c, $dstpath) {
         $this->srcimg = $img;
         $this->resize_width = $wid;
         $this->resize_height = $hei;

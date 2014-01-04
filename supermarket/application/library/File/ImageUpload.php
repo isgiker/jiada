@@ -185,15 +185,20 @@ class File_ImageUpload {
                 if (@move_uploaded_file($sysTempFile, $localDestFile)) {
                     //如果上传成功，记录该文件完整路径
                     $this->uploadSuccessFile[] = $localDestFile;
-                    return true;
                 } else {
                     $this->setError('errorNum', -7);
+                    //设置不符合条件的当前源文件
+                    $this->originName = $this->_files['name'][$i];
+                    
+                    //保证上传数据的原子性，只要其中有一张图上传失败，删除所有图片
+                    $this->delFiles();
                     return false;
                 }
             }
         } else {
             return false;
         }
+        return true;
     }
 
     /**

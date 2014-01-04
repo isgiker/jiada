@@ -30,8 +30,8 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
         }
 
         //图片服务器配置文件
-        $imagesConfig = new Yaf_Config_Ini(CONFIG_PATH . DS . 'images.ini');
-        Yaf_Registry::set('imagesConfig', $imagesConfig);
+        $ImagesConfig = new Yaf_Config_Ini(CONFIG_PATH . DS . 'images.ini');
+        Yaf_Registry::set('_ImagesConfig', $ImagesConfig);
     }
     
     public function _initRegisterClass(Yaf_Dispatcher $dispatcher) {

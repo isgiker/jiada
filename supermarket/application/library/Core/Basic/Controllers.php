@@ -106,33 +106,80 @@ class Core_Basic_Controllers extends Yaf_Controller_Abstract {
     /**
      * 用于接口
      * @param type $msg
-     * @param type $errorCode
-     * @return json
+     * @param string $format array|json|xml
+     * @return $format
      */
-    public function errorMessage($msg = 'fail', $errorCode = null) {
-        $errorCode = $errorCode ? $errorCode : 404;
-        $returnResult = array(
-            'result' => array(
+    public function errorMessage($msg = 'fail', $format='json') {
+        $returnResult =array(
                 'status' => false,
                 'message' => $msg,
-                'code' => $errorCode
-            )
-        );
-        return json_encode($returnResult);
+                'code' => -200
+            );
+        if($format=='json'){
+            return json_encode($returnResult);
+        }else{
+            return $returnResult;
+        }
     }
 
-    
-    public function returnData($data = null) {
+    /**
+     * 返回结果函数
+     * @param array $data
+     * @param string $format array|json|xml
+     * @return $format
+     */
+    public function returnData($data = null, $format='json') {
         $returnResult = array(
-            'result' => array(
-                'status' => true,
-                'message' => 'success',
-                'code' => 200
-            )
+            'status' => true,
+            'message' => 'success',
+            'code' => 200
         );
         if ($data)
             $returnResult['data'] = $data;
-        return json_encode($returnResult);
+        if($format=='json'){
+            return json_encode($returnResult);
+        }else{
+            return $returnResult;
+        }
+        
+    }
+    
+    /**
+     * 通用,主要用于函数之间的返回信息传递；
+     * @param bool $status 必要参数
+     * @param string $msg 可选参数
+     * @param array $data 可选参数
+     * @param string $format array|json|xml
+     * @return $format
+     */
+    public function returnResult($status, $msg=null, $format='array'){
+        if(!is_bool($status)){
+            die('返回结果状态参数错误！');
+        }
+        $data=array();
+        if($status===false && !$msg){
+            $msg='fail';
+            $code=-200;
+        }elseif($status===true && !$msg){
+            $msg='success';
+            $code=200;
+        }elseif($msg && is_array($msg)){
+            $data=$msg;
+            $status?$msg='success':$msg='fail';
+        }
+        
+        $returnResult = array(
+            'status' => $status,
+            'message' => $msg,
+            'data' => $data,
+            'code' => $code
+        );
+        
+        if($format=='json'){
+            return json_encode($returnResult);
+        }else{
+            return $returnResult;
+        }
     }
     
     /**
