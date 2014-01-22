@@ -1,81 +1,72 @@
 <!--breadcrumbs-->
-<div id="content-header">
-    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="tip-bottom">商品属性</a> <a href="#" class="current">列表</a> </div>
-    <h1>商品属性管理</h1>
-</div>
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index" ?>">商品属性管理</a> </li>
+    <li class="active">列表</li>
+</ul>
 
 <!--End-breadcrumbs-->
-<div class="container-fluid">
-    <hr>
-    <div class="row-fluid">
-        <div class="span12">
-            <div class="widget-box">
-                <div class="widget-title">
-                    <ul class="nav nav-tabs">
-                        <li><a href="/Admin/Goodsattrcate/index/cateId/<?php echo $goodsCateId; ?>">商品属性分类管理</a></li>
-                        <li class="active"><a href="/Admin/Goodsattr/index/cateId/<?php echo $goodsCateId; ?>">商品属性管理</a></li>
-                    </ul>
-                </div>
-                <div class="widget-content nopadding tab-content">
-                    <div id="tab1" class="tab-pane">
+<div class="widget-list">
 
-                    </div>
-                    <div id="tab2" class="tab-pane active">
-                        <p style="display: block;padding-top: 3px;margin-right: 5px;float: right;">
-                            <button type="submit" name="jsubmit" value="add" class="btn" onclick="location = '/Admin/Goodsattr/add/cateId/<?php echo $goodsCateId; ?>'">添加商品属性</button>
-                        </p> 
-                        <table class="table table-bordered table-striped with-check">
-                            <thead>
-                                <tr>
-                                    <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
-                                    <th>属性名称</th>
-                                    <th>属性分类</th>
-                                    <th>商品类型</th>
-                                    <th>属性值录入方式</th>
-                                    <th>排序</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                if (is_array($data) && !empty($data)) {
-                                    foreach ($data as $key => $item) {
-                                        ?>
-                                        <tr>
-                                            <td><input type="checkbox" name="checkIds[]" value="<?php echo $item['attrId']; ?>"/></td>
-                                            <td><a href="/Admin/Goodsattr/edit/attrId/<?php echo $item['attrId']; ?>"><?php echo $item['attrName']; ?></a></td>
-                                            <td><?php echo $item['attrCateName']; ?></td>
-                                            <td><?php echo $item['cateName']; ?></td>
-                                            <td><?php echo $item['attrInputType']; ?></td>
-                                            <td><?php echo $item['sort']; ?></td>
-                                        </tr>
-                                        <?php
-                                    }
-                                } else {
-                                    ?>
-                                    <tr>
-                                        <td colspan="6">无数据！</td>
-                                    </tr>
-                                    <?php
-                                }
-                                ?>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="6"><?php echo $pagination; ?></td>
-                                </tr>
+    <ul class="nav nav-tabs">
+        <li><a href="/Admin/Goodsattrcate/index/cateId/<?php echo $goodsCateId; ?>">商品属性分类管理</a></li>
+        <li class="active"><a href="/Admin/Goodsattr/index/cateId/<?php echo $goodsCateId; ?>">商品属性管理</a></li>
+    </ul>
 
-                            </tfoot>
-                        </table>
-                        <p></p>
-                    </div>
+    <div class="widget-content nopadding tab-content">
+        <div id="tab1" class="tab-pane">
 
-                </div>
+        </div>
+        <div id="tab2" class="tab-pane active">
+            <p>
+            <div class="widget-event">
+                <span class="submenu pull-right"><button type="submit" name="jsubmit" value="add" class="btn btn-sm btn-info" onclick="location = '/Admin/Goodsattr/add/cateId/<?php echo $goodsCateId; ?>'">添加商品属性</button></span>
             </div>
+            </p>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                        <th>属性名称</th>
+                        <th>属性分类</th>
+                        <th>商品类型</th>
+                        <th>属性值录入方式</th>
+                        <th>排序</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if (is_array($data) && !empty($data)) {
+                        foreach ($data as $key => $item) {
+                            ?>
+                            <tr>
+                                <td class="checkids"><input type="checkbox" name="checkIds[]" value="<?php echo $item['attrId']; ?>"/></td>
+                                <td><a href="/Admin/Goodsattr/edit/attrId/<?php echo $item['attrId']; ?>"><?php echo $item['attrName']; ?></a></td>
+                                <td><?php echo $item['attrCateName']; ?></td>
+                                <td><?php echo $item['cateName']; ?></td>
+                                <td><?php echo $item['attrInputType']; ?></td>
+                                <td><?php echo $item['sort']; ?></td>
+                            </tr>
+                            <?php
+                        }
+                    } else {
+                        ?>
+                        <tr>
+                            <td colspan="6">无数据！</td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6"><?php echo $pagination; ?></td>
+                    </tr>
 
-
-
+                </tfoot>
+            </table>
+            <p></p>
         </div>
 
     </div>
-
 </div>

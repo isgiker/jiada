@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @name SampleModel
- * @desc sample数据获取类, 可以访问数据库，文件，其它系统等
- * @author root
+ * @name Admin_GoodsbrandModel
+ * @desc 商品品牌
+ * @author Vic Shiwei
  */
 class Admin_GoodsbrandModel extends BasicModel{
 
@@ -21,6 +21,7 @@ class Admin_GoodsbrandModel extends BasicModel{
             $query .=" and status = $search[status]";
         }
         $query .=" order by pinyin asc,brandId desc ";
+        $query .=' limit '.$this->getLimitStart().', '.$this->getLimit();
 
         $this->db->setQuery($query);
         $rows = $this->db->loadAssocList();

@@ -2,7 +2,7 @@
 
 /**
  * @name GoodscateController
- * @author Vic
+ * @author Vic Shiwei
  * @desc 商品品牌
  */
 class GoodsbrandController extends Core_Basic_Controllers {
@@ -10,7 +10,7 @@ class GoodsbrandController extends Core_Basic_Controllers {
     protected $model;
 
     public function init() {
-        $this->getView()->assign('_view', $this->getView());
+        parent::init();
         $this->model = new Admin_GoodsbrandModel();
     }
     
@@ -144,10 +144,10 @@ class GoodsbrandController extends Core_Basic_Controllers {
         $saveR = $this->model->$action($data);
         if($saveR){
             //保存成功跳转到列表页
-            $this->redirect('/'.$this->getRequest()->getModuleName().'/'.$this->getRequest()->getControllerName().'/index');
+            $this->ok(null, '/'.$this->getRequest()->getModuleName().'/'.$this->getRequest()->getControllerName().'/index/cateId/'.$data['cateId'], '保存成功！');
         }else{
-        //返回来源地址;
-            $this->redirect('/'.$this->getRequest()->getModuleName().'/'.$this->getRequest()->getControllerName().'/'.$action.'/cateId/'.$data['cateId']);
+            //返回来源地址;
+            $this->ok(null, '/'.$this->getRequest()->getModuleName().'/'.$this->getRequest()->getControllerName().'/'.$action.'/cateId/'.$data['cateId'], '保存失败！');
         }
     }
     

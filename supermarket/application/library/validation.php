@@ -52,8 +52,12 @@ class validation {
         //exit;
 
         $checkType = array('required', 'number', 'remote', 'email', 'url', 'date', 'digits', 'equalTo', 'accept', 'rangelength', 'range', 'regex', 'clearxss');
-        foreach ($data as $v) {
+        foreach ($data as $v) {            
             $val = $v->value;
+            if (!isset($GetPost[$val])) {
+                continue;
+            }
+            
             //检测提交内容是否是数组
             if (strstr($val, '[]')) {
                 $val = str_replace('[]', '', $val);

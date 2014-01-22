@@ -34,6 +34,10 @@ class File_Ftp {
             $this->_init($config);
         }
     }
+    
+    public function __destruct() {
+        $this->close();
+    }
 
     /**
      * FTP连接

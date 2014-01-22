@@ -1,0 +1,104 @@
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index"; ?>">商品管理</a> </li>
+    <li class="active">添加库存</li>
+</ul>
+<!--End-breadcrumbs-->
+<div class="widget-box">
+    <form action="" method="post" class="form-horizontal validate">
+        <div class="form-group control-group">
+            <label class="col-sm-2 control-label">商品分类 :</label>
+            <div class="col-sm-10">
+                <?php if (isset($goodsInfo['cateName'])) {
+                    echo $goodsInfo['cateName'];
+                } ?>
+            </div>
+        </div>
+        <div class="form-group control-group">
+            <label class="col-sm-2 control-label">商品品牌 :</label>
+            <div class="col-sm-10">
+            <?php if (isset($goodsInfo['brandName'])) {
+                echo $goodsInfo['brandName'];
+            } ?>
+
+            </div>
+        </div>
+
+        <div class="form-group control-group">
+            <label class="col-sm-2 control-label">商品名称 :</label>
+            <div class="col-sm-10">
+            <?php if (isset($goodsInfo['goodsNme'])) {
+                echo $goodsInfo['goodsNme'];
+            } ?>
+            </div>
+
+        </div>
+        <div class="form-group control-group">
+            <label class="col-sm-2 control-label"> <b class="bold red">*</b> 所属仓库 :</label>
+            <div class="col-sm-10">
+                <select name="storehouseId" id="storehouseId" class="span5">                                        
+                    <?php
+                    if (isset($storehouse) && $storehouse) {
+                        foreach ($storehouse as $key => $val) {
+                            if (1 == $val['storehouseId']) {
+                                $selected = ' selected';
+                            } else {
+                                $selected = '';
+                            }
+                            echo "<option value='" . $val[storehouseId] . "' $selected>" . $val['storehouseName'] . "</option>";
+                        }
+                    }
+                    ?>
+                </select>
+                <div class="showmsg">
+                <?php
+                if (isset($error['storehouseId'])) {
+                    $this->_view->showValidateError($error['storehouseId']);
+                }
+                ?>
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group control-group">
+            <label class="col-sm-2 control-label"> <b class="bold red">*</b> 进货数量 :</label>
+            <div class="col-sm-10">
+                <input type="text" name="quantity" <?php echo $this->_view->getInputAttrs($rules, 'quantity') ?> id="quantity" value="<?php if (isset($goodsInfo['quantity'])) {
+                        echo $goodsInfo['quantity'];
+                    } ?>" class="form-control" placeholder="进货数量" />
+                <div class="showmsg">
+                    <?php
+                    if (isset($error['quantity'])) {
+                        $this->_view->showValidateError($error['quantity']);
+                    }
+                    ?>
+                </div>
+            </div>                            
+        </div>
+        <div class="form-group control-group">
+            <label class="col-sm-2 control-label"><b class="bold red">*</b>进货价格 :</label>
+            <div class="col-sm-10">
+                <input type="text" name="purchasePrice" <?php echo $this->_view->getInputAttrs($rules, 'purchasePrice') ?> id="marketPrice" value="<?php if (isset($goodsInfo['purchasePrice'])) {
+                        echo $goodsInfo['purchasePrice'];
+                    } ?>" class="form-control" placeholder="进货价格" />
+                <div class="showmsg">
+                <?php
+                if (isset($error['purchasePrice'])) {
+                    $this->_view->showValidateError($error['purchasePrice']);
+                }
+                ?>
+                </div>
+            </div>                            
+        </div>
+
+
+
+
+        <div class="form-actions">
+            <button type="submit" name="jsubmit" value="save" class="btn btn-success">保存</button>
+            <button type="reset" name="jsubmit" value="reset" class="btn btn-primary">重置</button>
+        </div>
+
+    </form>
+</div>

@@ -38,10 +38,12 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
         Yaf_Loader::getInstance()->registerLocalNamespace(array("Factory"));
     }
     
+    /**
+     * 关闭自定义错误，因为自定义错误无法用‘@’符合抑制     
     public function _initErrors() {
         Core_Error::attachHandler($this->_settingConfig);        
     }
-
+    */
     public function _initPlugin(Yaf_Dispatcher $dispatcher) {
         //demo
         $objSamplePlugin = new SamplePlugin();

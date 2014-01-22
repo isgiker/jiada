@@ -49,7 +49,7 @@ class AreaController extends Core_Basic_Controllers {
         $this->_layout = true;
         $rules = $this->model->getRules();
         $post = $this->getPost();
-        if($this->isPost()){            
+        if($this->isPost()){
             $v = new validation(); //数据校验
             $v->validate($rules, $post);
             if (!empty($v->error_message)) {
@@ -81,6 +81,8 @@ class AreaController extends Core_Basic_Controllers {
         $rules = $this->model->getRules();        
         if($this->isPost()){
             $post = $this->getPost();
+            $post['areaId']=$areaid;
+            
             $v = new validation(); //数据校验
             $v->validate($rules, $post);
             if (!empty($v->error_message)) {
@@ -101,14 +103,16 @@ class AreaController extends Core_Basic_Controllers {
         $this->getView()->assign('areaInfo', $areaInfo);
     }
     
-    public function saveAction($data,$action){  
-        if(!$data || !$action){            
+    public function saveAction($data,$action){
+        if(!$data || !$action){
             $this->redirect('/'.$this->getRequest()->getModuleName().'/'.$this->getRequest()->getControllerName().'/'.$action);
         }
         $saveR = $this->model->$action($data);
         if($saveR){
             //保存成功跳转到列表页
-            $this->redirect('/admin/area/index');
+            $this->ok(null, '/'.$this->getRequest()->getModuleName().'/'.$this->getRequest()->getControllerName().'/index', '保存成功！');
+        }else{
+            $this->ok(null, '/'.$this->getRequest()->getModuleName().'/'.$this->getRequest()->getControllerName().'/index', '保存失败！');
         }
     }
 

@@ -16,6 +16,7 @@ class BasicModel{
     protected $_db = null;
     protected $_SETTINGCONFIG;
     protected $_Request;
+    private $_errorMsg=null;
 
     function __construct() {
         $this->_Request = new Yaf_Request_Http();
@@ -53,6 +54,20 @@ class BasicModel{
     public function getLimitStart() {
         $this->setLimitStart();
         return $this->limitstart;
+    }
+    
+    /**
+     * 设置Model类中的错误消息
+     */
+    public function setErrorMsg($errorMsg){
+        $this->_errorMsg = $errorMsg;      
+    }
+    
+    /**
+     * 获取Model类中的错误消息
+     */
+    public function getErrorMsg(){
+        return $this->_errorMsg;      
     }
 
 }

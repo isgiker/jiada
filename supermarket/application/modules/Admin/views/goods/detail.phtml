@@ -1,0 +1,82 @@
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index"; ?>">商品管理</a> </li>
+    <li class="active">详情</li>
+</ul>
+
+<!--End-breadcrumbs-->
+<div class="widget-tabs-box">
+    <ul class="nav nav-tabs">
+        <li><a href="/Admin/Goods/edit/goodsId/<?php echo $goodsId; ?>">基本信息</a></li>
+        <li><a href="/Admin/Goods/packpic/goodsId/<?php echo $goodsId; ?>">包装图片</a></li>
+        <li  class="active"><a href="/Admin/Goods/detail/goodsId/<?php echo $goodsId; ?>">商品详情</a></li>
+        <li><a href="/Admin/Goods/attr/goodsId/<?php echo $goodsInfo['goodsId']; ?>">商品属性</a></li>
+    </ul>
+    <div class="widget-content nopadding tab-content">
+        <div id="tab1" class="tab-pane ">
+            ......
+        </div>
+        <div id="tab2" class="tab-pane">
+            ......
+        </div>
+        <div id="tab3" class="tab-pane active">                            
+            <script type="text/javascript" charset="utf-8" src="/ueditor136/ueditor.config.js"></script>
+            <script type="text/javascript" charset="utf-8" src="/ueditor136/ueditor.all.min.js"></script>
+
+            <script>
+                $(function() {
+                    UE.getEditor('goodsDesc').addListener('contentchange', function() {
+                        this.sync();
+                        //1.2.4+以后可以直接给textarea的id名字就行了
+//                                    $('#goodsDesc').valid();
+                    });
+//                                var validator = $("#jform").submit(function() {
+//                                    UE.getEditor('content').sync();
+//                                }).validate({
+//                                    ignore: "",
+//                                    rules: {
+//                                        title: "required",
+//                                        content: "required"
+//                                    },
+//                                    errorPlacement: function(label, element) {
+//                                        label.insertAfter(element.is("textarea") ? element.next() : element);
+//                                    }
+//                                });
+//                                validator.focusInvalid = function() {
+//                                    if (this.settings.focusInvalid) {
+//                                        try {
+//                                            var toFocus = $(this.findLastActive() || this.errorList.length && this.errorList[0].element || []);
+//                                            if (toFocus.is("textarea")) {
+//                                                UE.getEditor('content').focus()
+//                                            } else {
+//                                                toFocus.filter(":visible").focus();
+//                                            }
+//                                        } catch (e) {
+//                                        }
+//                                    }
+//                                }
+                })
+            </script>
+
+
+
+            <form name="jform" id="jform" action="" method="post" class="form-horizontal">
+
+                <textarea id="goodsDesc" name="goodsDesc"   style="min-height: 500px;width: 100%;">
+                    <?php
+                    if (isset($goodsInfo['goodsDesc']))
+                        echo $goodsInfo['goodsDesc'];
+                    ?>
+                </textarea>
+
+                <div class="form-actions">
+                    <button type="submit" name="jsubmit" value="save" class="btn btn-success">保存</button>
+                    <button type="reset" name="jsubmit" value="reset" class="btn btn-primary">重置</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>

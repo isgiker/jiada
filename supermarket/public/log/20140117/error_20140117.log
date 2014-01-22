@@ -1,0 +1,4 @@
+[2014-01-17 06:11:23] 4096 Catchable Fatal Error Yaf_Application::run(): There is no method addsAction in AreaController D:\var\www\php\me\jiada\supermarket\public\index.php 17
+[2014-01-17 06:11:23] 4096 Catchable Fatal Error Yaf_Application::run(): Failed opening controller script D:\var\www\php\me\jiada\supermarket/application\controllers\Favicon.ico.php: No such file or directory D:\var\www\php\me\jiada\supermarket\public\index.php 17
+[2014-01-17 06:12:17] 4096 Catchable Fatal Error Yaf_Application::run(): There is no method addsAction in AreaController D:\var\www\php\me\jiada\supermarket\public\index.php 17
+[2014-01-17 06:12:17] 4096 Catchable Fatal Error Yaf_Application::run(): Failed opening controller script D:\var\www\php\me\jiada\supermarket/application\controllers\Favicon.ico.php: No such file or directory D:\var\www\php\me\jiada\supermarket\public\index.php 17

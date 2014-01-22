@@ -1,16 +1,16 @@
 <?php
 
 /**
- * @name GoodscateController
- * @author Vic
- * @desc 商品品牌
+ * @name GoodsattrController
+ * @author Vic Shiwei
+ * @desc 商品属性
  */
 class GoodsattrController extends Core_Basic_Controllers {
     
     protected $model;
 
     public function init() {
-        $this->getView()->assign('_view', $this->getView());
+        parent::init();
         $this->model = new Admin_GoodsattrModel();
     }
     

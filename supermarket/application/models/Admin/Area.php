@@ -83,7 +83,7 @@ class Admin_AreaModel extends BasicModel{
         }else{
             $parentPath = $this->getParentPath($data['parentId']);
         }
-        $sql = "insert area set areaName='$data[areaName]',pinyin='$data[pinyin]',parentId='$data[parentId]',parentPath='$parentPath',domain='',sort='0',public='$data[public]'";
+        $sql = "insert area set areaName='$data[areaName]',pinyin='$data[pinyin]',parentId='$data[parentId]',parentPath='$parentPath',domain='',sort='$data[sort]',public='$data[public]'";
         $result = $this->db->query($sql);
         if ($result == false) {
             $error = $db->ErrorMsg();
@@ -98,7 +98,7 @@ class Admin_AreaModel extends BasicModel{
         }else{
             $parentPath = $this->getParentPath($data['parentId']);
         }
-        $sql = "update area set areaName='$data[areaName]',pinyin='$data[pinyin]',parentId='$data[parentId]',parentPath='$parentPath',domain='',sort='0',public='$data[public]' where areaId=$data[areaId]";
+        $sql = "update area set areaName='$data[areaName]',pinyin='$data[pinyin]',parentId='$data[parentId]',parentPath='$parentPath',domain='',sort='$data[sort]',public='$data[public]' where areaId=$data[areaId]";
         $result = $this->db->query($sql);
         if ($result == false) {
             $error = $db->ErrorMsg();
@@ -125,6 +125,28 @@ class Admin_AreaModel extends BasicModel{
         }
         
         return $result;
+    }
+    
+    /**
+     * 根据areaId获取地区名称
+     * @param string $areaIds 逗号分隔
+     * @return array 数组
+     */
+    public function getAreaNames($areaIds){
+        if(!$areaIds){
+            return false;
+        }
+        
+        $query = "select areaName from area where areaId in($areaIds)";
+        $this->db->setQuery($query);
+        $rows = $this->db->loadAssocList();
+        $names='';
+        if($rows){
+            foreach($rows as $item){
+                $names?$names.='/'.$item['areaName']:$names=$item['areaName'];
+            }
+        }
+        return $names;
     }
 
     /**

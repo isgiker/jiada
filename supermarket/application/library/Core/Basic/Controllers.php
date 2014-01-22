@@ -5,6 +5,13 @@ class Core_Basic_Controllers extends Yaf_Controller_Abstract {
     public $_layout = false;
     protected $_layoutVars = array();
     
+    public function init() {
+        $this->getView()->assign('_view', $this->getView());
+        $this->getView()->assign('_ModuleName', $this->getRequest()->getModuleName());
+        $this->getView()->assign('_ControllerName', $this->getRequest()->getControllerName());
+        $this->getView()->assign('_ActionName', $this->getRequest()->getActionName());
+    }
+    
     public function __call($name, $arguments) {
         if(method_exists($this->getRequest()->getControllerName(), $name)){
             return $this->$name($arguments);
@@ -156,16 +163,16 @@ class Core_Basic_Controllers extends Yaf_Controller_Abstract {
         if(!is_bool($status)){
             die('返回结果状态参数错误！');
         }
+        $status?$code=200:$code=-200;
         $data=array();
         if($status===false && !$msg){
             $msg='fail';
-            $code=-200;
         }elseif($status===true && !$msg){
             $msg='success';
-            $code=200;
-        }elseif($msg && is_array($msg)){
+        }
+        if($msg && is_array($msg)){
             $data=$msg;
-            $status?$msg='success':$msg='fail';
+            $status?$msg='success':$msg='fail';            
         }
         
         $returnResult = array(

@@ -9,7 +9,6 @@
  * 用PHP自定义函数调试页面;
  */
 class Core_Error {
-
     /**
      * 设置自定义的错误处理函数
      * set_error_handler(error_function,error_types);
@@ -30,8 +29,13 @@ class Core_Error {
      * 8191	E_ALL
      */
     public static function attachHandler($_setting) {
-        //set_error_handler(array('Core_Error', 'customError'), $_setting->setting->errorLevel);
-        set_error_handler(array('Core_Error', 'ErrorLog'), $_setting->setting->errorLevel);
+        //如果开启debug页面显示，否则记录日志;
+        if($_setting->setting->debug){
+            echo set_error_handler(array('Core_Error', 'showCustomError'), $_setting->setting->errorLevel);
+        }else{
+            echo set_error_handler(array('Core_Error', 'writeErrorLog'), $_setting->setting->errorLevel);
+        }       
+        
     }
 
     /**
@@ -42,19 +46,15 @@ class Core_Error {
      * error_line	可选。规定错误发生的行号。
      * error_context	可选。规定一个数组，包含了当错误发生时在用的每个变量以及它们的值。
      */
-    public static function customError($errno, $errstr, $errfile, $errline, $context) {
+    public static function showCustomError($errno, $errstr, $errfile, $errline, $context = NULL) {
         //错误级别：一般,不暴露文件位置;
-        $errormsg = "<b>Jframe Error:</b> [$errno] $errstr<br /> ";
+        $errormsg = "<b>Yaf-Jframework Error:</b> [$errno] $errstr<br /> ";
         //错误级别：高级,暴露文件位置;
         $errormsg .= "Error in $errfile  on line $errline<br />";
-        exit($errormsg);
+        echo("$errormsg");
     }
 
-    public static function ErrorLog($errno, $errstr, $errfile, $errline, $context = NULL) {
-        global $_setting;
-        if (!$_setting['debug']) {
-            return false;
-        }
+    public static function writeErrorLog($errno, $errstr, $errfile, $errline, $context = NULL) {
         $currentTime = date("Y-m-d H:i:s");
         $errortype = array(
             E_ERROR => 'Error',

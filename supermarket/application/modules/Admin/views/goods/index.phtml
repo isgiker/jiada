@@ -1,86 +1,98 @@
 <!--breadcrumbs-->
-<div id="content-header">
-    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="/Admin/Goods/index" class="tip-bottom">商品</a> <a href="javascript:void(0);" class="current">列表</a> </div>
-    <h1>商品管理</h1>
-</div>
-<div class="container-fluid">
-    <hr>
-    <div class="row-fluid">
-        <div class="span12">
-            <div class="widget-box">
-                
-                    <div class="widget-title">
-                        <span class="icon"> <i class="icon-th"></i> </span>
-                        <span class="submenu right"><button type="submit" name="jsubmit" value="del" class="btn" >删除</button></span>
-                        <span class="submenu right"><button type="submit" name="jsubmit" value="search" class="btn" onclick="location.href='/Admin/Goods/add';">添加商品</button></span>
-                    </div>
-                    <div class="widget-content ">
-                        <form name="jform" id="jform" action="" method="post" class="form-horizontal">
-                        <div class="search">
-                            <span>
-                                <select name="onLine" class="span2">
-                                    <option value="all" <?php if($post['onLine']==''){echo ' selected';}else{echo '';}?>>显示所有</option>
-                                    <option value="1" <?php if(isset($post['onLine']) && $post['onLine']==1){echo ' selected';}else{echo '';}?>>已上架</option>
-                                    <option value="0" <?php if(isset($post['onLine']) && $post['onLine']===0){echo ' selected';}else{echo '';}?>>已下架</option>
-                                </select>
-                            </span>
-                            
-                            <span><button type="submit" name="jsubmit" value="search" class="btn" >搜索</button></span>
-                            
-                        </div>
-                        
-                        
-                        <table class="table table-bordered table-striped with-check">
-                            <thead>
-                                <tr>
-                                    <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
-                                    <th>商品名称</th>
-                                    <th>商品分类</th>
-                                    <th>商品品牌</th>
-                                    <th>现价</th>
-                                    <th>发布时间</th>
-                                    <th>状态</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                if (is_array($data) && !empty($data)) {
-                                    foreach ($data as $key => $item) {
-                                        ?>
-                                        <tr>
-                                            <td><input type="checkbox" name="checkIds[]" value="<?php echo $item['goodsId']; ?>"/></td>
-                                            <td><a href="/Admin/Goods/edit/goodsId/<?php echo $item['goodsId']; ?>"><?php echo $item['goodsNme']; ?></a></td>
-                                            <td><?php echo $item['cateId']; ?></td>
-                                            <td><?php echo $item['brandId']; ?></td>
-                                            <td><?php echo $item['currentPrice']; ?></td>
-                                            <td><?php echo date('Y-m-d H:i:s', $item['publishTime']); ?></td>
-                                            <td><?php if($item['onLine']==1){ echo '已上架';}else{ echo '已下架';} ?></td>
-                                        </tr>
-                                        <?php
-                                    }
-                                } else {
-                                    ?>
-                                    <tr>
-                                        <td colspan="7">无数据！</td>
-                                    </tr>
-                                    <?php
-                                }
-                                ?>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="7"><?php echo $pagination; ?></td>
-                                </tr>
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index" ?>">商品管理</a> </li>
+    <li class="active">列表</li>
+</ul>
 
-                            </tfoot>
-                        </table>
-                        </form>
-                    </div>
-                
+<div class="widget-list">
+    <div class="widget-event">
+        <span class="submenu pull-right"><button type="submit" name="jsubmit" value="del" class="btn btn-sm btn-info" >删除</button></span>
+        <span class="submenu pull-right"><button type="submit" name="jsubmit" value="add" class="btn btn-sm btn-info" onclick="location.href = '/Admin/Goods/add';">添加商品</button></span>
+    </div>
+    <div class="widget-content">
+        <form name="jform" id="jform" action="" method="post" class="form-horizontal">
+            <div class="search">
+                <span class="col-sm-2 nopadding">
+                    <select name="cateId" id="cateId" class="form-control input-sm">
+                        <option value="all" selected>--选择分类--</option>
+                        <?php echo $treeGcate; ?>
+                    </select>
+                </span>
+                <span class="col-sm-2 nopadding">
+                    <select name="onLine" class="form-control input-sm">
+                        <option value="1" <?php if (isset($post['onLine']) && $post['onLine'] == '1') {
+                            echo ' selected';
+                        } else {
+                            echo '';
+                        } ?>>已上架</option>
+                        <option value="0" <?php if (isset($post['onLine']) && $post['onLine'] == '0') {
+                            echo ' selected';
+                        } else {
+                            echo '';
+                        } ?>>已下架</option>
+                    </select>
+                </span>
+
+                <span>
+                    <button type="submit" name="jsubmit" value="search" class="btn btn-default btn-sm" >检索</button>
+                </span>
+
             </div>
 
 
-        </div>
-    </div>
-</div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                        <th>商品名称</th>
+                        <th>商品分类</th>
+                        <th>商品品牌</th>
+                        <th>现价</th>
+                        <th>发布时间</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if (is_array($data) && !empty($data)) {
+                        foreach ($data as $key => $item) {
+                            ?>
+                            <tr>
+                                <td class="checkids"><input type="checkbox" name="checkIds[]" value="<?php echo $item['goodsId']; ?>"/></td>
+                                <td><a href="/Admin/Goods/edit/goodsId/<?php echo $item['goodsId']; ?>"><?php echo $item['goodsNme']; ?></a></td>
+                                <td><?php echo $item['cateName']; ?></td>
+                                <td><?php echo $item['brandName']; ?></td>
+                                <td><?php echo $item['currentPrice']; ?></td>
+                                <td><?php echo date('Y-m-d H:i:s', $item['publishTime']); ?></td>
+                                <td><?php if ($item['onLine'] == 1) {
+                                    echo '已上架';
+                                } else {
+                                    echo '已下架';
+                                } ?>
+                                </td>
+                                <td>【<a href="/Admin/Goods/stock/goodsId/<?php echo $item['goodsId']; ?>">添加</a> | <a href="/Admin/Goods/stocklist/goodsId/<?php echo $item['goodsId']; ?>">查看</a>库存】</td>
+                            </tr>
+                            <?php
+                        }
+                    } else {
+                        ?>
+                        <tr>
+                            <td colspan="7">无数据！</td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="7"><?php echo $pagination; ?></td>
+                    </tr>
 
+                </tfoot>
+            </table>
+        </form>
+    </div>
+
+</div>

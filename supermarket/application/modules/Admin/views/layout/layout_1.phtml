@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>家大.小区服务</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/bootstrap-responsive.min.css" />
+        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/fullcalendar.css" />
+        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/matrix-style.css" />
+        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/matrix-media.css" />
+        <link href="//static.jiada.local/supermarket-admin/font-awesome/css/font-awesome.css" rel="stylesheet" />
+        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/jquery.gritter.css" />
+        <link rel="stylesheet" href="//static.jiada.local/css/admin/jiada.css" />
+
+        <!--form common input begin-->
+        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/uniform.css" />
+        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/select2.css" />
+        <!--form common input end-->
+        <script src="//static.jiada.local/supermarket-admin/js/jquery.min.js"></script> 
+    </head>
+    <body>
+        <!--Header-part-->
+        <div id="header">
+            <h1><a href="dashboard.html">家大.小区超市</a></h1>
+        </div>
+        <!--close-Header-part--> 
+
+
+        <!--top-Header-menu-->
+        <?php include_once 'layout_header.phtml'; ?>
+
+        <!--close-top-Header-menu-->
+        <!--start-top-serch-->
+        <div id="search">
+            <input type="text" placeholder="Search here..."/>
+            <button type="submit" class="tip-bottom" title="Search"><i class="icon-search icon-white"></i></button>
+        </div>
+        <!--close-top-serch-->
+        <!--sidebar-menu-->
+        <?php include_once 'layout_left.phtml'; ?>
+        <!--main-container-part-->
+        <div id="content">
+            <!--Action boxes-->
+            <?php
+            echo $_ActionContent;
+            ?>
+            <!--End Action boxes-->
+        </div>
+
+        <!--end-main-container-part-->
+        <!--Footer-part-->
+        <?php include_once 'layout_footer.phtml'; ?>
+
+    </body>
+</html>

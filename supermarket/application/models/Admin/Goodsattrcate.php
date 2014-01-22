@@ -94,7 +94,7 @@ class Admin_GoodsattrcateModel extends BasicModel{
     public function getRules() {
         $rules = '{"validation":[{
 			 		"value":"attrCateName",
-			  		"label":"商品属性分类名称",
+			  		"label":"属性分类名称",
 			  		"rules":[	  					
 						{
 		  					"name":"clearxss"				

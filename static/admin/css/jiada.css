@@ -1,0 +1,199 @@
+@charset 'utf-8';
+
+.hide{
+    display: none;
+}
+
+/*颜色*/
+.red{
+    color:red;
+}
+
+.nopadding{
+    padding: 0px;
+}
+
+/*...*/
+#left{
+    width:238px;
+}
+#right{
+    width:79%;
+}
+
+
+/*
+错误信息
+===============================================================================*/
+#errorMsg{
+    position: fixed;
+    top:30%;
+    width:20em;
+    left: 50%;
+    margin-left: -9em;
+    color: #fff;
+    background: #000;
+    z-index: 1003;
+    border-radius: .3em;
+    overflow: hidden;
+    border: #b5b5b5 solid .2em;
+    opacity: 0.8;
+    padding: 1.5em; padding-top:2.5em;line-height: 1.2em;
+    -webkit-animation:errorHide 3s .2s ease both;
+    -moz-animation:errorHide 3s .2s ease both;   
+}
+#errorMsg:before{position: absolute;content: '温馨提示';font-size: 1em;top:.3em;left:.3em}
+
+.showmsg{
+    display:inline-block;
+    line-height:22px;
+    width:100%;
+}
+
+/*错误/提示信息*/
+.alertInfo{
+    position: fixed;
+    z-index: 1003;
+    top:35%;
+    left: 50%;
+    margin-left: -45%;
+    width: 90%;
+    background: #fff;
+}
+.ft18{ font-size: .9375em;}
+.border{
+    border: 0.0625em solid #d6d3d3;
+    border-radius: 0.3em;
+    border-bottom: #aba9a4;
+    overflow: hidden;
+    background: #fff;
+}
+.flex{ width: 100%; display:-moz-box; display:-webkit-box; display:box;}
+.flex div{ -webkit-box-flex:1; -moz-box-flex:1; box-flex:1;}
+.mask{
+    position: fixed;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0.2;
+    z-index: 1001;
+}
+
+/*
+分页
+===============================================================================*/
+.pagination{
+    margin: 0px;
+    float:right;
+    display: block;
+}
+.pagination a{
+    font-weight: bold;
+}
+
+
+/*表格
+================================================================================*/
+.table th{
+    background:#efefef;
+
+    height: auto;
+    font-size: 10px;
+    padding: 5px 10px 2px;
+    border-bottom: 0;
+    text-align: center;
+    color: #666666;
+}
+.table-bordered>thead>tr>th, .table-bordered>thead>tr>td {
+    border-bottom-width: 1px;
+}
+/*表单
+================================================================================*/
+.control-group {
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 0;
+    padding: 5px 0;
+}
+.form-horizontal .form-group {
+margin-right: 0px;
+margin-left: 0px;
+}
+.form-actions {
+    padding: 19px 20px 20px;
+    padding-left: 20px;
+
+    background-color: #f5f5f5;
+}
+.form-actions {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.widget-box{
+    border: 1px solid #f5f5f5;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+.widget-box label,.widget-tabs-box label{
+    font-weight: 200;
+}
+
+.widget-tabs-box .control-group{
+    border-bottom:0px;
+}
+
+.widget-title{
+    background-color: #f5f5f5;
+    height: 32px;
+}
+.widget-title h5{
+    margin: 0px 10px;
+    line-height: 32px;
+}
+
+.widget-list .search{
+    margin: 15px 0;
+    display: block;
+}
+.widget-list .search span{
+    margin-right:10px;
+    display: block;
+}
+.widget-list .widget-content table .checkids{
+    text-align: center;
+}
+
+.widget-event{
+    height: 32px;
+}
+.widget-event .submenu{
+    margin-left: 5px;
+}
+
+.widget-tabs-box .tab-content .active .row{
+    min-height: 235px;
+    display:block;
+}
+
+.input1{
+    width: 100px;
+    float: left;
+    margin-right: 5px;
+}
+.input2{
+    width: 200px;
+    float: left;
+    margin-right: 5px;
+}
+.input3{
+    width: 300px;
+    float: left;
+    margin-right: 5px;
+}
+
+.textRight{
+    text-align: right;
+}

@@ -2,7 +2,7 @@
 
 /**
  * @name GoodscateController
- * @author Vic
+ * @author Vic Shiwei
  * @desc 商品分类控制器
  */
 class GoodscateController extends Core_Basic_Controllers {
@@ -10,7 +10,7 @@ class GoodscateController extends Core_Basic_Controllers {
     protected $model;
 
     public function init() {
-        $this->getView()->assign('_view', $this->getView());
+        parent::init();
         $this->model = new Admin_GoodscateModel();        
     }
     
@@ -82,6 +82,7 @@ class GoodscateController extends Core_Basic_Controllers {
         $rules = $this->model->getRules();        
         if($this->isPost()){
             $post = $this->getPost();
+            $post['cateId']=$cateId;
             $v = new validation(); //数据校验
             $v->validate($rules, $post);
             if (!empty($v->error_message)) {
@@ -109,10 +110,9 @@ class GoodscateController extends Core_Basic_Controllers {
         $saveR = $this->model->$action($data);
         if($saveR){
             //保存成功跳转到列表页
-            $this->redirect('/'.$this->getRequest()->getModuleName().'/'.$this->getRequest()->getControllerName().'/index');
+            $this->ok(null, '/'.$this->getRequest()->getModuleName().'/'.$this->getRequest()->getControllerName().'/index', '保存成功！');
         }else{
-//            die('保存失败！');
-            $this->redirect('/'.$this->getRequest()->getModuleName().'/'.$this->getRequest()->getControllerName().'/'.$action.'/cateId/'.$data['cateId']);
+            $this->ok(null, '/'.$this->getRequest()->getModuleName().'/'.$this->getRequest()->getControllerName().'/index', '保存失败！');
         }
     }
 
