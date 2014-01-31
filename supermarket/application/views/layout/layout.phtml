@@ -1,49 +1,50 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8" />
-        <title><?php echo $meta_title; ?></title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/bootstrap-responsive.min.css" />
-        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/fullcalendar.css" />
-        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/matrix-style.css" />
-        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/matrix-media.css" />
-        <link href="//static.jiada.local/supermarket-admin/font-awesome/css/font-awesome.css" rel="stylesheet" />
-        <link rel="stylesheet" href="//static.jiada.local/supermarket-admin/css/jquery.gritter.css" />
+        <title>家大.小区服务</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="//static.jiada.local/plugin/bootstrap303/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//static.jiada.local/plugin/jquery_treeview/jquery.treeview.css" />
+        <link rel="stylesheet" href="//static.jiada.local/admin/css/jiada.css" />
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <script src="//static.jiada.local/admin/js/jquery.min.js"></script>
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+            <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
     </head>
     <body>
-        <!--Header-part-->
-        <div id="header">
-            <h1><a href="dashboard.html">家大.小区超市</a></h1>
-        </div>
-        <!--close-Header-part--> 
-
-
         <!--top-Header-menu-->
-        <?php include_once APPLICATION_PATH . DS . 'views/layout/layout_header.phtml'; ?>
+        <?php include_once 'layout_header.phtml'; ?>
 
         <!--close-top-Header-menu-->
-        <!--start-top-serch-->
-        <div id="search">
-            <input type="text" placeholder="Search here..."/>
-            <button type="submit" class="tip-bottom" title="Search"><i class="icon-search icon-white"></i></button>
-        </div>
-        <!--close-top-serch-->
-        <!--sidebar-menu-->
-        <?php include_once APPLICATION_PATH . DS . 'views/layout/layout_left.phtml'; ?>
-        <!--main-container-part-->
-        <div id="content">
-            <!--Action boxes-->
-            <?php
-                echo $_ActionContent;
-                ?>
-            <!--End Action boxes-->
-        </div>
 
-        <!--end-main-container-part-->
+
+        <div class="container">
+            <div class="row" style="padding-top: 60px;">
+                <div id="left" class="col-md-3">
+                    <!--sidebar-menu-->
+                    <?php include_once 'layout_left.phtml'; ?>
+
+                </div>
+                <div id="right" class="col-md-9 nopadding">
+                    <!--main-container-part-->
+                    <div class="content">
+                        <!--Action boxes-->
+                        <?php
+                        echo $_ActionContent;
+                        ?>
+                        <!--End Action boxes-->
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
         <!--Footer-part-->
-        <?php include_once APPLICATION_PATH . DS . 'views/layout/layout_footer.phtml'; ?>
+        <?php include_once 'layout_footer.phtml'; ?>
 
     </body>
 </html>

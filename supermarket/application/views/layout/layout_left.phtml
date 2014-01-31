@@ -1,52 +1,60 @@
 <!--sidebar-menu-->
-<div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> Dashboard</a>
-  <ul>
-    <li class="active"><a href="#"><i class="icon icon-home"></i> <span>起始页</span></a> </li>
-    
-    <li class="submenu open"> <a href="#"><i class="icon icon-th-list"></i> <span>商品管理</span> <span class="label label-important">3</span></a>
-      <ul>
-        <li><a href="#">商品分类</a></li>
-        <li class="active" ><a href="#">商品列表</a></li>
-        <li><a href="#">添加新商品</a></li>
-      </ul>
-    </li>
-    <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>交易管理</span> <span class="label label-important">2</span></a>
-      <ul>
-        <li><a href="#">订单管理</a></li>
-        <li><a href="gallery.html">用户评论</a></li>
-      </ul>
-    </li>
-    <li><a href="buttons.html"><i class="icon icon-fullscreen"></i> <span>促销管理</span></a></li>
-    <li><a href="interface.html"><i class="icon icon-th"></i> <span>广告管理</span></a></li>
-    <li><a href="buttons.html"><i class="icon icon-th"></i> <span>会员管理</span></a></li>
-    <li><a href="buttons.html"><i class="icon icon-pencil"></i> <span>权限管理</span></a></li>
-    
-    <li><a href="interface.html"><i class="icon icon-th"></i> <span>报表统计</span></a></li>
-    
-    <li class="submenu"> <a href="#"><i class="icon icon-info-sign"></i> <span>Error</span> <span class="label label-important">4</span></a>
-      <ul>
-        <li><a href="error403.html">Error 403</a></li>
-        <li><a href="error404.html">Error 404</a></li>
-        <li><a href="error405.html">Error 405</a></li>
-        <li><a href="error500.html">Error 500</a></li>
-      </ul>
-    </li>
-    
-<!--    <li class="content"> <span>Monthly Bandwidth Transfer</span>
-      <div class="progress progress-mini progress-danger active progress-striped">
-        <div style="width: 77%;" class="bar"></div>
-      </div>
-      <span class="percent">77%</span>
-      <div class="stat">21419.94 / 14000 MB</div>
-    </li>
-    <li class="content"> <span>Disk Space Usage</span>
-      <div class="progress progress-mini active progress-striped">
-        <div style="width: 87%;" class="bar"></div>
-      </div>
-      <span class="percent">87%</span>
-      <div class="stat">604.44 / 4000 MB</div>
-    </li>-->
-    
-  </ul>
+<div id="sidetree" class="breadcrumb">
+    <div id="sidetreecontrol"><a href="?#">Collapse All</a> | <a href="?#">Expand All</a></div>
+    <ul id="tree" >                        
+        <li><span>商品管理中心</span>
+            <ul>
+                <li><a href="/Admin/Goodscate/index" class="selected">商品分类管理</a>
+                    <ul>
+                        <li><a href="/Admin/Goodscate/add">添加分类</a></li>
+                    </ul>
+                </li>
+                <li><a href="/Admin/Goodsbrand/index">商品品牌管理</a>
+                    <ul>
+                        <li><a href="#">添加品牌</a></li>
+                    </ul>
+                </li>
+                <li><a href="/Admin/Goods/index">商品管理</a>
+                    <ul>
+                        <li><a href="/Admin/Goods/add">添加商品</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </li>
+        <li><span>区域管理中心</span>
+            <ul>
+                <li><a href="/Admin/Area/index">地区管理</a>
+                    <ul>
+                        <li><a href="/Admin/Area/add">新增地区</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><span>仓库管理中心</span>
+            <ul>
+                <li><a href="/Admin/Storehouse/index">仓库管理</a>
+                    <ul>
+                        <li><a href="/Admin/Storehouse/add">新增仓库</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><span>权限管理中心</span>
+            <ul>
+                <li><a href="/Admin/Agroup/index">用户组管理</a>
+                    <ul>
+                        <li><a href="/Admin/Agroup/add">新增用户组</a></li>
+                    </ul>
+                </li>
+                <li><a href="/Admin/Admin/index">管理员管理</a>
+                    <ul>
+                        <li><a href="/Admin/Admin/add">新增管理员</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
 </div>
 <!--sidebar-menu-->

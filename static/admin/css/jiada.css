@@ -45,11 +45,15 @@
 #errorMsg:before{position: absolute;content: '温馨提示';font-size: 1em;top:.3em;left:.3em}
 
 .showmsg{
-    display:inline-block;
+    /*display:inline-block;*/
     line-height:22px;
     width:100%;
 }
-
+.showmsg .error{
+    display:inline-block;
+    width:100%;
+    line-height:22px;
+}
 /*错误/提示信息*/
 .alertInfo{
     position: fixed;
@@ -193,7 +197,11 @@ margin-left: 0px;
     float: left;
     margin-right: 5px;
 }
-
+.input4{
+    width: 400px;
+    float: left;
+    margin-right: 5px;
+}
 .textRight{
     text-align: right;
 }

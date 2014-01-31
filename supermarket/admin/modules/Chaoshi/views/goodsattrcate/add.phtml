@@ -1,0 +1,72 @@
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index/cateId/$goodsCateId"; ?>">商品属性分类管理</a> </li>
+    <li class="active">添加</li>
+</ul>
+
+
+<!--End-breadcrumbs-->
+<div class="widget-tabs-box">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="<?php echo "/$_ModuleName/goodsattrcate/index/cateId/$goodsCateId"; ?>">商品属性分类管理</a></li>
+        <li><a href="<?php echo "/$_ModuleName/goodsattr/index/cateId/$goodsCateId"; ?>">商品属性管理</a></li>
+    </ul>
+    <div class="widget-content nopadding tab-content">
+        <div id="tab1" class="tab-pane active">
+            <p></p>
+            <form action="" name="jform" id="jform" method="post" class="form-horizontal validate">
+                <div class="form-group control-group">
+                    <label class="col-sm-2 control-label">商品分类 :</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="cateName" id="cateName" value="<?php echo $gcateInfo['cateName'] ?>" class="form-control"  readonly />
+                        <input type="hidden" name="goodsCateId" <?php echo $this->_view->getInputAttrs($rules, 'goodsCateId') ?> id="cateId" value="<?php echo $gcateInfo['cateId'] ?>" class="form-control"   readonly/>
+                        <div class="showmsg">
+                            <?php
+                            if (isset($error['goodsCateId'])) {
+                                $this->_view->showValidateError($error['goodsCateId']);
+                            }
+                            ?>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group control-group">
+                    <label class="col-sm-2 control-label">属性分类名称 :</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="attrCateName" <?php echo $this->_view->getInputAttrs($rules, 'attrCateName') ?> id="attrCateName" value="" class="form-control" placeholder="基本属性" />
+                        <div class="showmsg">
+                            <?php
+                            if (isset($error['attrCateName'])) {
+                                $this->_view->showValidateError($error['attrCateName']);
+                            }
+                            ?>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group control-group">
+                    <label class="col-sm-2 control-label">排序 :</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="sort" <?php echo $this->_view->getInputAttrs($rules, 'sort') ?> id="sort" value="" class="form-control" placeholder="0 1 2 3" />
+                        <div class="showmsg">
+                            <?php
+                            if (isset($error['sort'])) {
+                                $this->_view->showValidateError($error['sort']);
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <button type="reset" class="btn btn-primary">Reset</button>
+                </div>
+            </form>
+        </div>
+        <div id="tab2" class="tab-pane">
+
+        </div>
+
+    </div>
+</div>

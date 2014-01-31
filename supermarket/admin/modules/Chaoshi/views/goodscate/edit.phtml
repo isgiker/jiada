@@ -1,0 +1,114 @@
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index" ?>">商品分类管理</a> </li>
+    <li class="active">编辑</li>
+</ul>
+
+<!--End-breadcrumbs-->
+<div class="widget-box">
+    <div class="widget-title">
+        <h5>Goods Category-info</h5>
+    </div>
+    <div class="widget-content nopadding">
+        <form action="" method="post" class="form-horizontal validate">
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label">父分类 :</label>
+                <div class="col-sm-10">
+                    <select name="parentId" class="form-control">
+                        <option value="0" selected>--顶级--</option>
+                        <?php echo $treeGcate; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label">商品分类名称 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="cateName" <?php echo $this->_view->getInputAttrs($rules, 'cateName') ?> id="cateName" value="<?php if (isset($gcateInfo['cateName'])) echo $gcateInfo['cateName'] ?>" class="form-control" placeholder="北京 北京周边 燕郊" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['cateName'])) {
+                            $this->_view->showValidateError($error['cateName']);
+                        }
+                        ?>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label">拼音 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="pinyin" <?php echo $this->_view->getInputAttrs($rules, 'pinyin') ?> id="pinyin" value="<?php if (isset($gcateInfo['cateName'])) echo $gcateInfo['pinyin'] ?>" class="form-control" placeholder="beijing zhoubian yanjiao" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['pinyin'])) {
+                            $this->_view->showValidateError($error['pinyin']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label">排序 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="sort" <?php echo $this->_view->getInputAttrs($rules, 'sort') ?> id="sort" value="<?php if (isset($gcateInfo['cateName'])) echo $gcateInfo['sort'] ?>" class="form-control" placeholder="数字0123..." />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['sort'])) {
+                            $this->_view->showValidateError($error['sort']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label for="status" class="col-sm-2 textRight">状态设置：</label>
+                <div class="col-sm-10">
+                    <label>
+                        <input type="radio" name="status" value="1" checked <?php
+                        if (isset($gcateInfo['status'])) {
+                            if ($gcateInfo['status'] == 1) {
+                                echo ' checked';
+                            } else {
+                                echo ' ';
+                            }
+                        }
+                        ?>/>
+                        公开
+                    </label>
+                    <label>
+                        <input type="radio" name="status" value="-1" <?php
+                        if (isset($gcateInfo['status'])) {
+                            if ($gcateInfo['status'] == -1) {
+                                echo ' checked';
+                            } else {
+                                echo ' ';
+                            }
+                        }
+                        ?>/>
+                        不公开 
+                    </label>
+                    <label>
+                        <input type="radio" name="status" value="-2" <?php
+                        if (isset($gcateInfo['status'])) {
+                            if ($gcateInfo['status'] == -2) {
+                                echo ' checked';
+                            } else {
+                                echo ' ';
+                            }
+                        }
+                        ?>/>
+                        删除 
+                    </label>
+                </div>
+            </div>
+
+
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">Save</button>
+                <button type="reset" class="btn btn-primary">Reset</button>
+            </div>
+        </form>
+    </div>
+</div>

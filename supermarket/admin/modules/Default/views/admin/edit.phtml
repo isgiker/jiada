@@ -1,0 +1,144 @@
+
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index" ?>">管理员管理</a> </li>
+    <li class="active">编辑</li>
+</ul>
+
+
+<!--End-breadcrumbs-->
+<div class="widget-box">
+    <div class="widget-title">
+        <h5>Admin-info</h5>
+    </div>
+    <div class="widget-content nopadding">
+        <form name="form" id="form" action="" method="post" class="form-horizontal validate">
+            <div class="form-group control-group">
+                <label for="parentId" class="col-sm-2 control-label">用户组：</label>
+                <div class="col-sm-10">
+                    <select name="agroupId" id="agroupId" <?php echo $this->_view->getInputAttrs($rules, 'agroupId') ?> class="form-control">
+                        <option value="0" selected>顶级</option>
+                        <?php echo $treeAgroup; ?>
+                    </select>
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['agroupId'])) {
+                            $this->_view->showValidateError($error['agroupId']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label">真实姓名：</label>
+                <div class="col-sm-10">
+                    <input type="text" name="realName" <?php echo $this->_view->getInputAttrs($rules, 'realName') ?> id="realName" value="<?php if (isset($adminInfo['realName'])) echo $adminInfo['realName'] ?>"  class="form-control" placeholder="真实姓名" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['realName'])) {
+                            $this->_view->showValidateError($error['realName']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label">用户名：</label>
+                <div class="col-sm-10">
+                    <input type="text" name="userName" <?php echo $this->_view->getInputAttrs($rules, 'userName') ?> id="userName" value="<?php if (isset($adminInfo['userName'])) echo $adminInfo['userName'] ?>"  class="form-control" placeholder="登录账户" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['userName'])) {
+                            $this->_view->showValidateError($error['userName']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label">密码：</label>
+                <div class="col-sm-10">
+                    <input type="text" name="password" id="password" value=""  class="form-control" placeholder="修改密码" />
+                    
+                </div>
+            </div>
+            
+            <div class="form-group control-group">
+                <label for="status" class="col-sm-2 textRight">是否禁用：</label>
+                <div class="col-sm-10">
+                    <label>
+                        <input type="radio" name="status" value="1" checked <?php
+                        if (isset($adminInfo['status'])) {
+                            if ($adminInfo['status'] == 1) {
+                                echo ' checked';
+                            } else {
+                                echo ' ';
+                            }
+                        }
+                        ?>/>
+                        否
+                    </label>
+                    <label>
+                        <input type="radio" name="status" value="-1" <?php
+                        if (isset($adminInfo['status'])) {
+                            if ($adminInfo['status'] == -1) {
+                                echo ' checked';
+                            } else {
+                                echo ' ';
+                            }
+                        }
+                        ?>/>
+                        是
+                    </label>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <div class="col-sm-12">
+                    <table class="table table-bordered table-hover">
+                        <?php
+                        $_acl = array();
+                        if (isset($adminInfo['acl']) && $adminInfo['acl']) {
+                            $_acl = $adminInfo['acl'];
+                        }
+                        if (isset($resourcConfig) && $resourcConfig) {
+                            foreach ($resourcConfig as $m => $rv) {
+                                foreach ($rv as $c => $item) {
+                                    ?>
+                                    <tr>
+                                        <td class="col-sm-2" style="text-align: right;"><?php echo $item['name']; ?></td>
+                                        <td>
+                                            <?php
+                                            foreach ($item as $a => $eventName) {
+                                                if ($a == 'name')
+                                                    continue;
+                                                $acl = $m . '.' . $c . '.' . $a;
+                                                ?>
+                                            <span style="margin-right: 10px;">
+                                                <input type="checkbox" name="acl[]" value="<?php echo $acl; ?>" <?php if (!empty($_acl) && in_array($acl, $_acl)) {
+                                    echo ' checked';
+                                } ?>/> <?php echo $eventName; ?>
+                                            </span>
+                                                <?php
+                                            }
+                                            ?>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                }
+                            }
+                        }
+                        ?>
+
+                    </table>
+                    
+                </div>
+            </div>
+            <div class="form-actions">
+                <label for="button" class="col-sm-2 control-label"></label>
+                <button type="submit" name="jsubmit" value="save" class="btn btn-success">保存</button>
+                <button type="reset" name="jsubmit" value="reset" class="btn btn-primary">重置</button>
+            </div>
+        </form>
+    </div>
+</div>

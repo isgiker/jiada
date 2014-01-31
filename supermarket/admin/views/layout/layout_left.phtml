@@ -1,0 +1,47 @@
+<!--sidebar-menu-->
+<?php
+//根据行业不同，切换不同的管理模块
+if (isset($_COOKIE['industry_modules']) && $_COOKIE['industry_modules']) {
+    $industry_modules = @$_COOKIE['industry_modules'];
+} else {
+    $industry_modules = 'Default';
+}
+//$leftMenu
+include_once CONFIG_PATH . DS . 'leftmenu.php';
+
+?>
+<div id="sidetree" class="breadcrumb">
+    <div id="sidetreecontrol"><a href="?#">折叠</a> | <a href="?#">展开</a></div>
+    <ul id="tree" >                        
+        
+        <?php
+            if(isset($leftMenu[$industry_modules]) && $leftMenu[$industry_modules]  && is_array($leftMenu[$industry_modules])){
+                foreach ($leftMenu[$industry_modules] as $key => $menus) {
+
+        ?>
+        <li><span><?php echo $key;?></span>
+            <ul>
+                <?php 
+                if($menus && is_array($menus)){
+                        foreach ($menus as $mName => $mLink) {
+                            if ($mLink == 'keep_spacing') {
+                                    echo '</ul><ul>';
+                                    continue;
+                                }
+                ?>
+                <li><a href="<?php echo $mLink;?>"><?php echo $mName;?></a></li>
+                <?php
+                                   
+                        }
+                }
+                ?>
+            </ul>
+
+        </li>
+        <?php
+                }
+            }
+        ?>
+    </ul>
+</div>
+<!--sidebar-menu-->

@@ -1,0 +1,11 @@
+<?php
+if (isset($jses)) {
+    foreach ($jses as $js) {
+        $arrParams = [];
+        if (isset($js[1])) {
+            $arrParams = $js[1];
+        }
+        echo $page->js($js[0], $arrParams);
+    }
+}
+?>

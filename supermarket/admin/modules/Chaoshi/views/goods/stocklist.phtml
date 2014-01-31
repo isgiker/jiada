@@ -1,0 +1,75 @@
+<!--breadcrumbs-->
+<div id="content-header">
+    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="/Chaoshi/Goods/index" class="tip-bottom">商品库存</a> <a href="javascript:void(0);" class="current">列表</a> </div>
+    <h1>商品库存管理</h1>
+</div>
+<div class="container-fluid">
+    <hr>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                
+                    <div class="widget-title">
+                        <span class="icon"> <i class="icon-th"></i> </span>
+                        <span class="submenu right"><button type="submit" name="jsubmit" value="search" class="btn" onclick="location.href='/Chaoshi/Goods/stock/goodsId/<?php echo $goodsId;?>/storehouseId/<?php echo $storehouseId;?>';">添加库存</button></span>
+                    </div>
+                    <div class="widget-content ">
+                        <form name="jform" id="jform" action="" method="post" class="form-horizontal">
+    
+                        
+                        
+                        <table class="table table-bordered table-striped with-check">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                                    <th>商品名称</th>
+                                    <th>所属仓库</th>
+                                    <th>进货数量</th>
+                                    <th>进货价格</th>
+                                    <th>入库操作员</th>
+                                    <th>进货入库时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                if (is_array($data) && !empty($data)) {
+                                    foreach ($data as $key => $item) {
+                                        ?>
+                                        <tr>
+                                            <td><input type="checkbox" name="checkIds[]" value="<?php echo $item['stockId']; ?>"/></td>
+                                            <td><a href="/Chaoshi/Goods/stockedit/stockId/<?php echo $item['stockId']; ?>"><?php echo $item['goodsNme']; ?></a></td>
+                                            <td><?php echo $item['storehouseId']; ?></td>
+                                            <td><?php echo $item['quantity']; ?></td>
+                                            <td><?php echo $item['purchasePrice']; ?></td>
+                                            <td><?php echo $item['operator']; ?></td>
+                                            <td><?php echo date('Y-m-d H:i:s', $item['putinTime']); ?></td>
+                                            
+                                        </tr>
+                                        <?php
+                                    }
+                                } else {
+                                    ?>
+                                    <tr>
+                                        <td colspan="7">无数据！</td>
+                                    </tr>
+                                    <?php
+                                }
+                                ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="7"><?php //echo $pagination; ?></td>
+                                </tr>
+
+                            </tfoot>
+                        </table>
+                        </form>
+                    </div>
+                
+            </div>
+
+
+        </div>
+    </div>
+</div>
+

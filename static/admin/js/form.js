@@ -215,6 +215,13 @@ $(document).ready(function() {
             autoValidate(this);
         });
     }
+    
+    var form = $('form.ajax');
+    if (form.length) {
+        $("form").submit(function(e) {
+            ajaxForm("form");
+        });
+    }
 //    页面内显示错误
 //        $("#form").validate({
 //            debug: true,
@@ -225,3 +232,13 @@ $(document).ready(function() {
 //        });
 
 });
+
+/**
+ * 后台切换行业
+ */
+$("#industry_modules").change(function() {
+    var industry_modules = $(this).val();
+    $.cookie('industry_modules', industry_modules, { expires:0, path:'/'});
+    location.reload();
+});
+

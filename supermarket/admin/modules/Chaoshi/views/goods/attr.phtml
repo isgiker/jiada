@@ -1,0 +1,115 @@
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index"; ?>">商品管理</a> </li>
+    <li class="active">属性</li>
+</ul>
+
+<!--End-breadcrumbs-->
+<div class="widget-tabs-box">
+    <form action="" name="jform" id="jform" method="post" class="form-horizontal validate">
+        <ul class="nav nav-tabs">
+                <li><a href="<?php echo "/$_ModuleName/Goods/edit/goodsId/$goodsId"; ?>">基本信息</a></li>
+                <li><a href="<?php echo "/$_ModuleName/Goods/packpic/goodsId/$goodsId"; ?>">包装图片</a></li>
+                <li><a href="<?php echo "/$_ModuleName/Goods/detail/goodsId/$goodsId"; ?>">商品详情</a></li>
+                <li  class="active"><a href="<?php echo "/$_ModuleName/Goods/attr/goodsId/$goodsId"; ?>">商品属性</a></li>
+        </ul>
+        <div class="widget-content nopadding tab-content">
+            <div id="tab1" class="tab-pane">
+
+            </div>
+            <div id="tab2" class="tab-pane">
+                ......
+            </div>
+            <div id="tab3" class="tab-pane">
+                ......
+
+            </div>
+
+            <div id="tab4" class="tab-pane active">
+                <?php
+                if ($gattr) {
+                    foreach ($gattr as $attr) {
+                        echo '<h4>' . $attr['attrCateName'] . '</h4>';
+                        foreach ($attr['attr'] as $v) {
+                            if($v['isRequired']==1){
+                                    $required='<b class="bold red">*</b>';
+                                }else{
+                                    $required='';
+                                }
+                            if ($v['attrInputType'] == 'text') {
+                                
+                                ?>
+                                <div class="form-group control-group">
+                                    <label class="col-sm-2 control-label"> <?php echo $required; ?> <?php echo $v['attrName']; ?> :</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="attr_input[<?php echo $v['attrId']; ?>]"  id="<?php echo $v['attrId']; ?>" value="<?php if (isset($attrVaules[$v['attrId']])) echo $attrVaules[$v['attrId']]; ?>"
+                                                <?php if($required)echo 'data-msg-required="'.$v['attrName'].'为必填项" data-rule-required="true"';?> class="input-sm form-control" placeholder="" />
+
+                                    </div>
+
+                                </div>
+                            <?php
+                            }elseif ($v['attrInputType'] == 'select') {
+                                if (isset($v['attrValues']) && $v['attrValues']) {
+                                    $attrValues = explode("\r", $v['attrValues']);
+                                } else {
+                                    $attrValues = null;
+                                }
+                                ?>    
+                                <div class="form-group control-group">
+                                    <label class="col-sm-2 control-label"> <?php echo $required; ?> <?php echo $v['attrName']; ?> :</label>
+                                    <div class="col-sm-10">
+                                        <select name="attr_input[<?php echo $v['attrId']; ?>]"  id="<?php echo $v['attrId']; ?>"  <?php if($required)echo 'data-msg-required="'.$v['attrName'].'为必填项" data-rule-required="true"';?>  class="input-sm form-control">
+                                            <?php
+                                            if (!empty($attrValues) && is_array($attrValues)) {
+                                                foreach ($attrValues as $attrv) {
+                                                    $attrv = trim($attrv);
+                                                    if (trim($attrVaules[$v['attrId']]) == $attrv) {
+                                                        $checked = ' selected';
+                                                    } else {
+                                                        $checked = '';
+                                                    }
+                                                    echo '<option value="' . $attrv . '" ' . $checked . '>' . $attrv . '</option>';
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            <?php
+                            } elseif ($v['attrInputType'] == 'radio') {
+                                if (isset($v['attrValues']) && $v['attrValues']) {
+                                    $attrValues = explode("\r", $v['attrValues']);
+                                } else {
+                                    $attrValues = null;
+                                }
+                                ?>    
+                                <div class="form-group control-group">
+                                    <label class="col-sm-2 control-label"> <?php echo $required; ?> <?php echo $v['attrName']; ?> :</label>
+                                    <div class="col-sm-10">
+                                        <?php
+                                        if (!empty($attrValues) && is_array($attrValues)) {
+                                            foreach ($attrValues as $attrv) {
+                                                echo '<input type="radio" name="attr_input[' . $v['attrId'] . ']" value="' . $attrv . '" /> ' . $attrv;
+                                            }
+                                        }
+                                        ?>
+                                    </div>
+
+                                </div>
+                                <?php
+                            }
+                        }
+                    }
+                }
+                ?>
+                <div class="form-actions">
+                    <button type="submit" name="jsubmit" value="save" class="btn btn-success">保存</button>
+                    <button type="reset" name="jsubmit" value="reset" class="btn btn-primary">重置</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

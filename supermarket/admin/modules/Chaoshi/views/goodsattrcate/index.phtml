@@ -1,0 +1,75 @@
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index/cateId/$goodsCateId" ?>">商品属性分类管理</a> </li>
+    <li class="active">列表</li>
+</ul>
+
+<!--End-breadcrumbs-->
+<div class="widget-list">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="<?php echo "/$_ModuleName/goodsattrcate/index/cateId/$goodsCateId"; ?>">商品属性分类管理</a></li>
+        <li><a href="<?php echo "/$_ModuleName/goodsattr/index/cateId/$goodsCateId"; ?>">商品属性管理</a></li>
+    </ul>
+    <div class="widget-content nopadding tab-content">
+        <div id="tab1" class="tab-pane active">
+            <p>
+            <div class="widget-event">
+                <span class="submenu pull-right">
+                    <button type="submit" name="jsubmit" value="add" class="btn btn-sm btn-info" onclick="ajaxForm('jform', '<?php echo "/$_ModuleName/$_ControllerName/del/cateId/$goodsCateId"; ?>');return false;">删除</button>
+                </span>
+                <span class="submenu pull-right">
+                    <button type="submit" name="jsubmit" value="add" class="btn btn-sm btn-info" onclick="location = '<?php echo "/$_ModuleName/$_ControllerName/add/cateId/$goodsCateId"; ?>'">添加属性分类</button>
+                </span>
+            </div>                 
+            </p> 
+
+
+            <form action="" name="jform" id="jform" method="post" class="form-horizontal">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                            <th>商品类型</th>
+                            <th>商品分类</th>
+                            <th>排序</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if (is_array($data) && !empty($data)) {
+                            foreach ($data as $key => $item) {
+                                ?>
+                                <tr>
+                                    <td class="checkids"><input type="checkbox" name="checkIds[]" value="<?php echo $item['attrCateId']; ?>"/></td>
+                                    <td><a href="<?php echo "/$_ModuleName/goodsattrcate/edit/attrCateId/$item[attrCateId]"; ?>"><?php echo $item['attrCateName']; ?></a></td>
+                                    <td><?php echo $gcateInfo['cateName']; ?></td>
+                                    <td><?php echo $item['sort']; ?></td>
+                                </tr>
+                                <?php
+                            }
+                        } else {
+                            ?>
+                            <tr>
+                                <td colspan="6">无数据！</td>
+                            </tr>
+                            <?php
+                        }
+                        ?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6"><?php echo $pagination; ?></td>
+                        </tr>
+
+                    </tfoot>
+                </table>
+            </form>
+            <p></p>
+        </div>
+        <div id="tab2" class="tab-pane">
+
+        </div>
+
+    </div>
+</div>

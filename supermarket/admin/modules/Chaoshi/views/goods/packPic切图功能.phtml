@@ -1,0 +1,230 @@
+<!--breadcrumbs-->
+<div id="content-header">
+    <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="/Chaoshi/Goods/index" class="tip-bottom">商品</a> <a href="#" class="current">添加</a> </div>
+    <h1>商品管理</h1>
+</div>
+
+<!--End-breadcrumbs-->
+<div class="container-fluid">
+    <hr>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <form action="/Chaoshi/Goods/add" method="post" class="form-horizontal">
+                    <div class="widget-title">
+                        <ul class="nav nav-tabs">
+                            <li><a href="/Chaoshi/Goods/edit/goodsId/<?php echo $goodsId; ?>">基本信息</a></li>
+                            <li  class="active"><a href="/Chaoshi/Goods/packpic/goodsId/<?php echo $goodsId; ?>">包装图片</a></li>
+                            <li><a href="#tab3">商品详情</a></li>
+                        </ul>
+                    </div>
+                    <div class="widget-content nopadding tab-content">
+                        <div id="tab1" class="tab-pane">
+                            .......
+                        </div>
+                        <div id="tab2" class="tab-pane active">
+
+
+                            <script src="//static.jiada.local/plugin/jcrop/js/jquery.min.js"></script>
+                            <script src="//static.jiada.local/plugin/jcrop/js/jquery.Jcrop.js"></script>
+
+                            <link rel="stylesheet" href="//static.jiada.local/plugin/jcrop/css/jquery.Jcrop.css" type="text/css" />
+
+                            <script type="text/javascript">
+                                jQuery(function($) {
+                                    // Create variables (in this scope) to hold the API and image size
+                                    var jcrop_api, boundx, boundy;
+
+                                    $("#target").Jcrop({
+                                        onChange: updatePreview, //拖动选择框时的动作
+                                        onSelect: updatePreview, //完成选择之后的动作
+                                        onSelect: updateCoords,
+                                                aspectRatio: 1
+                                    }, function() {
+                                        // Use the API to get the real image size
+                                        var bounds = this.getBounds();
+                                        boundx = bounds[0];//img的实际宽度，即width属性的值
+                                        boundy = bounds[1];//height属性值
+                                        // Store the API in the jcrop_api variable
+                                        jcrop_api = this;
+                                    });
+
+
+                                    function updateCoords(c)
+                                    {
+                                        $('#x').val(c.x);
+                                        $('#y').val(c.y);
+                                        $('#w').val(c.w);
+                                        $('#h').val(c.h);
+                                    }
+                                    ;
+
+                                    function checkCoords()
+                                    {
+                                        if (parseInt($('#w').val()))
+                                            return true;
+                                        alert('请选择图片上合适的区域.');
+                                        return false;
+                                    }
+                                    ;
+
+                                    function updatePreview(c) {//个人理解参数c为选择框选中区域所代表的对象
+                                        if (parseInt(c.w) > 0) {
+                                            var rx = 360 / c.w;//其中100为预览图像所在的DIV的宽度，c.w为原图中选择框的宽度，rx即为X方向压缩的比例
+                                            var ry = 360 / c.h;
+
+                                            $("#preview360").css({
+                                                width: Math.round(rx * boundx) + "px",
+                                                height: Math.round(ry * boundy) + "px",
+                                                marginLeft: "-" + Math.round(rx * c.x) + "px",
+                                                marginTop: "-" + Math.round(ry * c.y) + "px"
+                                            });
+
+                                            var rx = 160 / c.w;
+                                            var ry = 160 / c.h;
+                                            $("#preview160").css({
+                                                width: Math.round(rx * boundx) + "px",
+                                                height: Math.round(ry * boundy) + "px",
+                                                marginLeft: "-" + Math.round(rx * c.x) + "px",
+                                                marginTop: "-" + Math.round(ry * c.y) + "px"
+                                            });
+
+                                            var rx = 60 / c.w;
+                                            var ry = 60 / c.h;
+                                            $("#preview60").css({
+                                                width: Math.round(rx * boundx) + "px",
+                                                height: Math.round(ry * boundy) + "px",
+                                                marginLeft: "-" + Math.round(rx * c.x) + "px",
+                                                marginTop: "-" + Math.round(ry * c.y) + "px"
+                                            });
+                                        }
+                                        ;
+                                    }
+                                    ;
+                                });
+
+                            </script>
+                            <style type="text/css">
+                                #jcropTable{
+                                    width: 100%;
+                                    margin-top: 20px;
+                                }
+                                .preview360 {
+                                    width: 360px;
+                                    height: 360px;
+                                    overflow:hidden;
+                                }
+                                .preview160 {
+                                    width: 160px;
+                                    height: 160px;
+                                    overflow:hidden;
+                                }
+                                .preview60 {
+                                    width: 60px;
+                                    height: 60px;
+                                    overflow:hidden;
+                                }
+                                /*Bootstrap与jcrop冲突解决办法*/
+                                .jcropBox img {
+                                    max-width: none!important;               
+                                }
+                            </style>
+
+                            <table>
+                                <tr>
+                                    <td>
+                                        <h4>当前图片</h4>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <?php
+                                        $packPic=@$goodsInfo['packPic'];
+                                        if($packPic){
+                                            $packPic = explode(',', $packPic);
+                                            foreach($packPic as $pic){
+                                        ?>
+                                        <img width="60px" height="60px" src="//static.jiada.local/plugin/jcrop/img/default.jpg" />
+                                        <?php
+                                            }
+                                        }else{
+                                            //如果没有图片，输出默认图;
+                                        ?>
+                                        <img width="60px" height="60px" src="//static.jiada.local/plugin/jcrop/img/default.jpg" />
+                                        <?php
+                                        }
+                                        ?>
+     
+                                    </td>
+                                    <td>
+                                        上传图片
+                                    </td>
+                                </tr>
+                            </table>
+                            <p><hr style="margin:0px;height:1px;border:0px;background-color:#D5D5D5;color:#D5D5D5;"/></p>
+                            <table id="jcropTable">
+
+                                <tr>
+                                    <td>
+                                        <h4>原图</h4>
+                                    </td>
+                                    <td colspan="3">
+                                        <h4>切图预览</h4>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <img id="target" width="600px" src="//static.jiada.local/plugin/jcrop/img/default.jpg" />
+                                    </td>
+                                    <td align="center" valign="bottom">
+                                        <div  class="preview360 jcropBox" style="display:none;"><img id="preview360"  src="//static.jiada.local/plugin/jcrop/img/default.jpg"></div>
+                                    </td>
+                                    <td align="center" valign="bottom">
+                                        <div  class="preview160 jcropBox"><img id="preview160"  src="//static.jiada.local/plugin/jcrop/img/default.jpg"></div>
+                                    </td>
+                                    <td align="center" valign="bottom">
+                                        <div  class="preview60 jcropBox"><img id="preview60"  src="//static.jiada.local/plugin/jcrop/img/default.jpg"></div>
+                                    </td>
+
+
+                                </tr>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4">
+
+
+                                            <form action="" method="post" onsubmit="return checkCoords();">
+                                                <input type="hidden" id="x" name="x" />
+                                                <input type="hidden" id="y" name="y" />
+                                                <input type="hidden" id="w" name="w" />
+                                                <input type="hidden" id="h" name="h" />
+                                                <input type="hidden" name="goodsId" value="<?php echo $goodsInfo['goodsId']; ?>" />
+                                                <input type="submit" value="Crop Image" class="btn btn-large btn-inverse" />
+                                            </form>
+                                        </td>
+                                    </tr>
+
+                                </tfoot>
+
+
+
+                            </table>
+
+
+                        </div>
+                        <div id="tab3" class="tab-pane">
+                            ...
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+</div>

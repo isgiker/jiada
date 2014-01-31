@@ -1,0 +1,104 @@
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index" ?>">商品分类管理</a> </li>
+    <li class="active">列表</li>
+</ul>
+
+<div class="widget-list">
+    <form name="jform" id="jform" action="" method="post" class="form-horizontal">
+
+        <div class="widget-content">
+            <div class="search">
+                <span class="col-sm-2 nopadding">
+                    <select name="status" class="form-control input-sm">
+                        <option value="all" <?php
+                        if ($post['status'] == 'all') {
+                            echo ' selected';
+                        } else {
+                            echo '';
+                        }
+                        ?>>显示所有</option>
+                        <option value="1" <?php
+                        if ((isset($post['status']) && $post['status'] == 1) || $post['status'] =='') {
+                            echo ' selected';
+                        } else {
+                            echo '';
+                        }
+                        ?>>已上线</option>
+                        <option value="-1" <?php
+                        if (isset($post['status']) && $post['status'] == -1) {
+                            echo ' selected';
+                        } else {
+                            echo '';
+                        }
+                        ?>>未公开</option>
+                        <option value="-2" <?php
+                        if (isset($post['status']) && $post['status'] == -2) {
+                            echo ' selected';
+                        } else {
+                            echo '';
+                        }
+                        ?>>已删除</option>
+                    </select>
+                </span>
+
+                <span>
+                    <button type="submit" name="jsubmit" value="search" class="btn btn-default btn-sm" >检索</button>
+                </span>
+            </div>
+
+            <table class="table table-bordered table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                        <th>商品分类名称</th>
+                        <th>拼音</th>
+                        <th>排序</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if (is_array($data) && !empty($data)) {
+                        foreach ($data as $key => $item) {
+                            ?>
+                            <tr>
+                                <td class="checkids"><input type="checkbox" name="checkIds[]" value="<?php echo $item['cateId']; ?>"/></td>
+                                <td><a href="<?php echo "/$_ModuleName/goodscate/edit/cateId/$item[cateId]"; ?>"><?php echo $item['cateName']; ?></a> <a href="<?php echo "/$_ModuleName/goodscate/add/cateId/$item[cateId]"; ?>" class="red bold">+</a></td>
+                                <td><?php echo $item['pinyin']; ?></td>
+                                <td><?php echo $item['sort']; ?></td>
+                                <td><?php if($item['status']==1){ echo '已公开';}else{ echo '未公开';} ?></td>
+                                <td class="span3">
+                                    <?php
+                                    if($item['parentId']>0 && $item['childNums']){
+                                        ?>
+                                    <a href="<?php echo "/$_ModuleName/goodsbrand/add/cateId/$item[cateId]"; ?>">添加</a>|<a href="<?php echo "/$_ModuleName/goodsbrand/index/cateId/$item[cateId]"; ?>">查看</a>品牌
+                                    <a href="<?php echo "/$_ModuleName/goodsattr/add/cateId/$item[cateId]"; ?>">添加</a>|<a href="<?php echo "/$_ModuleName/goodsattr/index/cateId/$item[cateId]"; ?>">查看</a>商品属性
+                                            <?php
+                                    }
+                                    ?>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                    } else {
+                        ?>
+                        <tr>
+                            <td colspan="6">无数据！</td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6"><?php echo $pagination; ?></td>
+                    </tr>
+
+                </tfoot>
+            </table>
+        </div>
+    </form>
+</div>

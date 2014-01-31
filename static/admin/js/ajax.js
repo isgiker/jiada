@@ -1,7 +1,7 @@
 /*添加商品，根据分类获取品牌 begin======================================================================*/
 $("#cateId").change(function() {
     var cateId = $(this).val();
-    $.getJSON('/Admin/Goodsbrand/getCateBrand/cateId/'+cateId, function(data) {
+    $.getJSON('/Chaoshi/Goodsbrand/getCateBrand/cateId/'+cateId, function(data) {
         var items = '<option value="" selected>--选择商品品牌--</option>';
         $.each(data, function(key, val) {
             items+=('<option value="'+val.brandId+'">'+val.brandName+'</option>');            
@@ -13,7 +13,7 @@ $("#cateId").change(function() {
 /*添加仓库，地区联动功能 begin======================================================================*/
 $("#provinceId").change(function() {
     var areaId = $(this).val();
-    $.getJSON('/Admin/Storehouse/ajaxArea/areaId/'+areaId, function(data) {
+    $.getJSON('/Default/Area/ajaxArea/areaId/'+areaId, function(data) {
         var items = '<option value="0" selected>市</option>';
         $.each(data, function(key, val) {
             items+=('<option value="'+val.areaId+'">'+val.areaName+'</option>');            
@@ -23,7 +23,7 @@ $("#provinceId").change(function() {
 });
 $("#cityId").change(function() {
     var areaId = $(this).val();
-    $.getJSON('/Admin/Storehouse/ajaxArea/areaId/'+areaId, function(data) {
+    $.getJSON('/Default/Area/ajaxArea/areaId/'+areaId, function(data) {
         var items = '<option value="0" selected>区县</option>';
         $.each(data, function(key, val) {
             items+=('<option value="'+val.areaId+'">'+val.areaName+'</option>');            

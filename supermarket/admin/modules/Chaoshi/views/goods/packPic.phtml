@@ -1,0 +1,75 @@
+
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index"; ?>">商品管理</a> </li>
+    <li class="active">包装图片</li>
+</ul>
+
+<!--End-breadcrumbs-->
+<div class="widget-tabs-box">
+
+    <ul class="nav nav-tabs">
+        <li><a href="<?php echo "/$_ModuleName/Goods/edit/goodsId/$goodsId"; ?>">基本信息</a></li>
+        <li  class="active"><a href="<?php echo "/$_ModuleName/Goods/packpic/goodsId/$goodsId"; ?>">包装图片</a></li>
+        <li><a href="<?php echo "/$_ModuleName/Goods/detail/goodsId/$goodsId"; ?>">商品详情</a></li>
+        <li><a href="<?php echo "/$_ModuleName/Goods/attr/goodsId/$goodsId"; ?>">商品属性</a></li>
+    </ul>
+    <div class="widget-content nopadding tab-content">
+        <div id="tab1" class="tab-pane">
+            .......
+        </div>
+        <div id="tab2" class="tab-pane active">
+            <p></p>
+            <?php
+            if (isset($uploadMsg) && $uploadMsg) {
+                ?>
+                <div class="error red"><?php echo $uploadMsg; ?></div>
+                <?php
+            }
+            ?>
+            <div class="row">
+                <?php
+                $packPic = @$goodsInfo['packPic'];
+                if ($packPic) {
+                    $packPic = explode(',', $packPic);
+                    foreach ($packPic as $pic) {
+                        ?>
+                        <div class="col-md-2"><img src="<?php echo 'http://imga1.chihuobao365.com' . $pic ?>" class="img-thumbnail img-responsive" /><br /><a href="<?php echo "/$_ModuleName/Goods/delPackPic/goodsId/$goodsId"; ?>/sign/<?php echo md5($pic); ?>">删除</a></div>
+
+                        <?php
+                    }
+                } else {
+                    //如果没有图片，输出默认图;
+                    ?>
+                    <div class="col-md-12">请上传商品包装图片！</div>
+                    <?php
+                }
+                ?>
+            </div>
+
+            <form  name="filesForm" action="" method="post" id="filesForm" enctype="multipart/form-data" class="form-horizontal">
+
+                <span style="display: none;visibility: hidden;width: 0px;">
+                    <input type="file" name="files[]" multiple="multiple" id="upfiles" />
+                </span>
+                <div class="form-actions">
+                    <button type="submit" name="jsubmit" value="select" class="btn btn-success" onclick="upfiles.click();
+                            return false;">选择图片</button>
+                    <button type="submit" name="jsubmit" value="upload" class="btn btn-success"  onclick="$('#filesForm').trigger('submit');">开始上传</button>
+                </div>
+            </form>
+
+
+
+
+
+        </div>
+        <div id="tab3" class="tab-pane">
+            ...
+
+        </div>
+
+    </div>
+
+</div>

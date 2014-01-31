@@ -1,0 +1,187 @@
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index"; ?>">商品管理</a> </li>
+    <li class="active">添加</li>
+</ul>
+<!--End-breadcrumbs-->
+<div class="widget-tabs-box">
+    <form action="" name="jform" id="jform" method="post" class="form-horizontal validate">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#tab1">基本信息</a></li>
+            <li><a  href="javascript:void();">包装图片</a></li>
+            <li><a  href="javascript:void();">商品详情</a></li>
+            <li><a  href="javascript:void();">商品属性</a></li>
+        </ul>
+        <div class="widget-content nopadding tab-content">
+            <div id="tab1" class="tab-pane active">
+
+                <div class="form-group control-group">
+                    <label class="col-sm-2 control-label"> <b class="bold red">*</b> 商品分类 :</label>
+                    <div class="col-sm-10">
+                        <select name="cateId" id="cateId" <?php echo $this->_view->getInputAttrs($rules, 'cateId') ?> class="input-sm form-control">
+                            <option value="" selected>--选择分类--</option>
+                            <?php echo $treeGcate; ?>
+                        </select>
+                        <div class="showmsg">
+                            <?php
+                            if (isset($error['cateId'])) {
+                                $this->_view->showValidateError($error['cateId']);
+                            }
+                            ?>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group control-group">
+                    <label class="col-sm-2 control-label"> <b class="bold red">*</b> 商品品牌 :</label>
+                    <div class="col-sm-10">
+                        <select name="brandId" id="brandId" <?php echo $this->_view->getInputAttrs($rules, 'brandId') ?> class="input-sm form-control">                                        
+                            <option value='' selected>--选择品牌--</option>
+                            <?php
+                            if (isset($brands) && $brands) {
+                                foreach ($brands as $key => $val) {
+                                    if ($brandId == $val['brandId']) {
+                                        $selected = ' selected';
+                                    } else {
+                                        $selected = '';
+                                    }
+                                    echo "<option value='" . $val[brandId] . "' $selected>" . $val['brandName'] . "</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                        <div class="showmsg">
+                            <?php
+                            if (isset($error['brandId'])) {
+                                $this->_view->showValidateError($error['brandId']);
+                            }
+                            ?>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group control-group">
+                    <label class="col-sm-2 control-label"> <b class="bold red">*</b> 商品名称 :</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="goodsNme" <?php echo $this->_view->getInputAttrs($rules, 'goodsNme') ?> id="brandName" value="<?php if (isset($post['goodsNme'])) {
+                                echo $post['goodsNme'];
+                            } ?>" class="input-sm form-control" placeholder="" />
+                        <div class="showmsg">
+<?php
+if (isset($error['goodsNme'])) {
+    $this->_view->showValidateError($error['goodsNme']);
+}
+?>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group control-group">
+                    <label class="col-sm-2 control-label"> <b class="bold red">*</b> 商品价格 :</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="originalPrice" <?php echo $this->_view->getInputAttrs($rules, 'originalPrice') ?> id="brandName" value="<?php if (isset($post['originalPrice'])) {
+                                echo $post['originalPrice'];
+                            } ?>" class="input-sm form-control input2" placeholder="原价:本店售价" />
+                        <input type="text" name="discount" <?php echo $this->_view->getInputAttrs($rules, 'discount') ?> id="brandName" value="<?php if (isset($post['discount'])) {
+                                echo $post['discount'];
+                            } ?>" class="input-sm form-control input2" placeholder="折扣比例:0.85" />
+                        <input type="text" name="currentPrice" <?php echo $this->_view->getInputAttrs($rules, 'currentPrice') ?> id="brandName" value="<?php if (isset($post['currentPrice'])) {
+                                echo $post['currentPrice'];
+                            } ?>" class="input-sm form-control input2" placeholder="现价:活动促销价格" />
+                        <div class="showmsg">
+<?php
+if (isset($error['originalPrice'])) {
+    $this->_view->showValidateError($error['originalPrice']);
+}
+if (isset($error['discount'])) {
+    $this->_view->showValidateError($error['discount']);
+}
+if (isset($error['currentPrice'])) {
+    $this->_view->showValidateError($error['currentPrice']);
+}
+?>
+                        </div>
+                    </div>                            
+                </div>
+                <div class="form-group control-group">
+                    <label class="col-sm-2 control-label">市场价格 :</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="marketPrice" id="brandName" value="" class="input-sm form-control input2" placeholder="" />
+
+                    </div>                            
+                </div>
+
+                <div class="form-group control-group">
+                    <label class="col-sm-2 control-label">活动促销 :</label>
+                    <div class="col-md-10">
+                        <input type="text" name="activityStartTime" id="brandName" data-date="<?php echo date('Y-m-d H:i:s'); ?>" data-date-format="yyyy-mm-dd H:i:s" value="" class="datepicker input-sm form-control input2" placeholder="开始时间" />
+
+                        <input type="text" name="activityEndTime" id="brandName" value="" class="input-sm form-control input2" placeholder="结束时间" />
+                    </div>                          
+                </div>
+                <div class="form-group control-group">
+                    <label class="col-sm-2 control-label">推荐标签 :</label>
+                    <div class="col-sm-10">
+                        <select name="recTags" class="input-sm form-control">
+                            <option value="0" selected>无</option>
+                            <option value="1" >活动</option>
+                            <option value="2" >热销</option>
+                            <option value="3" >新品</option>
+                            <option value="4" >精品</option>
+                            <option value="5" >人气</option>                                        
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group control-group">
+                    <label class="col-sm-2 control-label"> <b class="bold red">*</b> 上架 :</label>
+                    <div class="col-sm-10">
+                        <label>
+                            <input type="radio" name="onLine" value="1" checked <?php
+                            if (isset($post['onLine'])) {
+                                if ($post['onLine'] == 1) {
+                                    echo ' checked';
+                                } else {
+                                    echo ' ';
+                                }
+                            }
+                            ?>/>
+                            是
+                        </label>
+                        <label>
+                            <input type="radio" name="onLine" value="0" <?php
+                                   if (isset($post['onLine'])) {
+                                       if ($post['onLine'] == 0) {
+                                           echo ' checked';
+                                       } else {
+                                           echo ' ';
+                                       }
+                                   }
+                            ?>/>
+                            否
+                        </label>
+                    </div>
+                </div>
+
+
+
+                <div class="form-actions">
+                    <button type="submit" name="jsubmit" value="save" class="btn btn-success">保存，下一步</button>
+                    <button type="reset" name="jsubmit" value="reset" class="btn btn-primary">重置</button>
+                </div>
+
+            </div>
+            <div id="tab2" class="tab-pane">
+                ...
+
+            </div>
+            <div id="tab3" class="tab-pane">
+                ...
+
+            </div>
+
+        </div>
+    </form>
+</div>
