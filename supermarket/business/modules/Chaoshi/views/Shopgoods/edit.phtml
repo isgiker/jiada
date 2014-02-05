@@ -1,0 +1,152 @@
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="<?php echo "/$_ModuleName/Shop/index/shopId/$currentShopId" ?>"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/Shopgoods/index/shopId/$currentShopId" ?>">商品管理</a> </li>
+    <li class="active">编辑</li>
+</ul>
+
+<!--End-breadcrumbs-->
+<div class="widget-tabs-box">
+    <form action="" name="jform" id="jform" method="post" class="form-horizontal validate">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#tab1">基本信息</a></li>
+            <li><a data-toggle="tab"  href="#tab2">包装图片</a></li>
+            <li><a data-toggle="tab"  href="#tab3">商品详情</a></li>
+            <li><a data-toggle="tab"  href="#tab4">商品属性</a></li>
+        </ul>
+        <div class="widget-content nopadding tab-content">
+            <div id="tab1" class="tab-pane active">
+
+                <div class="form-group control-group">
+                    <label class="col-sm-2 control-label">商品名称 :</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">
+                        <?php
+                        if (isset($goodsPriceInfo['goodsName'])) {
+                            echo $goodsPriceInfo['goodsName'];
+                        }
+                        ?>
+                       </p>
+                    </div>
+
+                </div>
+                <div class="form-group control-group">
+                    <label class="col-sm-2 control-label"> <b class="bold red">*</b> 商品价格 :</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="originalPrice" <?php echo $this->_view->getInputAttrs($rules, 'originalPrice') ?> id="originalPrice" value="<?php if (isset($goodsPriceInfo['originalPrice'])) {
+                                echo $goodsPriceInfo['originalPrice'];
+                            } ?>" class="input-sm form-control input2" placeholder="原价:本店售价" />
+                        <input type="text" name="discount" <?php echo $this->_view->getInputAttrs($rules, 'discount') ?> id="discount" value="<?php if (isset($goodsPriceInfo['discount'])) {
+                                echo $goodsPriceInfo['discount'];
+                            } ?>" class="input-sm form-control input2" placeholder="折扣比例:0.85" />
+                        <input type="text" name="currentPrice" <?php echo $this->_view->getInputAttrs($rules, 'currentPrice') ?> id="currentPrice" value="<?php if (isset($goodsPriceInfo['currentPrice'])) {
+                                echo $goodsPriceInfo['currentPrice'];
+                            } ?>" class="input-sm form-control input2" placeholder="现价:活动促销价格" />
+                        <div class="showmsg">
+                            <?php
+                            if (isset($error['originalPrice'])) {
+                                $this->_view->showValidateError($error['originalPrice']);
+                            }
+                            if (isset($error['discount'])) {
+                                $this->_view->showValidateError($error['discount']);
+                            }
+                            if (isset($error['currentPrice'])) {
+                                $this->_view->showValidateError($error['currentPrice']);
+                            }
+                            ?>
+                        </div>
+                    </div>                            
+                </div>
+                <div class="form-group control-group">
+                    <label class="col-sm-2 control-label">市场价格 :</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="marketPrice" id="marketPrice" value="<?php if (isset($goodsPriceInfo['marketPrice'])) {echo $goodsPriceInfo['marketPrice'];} ?>" class="input-sm form-control input2" placeholder="市场价格" />
+
+                    </div>                            
+                </div>
+
+                <div class="form-group control-group">
+                    <label class="col-sm-2 control-label">活动促销 :</label>
+                    <div class="col-md-10">
+                        <input type="text" name="activityStartTime" id="activityStartTime"  value="<?php if (isset($goodsPriceInfo['activityStartTime'])) {echo date('Y-m-d H:i',$goodsPriceInfo['activityStartTime']);} ?>" class="datepicker input-sm form-control input2" placeholder="活动开始时间" />
+
+                        <input type="text" name="activityEndTime" id="activityEndTime" value="<?php if (isset($goodsPriceInfo['activityEndTime'])) {echo date('Y-m-d H:i',$goodsPriceInfo['activityEndTime']);} ?>" class="input-sm form-control input2" placeholder="活动结束时间" />
+                    </div>                          
+                </div>
+                
+                <div class="form-group control-group">
+                    <label for="status" class="col-sm-2 textRight">商品状态：</label>
+                    <div class="col-sm-10">
+                        <label>
+                            <input type="radio" name="status" value="1" checked <?php
+                            if (isset($goodsPriceInfo['status'])) {
+                                if ($goodsPriceInfo['status'] == 1) {
+                                    echo ' checked';
+                                } else {
+                                    echo ' ';
+                                }
+                            }
+                            ?>/>
+                            发布
+                        </label>
+                        <label>
+                            <input type="radio" name="status" value="-1" <?php
+                            if (isset($goodsPriceInfo['status'])) {
+                                if ($goodsPriceInfo['status'] == -1) {
+                                    echo ' checked';
+                                } else {
+                                    echo ' ';
+                                }
+                            }
+                            ?>/>
+                            下架
+                        </label>
+                        <label>
+                            <input type="radio" name="status" value="-2" <?php
+                            if (isset($goodsPriceInfo['status'])) {
+                                if ($goodsPriceInfo['status'] == -2) {
+                                    echo ' checked';
+                                } else {
+                                    echo ' ';
+                                }
+                            }
+                            ?>/>
+                            删除
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" name="jsubmit" value="save" class="btn btn-success">保存</button>
+                    <button type="reset" name="jsubmit" value="reset" class="btn btn-primary">重置</button>
+                </div>
+
+            </div>
+            <div id="tab2" class="tab-pane">
+                ...
+
+            </div>
+            <div id="tab3" class="tab-pane">
+                <?php if (isset($goodsPriceInfo['goodsDesc'])) {echo $goodsPriceInfo['goodsDesc'];} ?>
+
+            </div>
+            <div id="tab4" class="tab-pane">
+                ...
+
+            </div>
+        </div>
+    </form>
+</div>
+<script src="//<?php echo $_config_domain['static'];?>/plugin/datetimepicker/js/jquery.datetimepicker.js"></script>
+<script>
+$('#activityStartTime').datetimepicker({
+    lang:'ch',
+    format:'Y-m-d H:i',
+    step:1
+});
+$('#activityEndTime').datetimepicker({
+    lang:'ch',
+    format:'Y-m-d H:i',
+    step:1
+});
+</script>

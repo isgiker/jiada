@@ -79,7 +79,7 @@ class AgroupController extends Core_Controller_Admin {
         $agroupId = $this->getParam('agroupId',0);
         $agroupInfo = $this->model->getAgroupInfo($agroupId);
         if(empty($agroupInfo)){
-            $this->redirect('/Admin/Agroup/index');
+            $this->redirect("/$this->_ModuleName/Agroup/index");
         }
         $rules = $this->model->getRules();        
         if($this->isPost()){

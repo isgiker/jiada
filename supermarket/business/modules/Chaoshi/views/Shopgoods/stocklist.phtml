@@ -1,0 +1,56 @@
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="<?php echo "/$_ModuleName/Shop/index/shopId/$currentShopId" ?>"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/Shopgoods/index/shopId/$currentShopId" ?>">商品管理</a> </li>
+    <li class="active">库存历史</li>
+</ul>
+
+<div class="widget-list">
+
+    <div class="widget-content">
+        <form name="jform" id="jform" action="" method="post" class="form-horizontal">            
+
+
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>商品名称</th>
+                        <th>进货数量</th>
+                        <th>进货价格</th>
+                        <th>到货时间</th>
+                        <th>入库操作员</th>                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if ( isset($data) && !empty($data) && is_array($data)) {
+                        foreach ($data as $key => $item) {
+                            ?>
+                            <tr>
+                                <td><a href="javascript:void(0);"><?php echo $item['goodsName']; ?></a></td>
+                                <td><?php echo $item['quantity']; ?></td>
+                                <td><?php echo $item['purchasePrice']; ?></td>
+                                <td><?php echo date('Y-m-d H:i', $item['putinTime']); ?></td>
+                                <td><?php echo $item['operator']; ?></td>
+                            </tr>
+                            <?php
+                        }
+                    } else {
+                        ?>
+                        <tr>
+                            <td colspan="5" class="red">该商品无进货记录！</td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5"><?php echo $pagination; ?></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+
+</div>

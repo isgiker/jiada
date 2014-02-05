@@ -65,13 +65,13 @@
                 <div class="form-group control-group">
                     <label class="col-sm-2 control-label"> <b class="bold red">*</b> 商品名称 :</label>
                     <div class="col-sm-10">
-                        <input type="text" name="goodsNme" <?php echo $this->_view->getInputAttrs($rules, 'goodsNme') ?> id="brandName" value="<?php if (isset($post['goodsNme'])) {
-                                echo $post['goodsNme'];
+                        <input type="text" name="goodsName" <?php echo $this->_view->getInputAttrs($rules, 'goodsName') ?> id="brandName" value="<?php if (isset($post['goodsName'])) {
+                                echo $post['goodsName'];
                             } ?>" class="input-sm form-control" placeholder="" />
                         <div class="showmsg">
 <?php
-if (isset($error['goodsNme'])) {
-    $this->_view->showValidateError($error['goodsNme']);
+if (isset($error['goodsName'])) {
+    $this->_view->showValidateError($error['goodsName']);
 }
 ?>
                         </div>

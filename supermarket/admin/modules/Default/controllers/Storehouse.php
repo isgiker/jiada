@@ -64,7 +64,7 @@ class StorehouseController extends Core_Controller_Admin {
         $storehouseId = $this->getParam('storehouseId',0);        
         $storehouseInfo = $this->model->getStorehouseInfo($storehouseId);
         if(empty($storehouseInfo)){
-            $this->redirect('/Admin/Storehouse/index');
+            $this->redirect("/$this->_ModuleName/Storehouse/index");
         }
         $rules = $this->model->getRules();
         if($this->isPost()){

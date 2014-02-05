@@ -1,0 +1,191 @@
+
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index" ?>">店铺管理</a> </li>
+    <li class="active">添加</li>
+</ul>
+
+
+<!--End-breadcrumbs-->
+<div class="widget-box">
+    <div class="widget-title">
+        <h5>Shop-info</h5>
+    </div>
+    <div class="widget-content nopadding">
+        <form name="form" id="form" action="" method="post" class="form-horizontal validate">
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 店铺名称 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="shopName" <?php echo $this->_view->getInputAttrs($rules, 'shopName') ?> id="shopName" value="<?php if (isset($post['shopName'])) echo $post['shopName'] ?>" class="form-control input-sm" placeholder="店铺/仓库名" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['shopName'])) {
+                            $this->_view->showValidateError($error['shopName']);
+                        }
+                        ?>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 所在地区 :</label>
+                <div class="col-sm-10">
+                    <span class="input2">
+                        <select name="provinceId" <?php echo $this->_view->getInputAttrs($rules, 'provinceId') ?> id="node1" class="form-control input-sm linkage" data-next="#node2" data-url="/Area/nodeArea/areaId">
+                            <option value="" selected>省</option>
+                            <?php
+                            foreach ($province as $p) {
+                                if ($post['provinceId'] == $p['id']) {
+                                    $selected = ' selected';
+                                } else {
+                                    $selected = ' ';
+                                }
+                                echo '<option value="' . $p['id'] . '" ' . $selected . '>' . $p['name'] . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </span>
+                    <span class="input2">
+                        <select name="cityId" <?php echo $this->_view->getInputAttrs($rules, 'cityId') ?>  id="node2" class="form-control input-sm linkage" data-next="#node3" data-url="/Area/nodeArea/areaId">
+                            <option value="" selected>市</option>
+                            <?php
+                            if(isset($city)){
+                                foreach ($city as $p) {
+                                    if ($post['cityId'] == $p['id']) {
+                                        $selected = ' selected';
+                                    } else {
+                                        $selected = ' ';
+                                    }
+                                    echo '<option value="' . $p['id'] . '" ' . $selected . '>' . $p['name'] . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </span>
+                    <span class="input2">
+                        <select name="districtId" <?php echo $this->_view->getInputAttrs($rules, 'districtId') ?> id="node3" class="form-control input-sm linkage" data-next="" data-url="">
+                            <option value="" selected>区县</option>
+                            <?php
+                            if(isset($district)){
+                                foreach ($district as $p) {
+                                    if ($post['districtId'] == $p['id']) {
+                                        $selected = ' selected';
+                                    } else {
+                                        $selected = ' ';
+                                    }
+                                    echo '<option value="' . $p['id'] . '" ' . $selected . '>' . $p['name'] . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </span>
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['provinceId'])) {
+                            $this->_view->showValidateError($error['provinceId']);
+                        }
+                        ?>
+                        <?php
+                        if (isset($error['cityId'])) {
+                            $this->_view->showValidateError($error['cityId']);
+                        }
+                        ?>
+                        <?php
+                        if (isset($error['districtId'])) {
+                            $this->_view->showValidateError($error['districtId']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 详细地址 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="address" <?php echo $this->_view->getInputAttrs($rules, 'address') ?> id="address" value="<?php if (isset($post['address'])) echo $post['address'] ?>" class="form-control input-sm" placeholder="店铺/仓库详细地址" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['address'])) {
+                            $this->_view->showValidateError($error['address']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 地理坐标 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="lnglat" id="lnglat" value="<?php if (isset($post['lng']) && $post['lng']) echo $post['lng'].','.$post['lat']; ?>" class="form-control input-sm" placeholder="店铺/仓库经纬度坐标" />
+                    <input type="hidden" name="lng" id="lng" <?php echo $this->_view->getInputAttrs($rules, 'lng') ?> id="address" value="<?php if (isset($post['lng'])) echo $post['lng'] ?>" class="form-control input-sm" placeholder="" />
+                    <input type="hidden" name="lat" id="lat" <?php echo $this->_view->getInputAttrs($rules, 'lat') ?> id="address" value="<?php if (isset($post['lat'])) echo $post['lat'] ?>" class="form-control input-sm" placeholder="" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['address'])) {
+                            $this->_view->showValidateError($error['address']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 联系人 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="contact" <?php echo $this->_view->getInputAttrs($rules, 'contact') ?> id="contact" value="<?php if (isset($post['contact'])) echo $post['contact'] ?>" class="form-control input-sm" placeholder="联系人" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['contact'])) {
+                            $this->_view->showValidateError($error['contact']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 联系人手机 :</label>
+                <div class="col-sm-10">
+                    <span class="input2">
+                        <select name="countryCode" id="countryCode" class="form-control  input-sm">
+                            <option value="86" selected>中国【86】</option>
+                            <option value="1" >美国【1】</option>
+                        </select>
+                    </span>
+                    <input type="text" name="mobile" <?php echo $this->_view->getInputAttrs($rules, 'mobile') ?> id="mobile" value="<?php if (isset($post['mobile'])) echo $post['mobile'] ?>" class="form-control input-sm input4" placeholder="手机号" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['mobile'])) {
+                            $this->_view->showValidateError($error['mobile']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label">联系电话 :</label>
+                <div class="col-sm-10">                    
+                    <input type="text" name="tel"  id="tel" value="<?php if (isset($post['tel'])) echo $post['tel'] ?>" class="form-control input-sm" placeholder="010-88888888" />
+
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label">营业时间 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="workingTime" id="workingTime" value="<?php if (isset($post['workingTime'])) echo $post['workingTime'] ?>" class="form-control input-sm" placeholder="24小时营业|09:00-23:00" />
+                    <?php
+                    if (isset($error['workingTime'])) {
+                        $this->_view->showValidateError($error['workingTime']);
+                    }
+                    ?>
+                </div>
+            </div>
+            
+
+
+            <div class="form-actions">
+                <button type="submit" name="jsubmit" value="save" class="btn btn-success">保存</button>
+                <button type="reset" name="jsubmit" value="reset" class="btn btn-primary">重置</button>
+            </div>
+        </form>
+    </div>
+</div>

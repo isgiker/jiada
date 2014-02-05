@@ -81,7 +81,7 @@ class AdminController extends Core_Controller_Admin {
         $adminId = $this->getParam('adminId',0);
         $adminInfo = $this->model->getAdminInfo($adminId);
         if(empty($adminInfo)){
-            $this->redirect('/Admin/Admin/index');
+            $this->redirect("/$this->_ModuleName/Admin/index");
         }
         $rules = $this->model->getRules();        
         if($this->isPost()){

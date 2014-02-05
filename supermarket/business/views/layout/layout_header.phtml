@@ -3,13 +3,17 @@
     $userInfo = unserialize(base64_decode($_COOKIE['_USERINFO']));
 
     $title = $userInfo['title'];
-    
-    //根据行业不同，切换不同的管理模块
-    if(isset($_COOKIE['industry_modules']) && $_COOKIE['industry_modules']){
-        $industry_modules = @$_COOKIE['industry_modules'];
-    }else{
-        $industry_modules = 'Default';
+    if(isset($shopId) && $shopId){
+        $logoLink="/$industry_modules/Shop/index/shopId/1";
+    }else{        
+        $logoLink="/$industry_modules/Index/index";
     }
+    
+    //根据cookie uid判断登录账号是商家还是店铺用户
+//    if(){
+        $logoLink="/$industry_modules/Index/index";
+//    }
+    
 ?>
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
@@ -20,15 +24,56 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="javascript:void(0);"><span style="font-size: 24px;">家大.</span>小区服务</a>
+            <a class="navbar-brand" href="<?php echo $logoLink;?>"><span style="font-size: 24px;">家大.</span>商家后台</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="javascript:void(0);">您好，<?php echo $title;?></a></li>
-                 
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">欢迎您：<?php echo $title;?> <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Chaoshi/Bizmanage/edit">商家信息</a></li>
+                        <li><a href="/Chaoshi/Bizmanage/passwd">修改密码</a></li>
+                        
+                        <li class="divider"></li>
+                        <li><a href="/Chaoshi/Shop/add">新建店铺</a></li>
+                    </ul>
+                </li>
+                <?php
+                    if(isset($shopId) && $shopId){
+                ?>
+                 <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">当前店铺：<?php echo $currentShopInfo['shopName'];?> <b class="caret"></b></a>
+                    <?php
+                        if(isset($shops) && $shops){
+                    ?>
+                    <ul class="dropdown-menu">
+                        <?php
+                            foreach($shops as $key=>$item){
+//                                if($shopId == $item['shopId']) continue;
+                        ?>
+                        <li><a href="<?php echo "/$industry_modules/Shop/index/shopId/$item[shopId]";?>"><?php echo $item['shopName'];?></a></li>
+                        <?php
+                            }
+                        ?>
+                    </ul>
+                    <?php
+                        }
+                    ?>
+                </li>
+                <?php
+                    }
+                ?>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="/Login/logout">退出</a></li>
+                <li class="dropdown">
+                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">商家服务<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a >客服电话：010-6888888</a></li>
+                        <li><a >投诉建议：isgiker@gmail.com</a></li>
+
+                    </ul>
+                </li>
+                <li><a href="/Login/logout">退出</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>

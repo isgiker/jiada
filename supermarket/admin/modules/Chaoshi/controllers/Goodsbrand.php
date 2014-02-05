@@ -62,7 +62,7 @@ class GoodsbrandController extends Core_Controller_Admin {
         //商品分类下的子分类，也即商品类型；
         $childCateType = $this->model->childCateType($cateId);
         if(empty($gcateInfo)){
-            $this->redirect('/admin/goodscate/index');
+            $this->redirect("/$this->_ModuleName/Goodscate/index");
         }
         
         $rules = $this->model->getRules();
@@ -101,7 +101,7 @@ class GoodsbrandController extends Core_Controller_Admin {
         //获取品牌信息
         $gbrandInfo = $this->model->getGbrandInfo($brandId);
         if(empty($gbrandInfo)){
-            $this->redirect('/admin/goodsbrand/index');
+            $this->redirect("/$this->_ModuleName/Goodsbrand/index");
         }
         $gbrandInfo['childCateType'] = explode(',', $gbrandInfo['childCateType']);
         //获取品牌的分类信息

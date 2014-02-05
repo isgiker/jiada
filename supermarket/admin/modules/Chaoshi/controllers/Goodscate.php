@@ -79,7 +79,7 @@ class GoodscateController extends Core_Controller_Admin {
         $cateId = $this->getParam('cateId',0);        
         $gcateInfo = $this->model->getGcateInfo($cateId);
         if(empty($gcateInfo)){
-            $this->redirect('/admin/goodscate/index');
+            $this->redirect("/$this->_ModuleName/Goodscate/index");
         }
         $rules = $this->model->getRules();        
         if($this->isPost()){

@@ -1,7 +1,7 @@
 <?php
 
 class Core_Controller_Basic extends Yaf_Controller_Abstract {
-
+    protected $_config = null;
     public $_layout = false;
     protected $_layoutVars = array();
     public $_ModuleName = false;
@@ -9,6 +9,7 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
     public $_ActionName = false;
     
     public function init() {
+        $this->_config = Yaf_Registry::get("_CONFIG");
         $this->_ModuleName=$this->getRequest()->getModuleName();
         $this->_ControllerName=$this->getRequest()->getControllerName();
         $this->_ActionName=$this->getRequest()->getActionName();
@@ -16,6 +17,8 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
         $this->getView()->assign('_ModuleName', $this->_ModuleName);
         $this->getView()->assign('_ControllerName', $this->_ControllerName);
         $this->getView()->assign('_ActionName', $this->_ActionName);
+        
+        $this->getView()->assign('_config_domain', $this->_config->domain);
     }
     
     public function __call($name, $arguments) {
@@ -26,9 +29,24 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
 
     /**
      * 加载Layout模板
+     * $_page=array(
+     * 'title' => '家大.小区服务-商家后台管理系统',
+     * 'meta_title' => '',
+       'meta_description' => '',
+       'meta_keywords' => '',            
+       'static_css_files' => [
+                ['css/admin/bootstrap.css'],
+                ['css/admin/bootstrap-theme.css']
+            ],
+       'static_js_files' => [
+                ['js/libs/jquery.min.js'],
+                ['js/libs/bootstrap/bootstrap.min.js']
+            ]
+     * )
      */
     public function render($action, array $tplVars = NULL) {
         if ($this->_layout == true) {
+//            $this->_layoutVars['_page']=$this->getView()->_page;
             $this->_layoutVars['_ActionContent'] = parent::render($action, $tplVars);
             //指定layout位置
             $this->setViewPath(APPLICATION_PATH . DS . 'views');
@@ -61,6 +79,13 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
      */
     public function isGet() {
         return $this->getRequest()->isGet();
+    }
+    
+    /**
+     * 返回
+     */
+    public function jsHistoryBack(){
+        echo '<script>javascript:history.back(1);</script>';
     }
     
     /**

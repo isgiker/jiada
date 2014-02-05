@@ -7,9 +7,51 @@
 <div class="widget-list">
 
     <div class="widget-content">
-        <form name="jform" id="jform" action="" method="post" class="form-horizontal">
+        <div class="row">
+            <?php
+                if (isset($data) && !empty($data) && is_array($data)) {
+                        foreach ($data as $key => $item) {
+            ?>
+            <div class="col-sm-5 col-md-3">
+                <div class="thumbnail">
+                    <a href="<?php echo "/$_ModuleName/Shop/index/shopId/$item[shopId]" ?>"><img alt="200x200" style="width: 200px; height: 200px;" src="//<?php echo $_config_domain['static'];?>/img/business/newshopimg.jpg"></a>
+                    <div class="caption">
+                        <h3><?php echo $item['shopName'];?></h3>
+                        <p>店铺状态：
+                        <?php
+                        //1已审核-1未审核-2注销(关闭)
+                                    switch ($item['status']) {
+                                        case 1:
+                                            echo '已审核';                                            
+                                            break;
+                                        case -1:
+                                            echo '未审核';                                            
+                                            break;
+                                        case -2:
+                                            echo '已注销';                                            
+                                            break;
+                                    }
+                        ?>
+                        </p>                        
+                    </div>
+                </div>
+            </div>
+            <?php
+                    }
+                }
+            ?>
             
-        </form>
+            <div class="col-sm-5 col-md-3">
+                <div class="thumbnail">
+                    <a href="<?php echo "/$_ModuleName/Shop/add" ?>"><img alt="200x200" style="width: 200px; height: 200px;" src="//<?php echo $_config_domain['static'];?>/img/business/newshopimg.jpg"></a>
+                    <div class="caption">
+                        <h3>新建店铺</h3>
+                        <p>&nbsp;</p>                        
+                    </div>
+                </div>
+            </div>
+            
+        </div>
     </div>
 
 </div>

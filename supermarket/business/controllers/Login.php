@@ -5,7 +5,7 @@
  * @desc 登录控制器
  * @see http://www.php.net/manual/en/class.yaf-controller-abstract.php
  */
-class LoginController extends Core_Controller_Admin {
+class LoginController extends Core_Controller_Business {
 
     protected $model;
 

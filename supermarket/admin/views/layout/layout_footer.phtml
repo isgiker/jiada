@@ -1,12 +1,18 @@
 
 <!--Footer-part-->
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="//static.jiada.local/plugin/bootstrap303/js/bootstrap.min.js"></script>
-<script src="//static.jiada.local/plugin/jquery_treeview/lib/jquery.cookie.js" type="text/javascript"></script>
-<script src="//static.jiada.local/plugin/jquery_treeview/jquery.treeview.js" type="text/javascript"></script>
-<script src="//static.jiada.local/admin/js/jquery.validate.js" charset="utf-8"></script>
-<script src="//static.jiada.local/admin/js/form.js" charset="utf-8"></script>
-<script src="//static.jiada.local/admin/js/ajax.js" charset="utf-8"></script>
+<!--action page additional files-->
+<?php
+    if (isset($_page['static_js_files']) && is_array($_page['static_js_files'])) {
+        echo $this->_view->_js($_page['static_js_files']);
+    }
+?>
+<!--全局文件-->
+<script src="//<?php echo $static_domain;?>/plugin/jquery_treeview/lib/jquery.cookie.js" type="text/javascript"></script>
+<script src="//<?php echo $static_domain;?>/plugin/jquery_treeview/jquery.treeview.js" type="text/javascript"></script>
+<script src="//<?php echo $static_domain;?>/js/basic/libs/jquery.validate.js" charset="utf-8"></script>
+<script src="//<?php echo $static_domain;?>/js/basic/form.js" charset="utf-8"></script>
+<script src="//<?php echo $static_domain;?>/js/admin/admin.js" charset="utf-8"></script>
 <script type="text/javascript">
     $(function() {
         $("#tree").treeview({

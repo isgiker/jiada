@@ -3,7 +3,7 @@
 /**
  * @name Chaoshi_IndexModel
  * @desc 商品分类
- * @author root
+ * @author Vic
  */
 class Chaoshi_IndexModel extends BasicModel{
 
@@ -11,5 +11,6 @@ class Chaoshi_IndexModel extends BasicModel{
         parent::__construct();
         $this->db = Factory::getDBO('local_jiada_chaoshi');
     }
+
 
 }

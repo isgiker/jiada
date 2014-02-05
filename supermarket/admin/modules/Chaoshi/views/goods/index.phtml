@@ -61,7 +61,7 @@
                             ?>
                             <tr>
                                 <td class="checkids"><input type="checkbox" name="checkIds[]" value="<?php echo $item['goodsId']; ?>"/></td>
-                                <td><a href="<?php echo "/$_ModuleName/Goods/edit/goodsId/$item[goodsId]"; ?>"><?php echo $item['goodsNme']; ?></a></td>
+                                <td><a href="<?php echo "/$_ModuleName/Goods/edit/goodsId/$item[goodsId]"; ?>"><?php echo $item['goodsName']; ?></a></td>
                                 <td><?php echo $item['cateName']; ?></td>
                                 <td><?php echo $item['brandName']; ?></td>
                                 <td><?php echo $item['currentPrice']; ?></td>
@@ -79,7 +79,7 @@
                     } else {
                         ?>
                         <tr>
-                            <td colspan="7">无数据！</td>
+                            <td colspan="8">无数据！</td>
                         </tr>
                         <?php
                     }
@@ -87,7 +87,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="7"><?php echo $pagination; ?></td>
+                        <td colspan="8"><?php echo $pagination; ?></td>
                     </tr>
 
                 </tfoot>

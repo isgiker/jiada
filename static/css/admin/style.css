@@ -1,0 +1,42 @@
+#left{
+    width:238px;
+}
+#right{
+    width:79%;
+}
+.nopadding{
+    padding: 0px;
+}
+/*表格
+================================================================================*/
+.table th{
+    background:#efefef;
+
+    height: auto;
+    font-size: 10px;
+    padding: 5px 10px 2px;
+    border-bottom: 0;
+    text-align: center;
+    color: #666666;
+}
+.table-bordered>thead>tr>th, .table-bordered>thead>tr>td {
+    border-bottom-width: 1px;
+}
+/*表单
+================================================================================*/
+.control-group {
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 0;
+    padding: 5px 0;
+}
+.form-actions {
+    padding: 19px 20px 20px;
+    padding-left: 20px;
+
+    background-color: #f5f5f5;
+}
+.form-actions {
+    margin-top: 0;
+    margin-bottom: 0;
+}

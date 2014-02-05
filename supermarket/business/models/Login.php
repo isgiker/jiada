@@ -19,7 +19,7 @@ class LoginModel extends BasicModel{
      * @param array $data
      */
     public function getUserInfo($data){
-        $query = "select a.businessId,a.userName,a.password,a.contact,a.mobile,a.title,a.provinceId,a.cityId,a.districtId,a.address,a.industryId,a.createTime,a.status from business a where a.password = ? and a.userName = ?";
+        $query = "select a.businessId,a.userName,a.contact,a.mobile,a.title,a.provinceId,a.cityId,a.districtId,a.address,a.industryId,a.createTime,a.status from business a where a.password = ? and a.userName = ?";
         $sth = $this->ssodb->prepare($query);
         if($sth != FALSE){
             if($sth->execute(array($data['password'], $data['username']))){

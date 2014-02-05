@@ -78,7 +78,7 @@ class AreaController extends Core_Controller_Admin {
         $areaid = $this->getParam('areaId',0);        
         $areaInfo = $this->model->getAreaInfo($areaid);
         if(empty($areaInfo)){
-            $this->redirect('/admin/area/index');
+            $this->redirect("/$this->_ModuleName/Area/index");
         }
         $rules = $this->model->getRules();        
         if($this->isPost()){

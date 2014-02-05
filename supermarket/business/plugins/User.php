@@ -21,22 +21,23 @@ class UserPlugin extends Yaf_Plugin_Abstract {
     }
 
     public function preDispatch(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {
-        
-    }
-
-    public function postDispatch(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {
-        
-    }
-
-    public function dispatchLoopShutdown(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {
-        if (!$this->isLogin()) {            
-            if($request->module=='Index' && $request->controller == 'Login'){
+        if (!$this->isLogin()) {
+            //Index模块里的控制器不受登录限制
+            if($request->module=='Index'){
      
             }else{
                 header("Location:/Login");
                 exit;
             }
         }
+    }
+
+    public function postDispatch(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {
+        
+    }
+
+    public function dispatchLoopShutdown(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {        
+        
     }
 
     public function isLogin() {

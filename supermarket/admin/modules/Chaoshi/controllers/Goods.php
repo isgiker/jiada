@@ -106,7 +106,7 @@ class GoodsController extends Core_Controller_Admin {
         //获取商品信息
         $goodsInfo = $this->model->getGoodsInfo($goodsId);
         if (!$goodsInfo) {
-            $this->redirect('/Admin/Goods/index');
+            $this->redirect("/$this->_ModuleName/Goods/index");
         }
 
         $post = $this->getPost();
@@ -164,7 +164,7 @@ class GoodsController extends Core_Controller_Admin {
         //获取商品信息
         $goodsInfo = $this->model->getGoodsPriceInfo($goodsId);
         if (!$goodsInfo) {
-            $this->redirect('/Admin/Goods/index');
+            $this->redirect("/$this->_ModuleName/Goods/index");
         }
 
         $post = $this->getPost();
@@ -191,7 +191,7 @@ class GoodsController extends Core_Controller_Admin {
         }
 
         //获取仓库        
-        $sModel = new Chaoshi_StorehouseModel();
+        $sModel = new Default_StorehouseModel();
         $storehouse = $sModel->getStorehouseList();
 
         //模板变量
@@ -211,7 +211,7 @@ class GoodsController extends Core_Controller_Admin {
         //获取商品信息
         $goodsInfo = $this->model->getGoodsPriceInfo($goodsId);
         if (!$goodsInfo) {
-            $this->redirect('/Admin/Goods/index');
+            $this->redirect("/$this->_ModuleName/Goods/index");
         }
 
         $post = $this->getPost();
@@ -238,7 +238,7 @@ class GoodsController extends Core_Controller_Admin {
         }
 
         //获取仓库        
-        $sModel = new Chaoshi_StorehouseModel();
+        $sModel = new Default_StorehouseModel();
         $storehouse = $sModel->getStorehouseList();
 
         //模板变量
@@ -257,7 +257,7 @@ class GoodsController extends Core_Controller_Admin {
         $goodsId = $this->getParam('goodsId', 0);
         $storehouseId = $this->getParam('storehouseId', 0);
         if (!$goodsId || !$storehouseId) {
-            $this->redirect('/Admin/Goods/index');
+            $this->redirect("/$this->_ModuleName/Goods/index");
         }
         $data = $this->model->getStocklist($goodsId, $storehouseId);
         $this->getView()->assign('data', $data);
@@ -271,7 +271,7 @@ class GoodsController extends Core_Controller_Admin {
         //获取商品信息
         $goodsInfo = $this->model->getGoodsInfo($goodsId);
         if (!$goodsInfo) {
-            $this->redirect('/Admin/Goods/index');
+            $this->redirect("/$this->_ModuleName/Goods/index");
         }
 
         if ($this->isPost()) {
@@ -289,7 +289,7 @@ class GoodsController extends Core_Controller_Admin {
         $this->_layout = true;
         $goodsId = $this->getParam('goodsId', 0);
         if (!$goodsId) {
-            $this->redirect('/Admin/Goods/index');
+            $this->redirect("/$this->_ModuleName/Goods/index");
         }
         
         if ($this->isPost()) {
@@ -301,7 +301,7 @@ class GoodsController extends Core_Controller_Admin {
         //获取商品信息
         $goodsInfo = $this->model->getGoodsInfo($goodsId);
         if (!$goodsInfo) {
-            $this->redirect('/Admin/Goods/index');
+            $this->redirect("/$this->_ModuleName/Goods/index");
         }
         
         //根据商品类型获取父类id
@@ -314,6 +314,7 @@ class GoodsController extends Core_Controller_Admin {
         $attrVaules = $this->model->getGoodsAttrVaules($goodsId);
         $this->getView()->assign('attrVaules', $attrVaules);
         $this->getView()->assign('goodsId', $goodsId);
+        $this->getView()->assign('cateInfo', $cateInfo);
         
     }
 
@@ -328,7 +329,7 @@ class GoodsController extends Core_Controller_Admin {
         $this->_layout = true;
         $goodsId = $this->getParam('goodsId');
         if (!$goodsId) {
-            $this->redirect('/Admin/Goods/index');
+            $this->redirect("/$this->_ModuleName/Goods/index");
         }
         if ($this->isPost()) {
             //
@@ -354,7 +355,7 @@ class GoodsController extends Core_Controller_Admin {
         //获取商品信息
         $goodsInfo = $this->model->getGoodsInfo($goodsId);
         if (!$goodsInfo) {
-            $this->redirect('/Admin/Goods/index');
+            $this->redirect("/$this->_ModuleName/Goods/index");
         }
 
         //模板变量        
@@ -485,13 +486,13 @@ class GoodsController extends Core_Controller_Admin {
         $goodsId = $this->getParam('goodsId');
         $packPicSign = $this->getParam('sign');
         if (!$goodsId || !$packPicSign) {
-            $this->jsLocation('参数错误！', '/Admin/Goods/index');
+            $this->jsLocation('参数错误！', "/$this->_ModuleName/Goods/index");
         }
 
         //获取商品信息
         $goodsInfo = $this->model->getGoodsInfo($goodsId);
         if (!$goodsInfo) {
-            $this->jsLocation('该商品不存在！', '/Admin/Goods/index');
+            $this->jsLocation('该商品不存在！', "/$this->_ModuleName/Goods/index");
         }
         $newPackPic = array();
         if ($goodsInfo['packPic']) {
@@ -512,9 +513,9 @@ class GoodsController extends Core_Controller_Admin {
         }
 
         if (!$this->model->upGoodsPackPic($newPackPic, $goodsId, 'del')) {
-            $this->jsLocation('图片删除失败', '/Admin/Goods/packPic/goodsId/' . $goodsId);
+            $this->jsLocation('图片删除失败', "/$this->_ModuleName/Goods/packPic/goodsId/$goodsId");
         } else {
-            $this->jsLocation('图片删除成功', '/Admin/Goods/packPic/goodsId/' . $goodsId);
+            $this->jsLocation('图片删除成功', "/$this->_ModuleName/Goods/packPic/goodsId/$goodsId");
         }
     }
 

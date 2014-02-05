@@ -5,7 +5,7 @@
  * @desc 默认控制器
  * @see http://www.php.net/manual/en/class.yaf-controller-abstract.php
  */
-class IndexController extends Core_Controller_Admin {
+class IndexController extends Core_Controller_Business {
 
     public function init() {
         parent::init();

@@ -1,14 +1,34 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>家大.小区超市</title>
+        <?php
+        if (isset($_page['title']) && $_page['title']) {
+            $title = $_page['title']; //this->_layouttitle;
+        } else {
+            $title = '家大.小区服务-数据后台管理系统';
+        }
+
+        $static_domain = $_config_domain['static'];
+        ?>
+        <title><?php echo $title;?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--全局css文件-->
         <!-- Bootstrap -->
-        <link rel="stylesheet" href="//static.jiada.local/plugin/bootstrap303/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//static.jiada.local/plugin/jquery_treeview/jquery.treeview.css" />
-        <link rel="stylesheet" href="//static.jiada.local/admin/css/jiada.css" />
+        <link rel="stylesheet" href="//<?php echo $static_domain;?>/plugin/bootstrap303/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//<?php echo $static_domain;?>/plugin/jquery_treeview/jquery.treeview.css" />
+        <link rel="stylesheet" href="//<?php echo $static_domain;?>/css/admin/admin.css" />
+        
+        <!--action page additional files-->
+        <?php
+            if (isset($_page['static_css_files']) && is_array($_page['static_css_files'])) {
+                echo $this->_view->_css($_page['static_css_files']);
+            }
+        ?>
+        
+        <!--全局js文件-->        
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <script src="//static.jiada.local/admin/js/jquery.min.js"></script>
+        <script src="//<?php echo $static_domain;?>/js/basic/libs/jquery.min.js"></script>
+        <script src="//<?php echo $static_domain;?>/plugin/bootstrap303/js/bootstrap.min.js"></script>
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
             <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>

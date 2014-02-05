@@ -51,7 +51,7 @@ class Chaoshi_GoodsModel extends BasicModel{
     }
     
     public function getGoodsPriceInfo($goodsId){
-        $query = "select a.cateId,a.brandId,a.goodsNme,a.recTags,a.onLine,a.goodsId,b.*,(select cateName from goods_categary where cateId=a.cateId)as cateName,(select brandName from goods_brand where brandId=a.brandId)as brandName   from goods a left join goods_price b on a.goodsId=b.goodsId where a.goodsId=$goodsId ";
+        $query = "select a.cateId,a.brandId,a.goodsName,a.recTags,a.onLine,a.goodsId,b.*,(select cateName from goods_categary where cateId=a.cateId)as cateName,(select brandName from goods_brand where brandId=a.brandId)as brandName   from goods a left join goods_price b on a.goodsId=b.goodsId where a.goodsId=$goodsId ";
         $this->db->setQuery($query);
         $rows = $this->db->loadAssoc();
         return $rows;
@@ -66,7 +66,7 @@ class Chaoshi_GoodsModel extends BasicModel{
 
     public function add($data) {
         $time = time();
-        $query = "insert goods set cateId='$data[cateId]',brandId='$data[brandId]',goodsNme='$data[goodsNme]',originalPrice='$data[originalPrice]',discount='$data[discount]',currentPrice='$data[currentPrice]',marketPrice='$data[marketPrice]',activityStartTime='$data[activityStartTime]',activityEndTime='$data[activityEndTime]',onLine='$data[onLine]',recTags='$data[recTags]',publishTime='$time';";
+        $query = "insert goods set cateId='$data[cateId]',brandId='$data[brandId]',goodsName='$data[goodsName]',originalPrice='$data[originalPrice]',discount='$data[discount]',currentPrice='$data[currentPrice]',marketPrice='$data[marketPrice]',activityStartTime='$data[activityStartTime]',activityEndTime='$data[activityEndTime]',onLine='$data[onLine]',recTags='$data[recTags]',publishTime='$time';";
 
         $result = $this->db->query($query);
         if ($result == false) {
@@ -79,7 +79,7 @@ class Chaoshi_GoodsModel extends BasicModel{
 
     public function edit($data) {
         $time = time();
-        $query = "update goods set cateId='$data[cateId]',brandId='$data[brandId]',goodsNme='$data[goodsNme]',originalPrice='$data[originalPrice]',discount='$data[discount]',currentPrice='$data[currentPrice]',marketPrice='$data[marketPrice]',activityStartTime='$data[activityStartTime]',activityEndTime='$data[activityEndTime]',onLine='$data[onLine]',recTags='$data[recTags]',modifyTime='$time' where goodsId=$data[goodsId];";
+        $query = "update goods set cateId='$data[cateId]',brandId='$data[brandId]',goodsName='$data[goodsName]',originalPrice='$data[originalPrice]',discount='$data[discount]',currentPrice='$data[currentPrice]',marketPrice='$data[marketPrice]',activityStartTime='$data[activityStartTime]',activityEndTime='$data[activityEndTime]',onLine='$data[onLine]',recTags='$data[recTags]',modifyTime='$time' where goodsId=$data[goodsId];";
 
         $result = $this->db->query($query);
         if ($result == false) {
@@ -118,7 +118,7 @@ class Chaoshi_GoodsModel extends BasicModel{
     }
     
     public function getStocklist($goodsId, $storehouseId){
-        $query = "select a.*,(select goodsNme from goods where goodsId=$goodsId)as goodsNme  from goods_stock a  where a.goodsId = $goodsId and a.storehouseId=$storehouseId";
+        $query = "select a.*,(select goodsName from goods where goodsId=$goodsId)as goodsName  from goods_stock a  where a.goodsId = $goodsId and a.storehouseId=$storehouseId";
         $query .=" order by a.putinTime desc ";
         $query .=' limit '.$this->getLimitStart().', '.$this->getLimit();
 
@@ -273,7 +273,7 @@ class Chaoshi_GoodsModel extends BasicModel{
 		  			]	
 				},
                                 {
-			 		"value":"goodsNme",
+			 		"value":"goodsName",
 			  		"label":"商品名称",
 			  		"rules":[	  					
 						{

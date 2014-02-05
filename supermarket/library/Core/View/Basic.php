@@ -12,89 +12,100 @@ class Core_View_Basic extends Yaf_View_Simple {
         return $this->render($viewPath, $params);
     }
 
-    public function _js($file = NULL, $params = array()) {
-        $config = Yaf_Registry::get("config");
-        if (strpos($file, '//') === FALSE) {
-            $strPath = $this->js($file, array('v' => $config->app->version));
-        } else {
-            $strPath = $file;
-        }
-        $strParams = '';
-        if (!empty($params)) {
-            foreach ($params as $key => $value) {
-                $strParams .= " {$key}=\"{$value}\"";
+    public function _js($files) {
+        $config = Yaf_Registry::get("_CONFIG");
+        $domain = @$config->domain->js;
+        $v = @$config->system->version;
+        $htmlTag='';
+        if($files && is_array($files)){
+            foreach($files as $key=>$file){
+                
+                if(isset($file['path']) && $file['path']){
+                    //文件路径
+                    $files_path=$file['path'];
+                    if (strpos($files_path, '//') === FALSE) {
+                        $files_path = ltrim($files_path, '/');
+                        $src = '//'.$domain . '/' . $files_path;
+                        if ($v) {
+                            if(strpos($files_path,'?')){
+//                                $src .= '&' . http_build_query(array('v'=>$v));
+                            }else{
+                                $src .= '?' . http_build_query(array('v'=>$v));
+                            }                
+                        }
+                    } else {
+                        $src = $files_path;
+                    }
+                    
+                    //html script/link属性
+                    $attribute = '';
+                    if(isset($file['attr']) && $file['attr']){
+                        $files_attr=$file['attr'];                    
+                        
+                        if (!empty($files_attr) && is_array($files_attr)) {
+                            foreach ($files_attr as $key => $value) {
+                                $attribute .= " {$key}=\"{$value}\"";
+                            }
+                        }
+                    }
+                    $htmlTag .= '<script src="' . $src . '"' . $attribute . ' type="text/javascript"></script>';
+                    $htmlTag .="\n";
+                }
+                
             }
+            
         }
-        $strPath = '<script src="' . $strPath . '"' . $strParams . '></script>';
-        return $strPath;
+        
+        return $htmlTag;
     }
 
-    public function _css($file = NULL, $params = array()) {
-        $config = Yaf_Registry::get("config");
-        if (strpos($file, '//') === FALSE) {
-            $strPath = $this->css($file, array('v' => $config->app->version));
-        } else {
-            $strPath = $file;
-        }
-        $strParams = '';
-        if (!empty($params)) {
-            foreach ($params as $key => $value) {
-                $strParams .= " {$key}=\"{$value}\"";
+    public function _css($files) {
+        $config = Yaf_Registry::get("_CONFIG");
+        $domain = @$config->domain->css;
+        $v = @$config->system->version;
+        $htmlTag='';
+        if($files && is_array($files)){
+            foreach($files as $key=>$file){
+                
+                if(isset($file['path']) && $file['path']){
+                    //文件路径
+                    $files_path=$file['path'];
+                    if (strpos($files_path, '//') === FALSE) {
+                        $files_path = ltrim($files_path, '/');
+                        $src = '//'.$domain . '/' . $files_path;
+                        if ($v) {
+                            if(strpos($files_path,'?')){
+//                                $src .= '&' . http_build_query(array('v'=>$v));
+                            }else{
+                                $src .= '?' . http_build_query(array('v'=>$v));
+                            }                
+                        }
+                    } else {
+                        $src = $files_path;
+                    }
+                    
+                    //html script/link属性
+                    $attribute = '';
+                    if(isset($file['attr']) && $file['attr']){
+                        $files_attr=$file['attr'];                    
+                        
+                        if (!empty($files_attr) && is_array($files_attr)) {
+                            foreach ($files_attr as $key => $value) {
+                                $attribute .= " {$key}=\"{$value}\"";
+                            }
+                        }
+                    }
+                    $htmlTag .= '<link href="' . $src . '"' . $attribute . ' rel="stylesheet"/>';
+                    $htmlTag .="\n";
+                }
+                
             }
+            
         }
-        $strPath = '<link href="' . $strPath . '" rel="stylesheet"' . $strParams . ' />';
-        return $strPath;
+        
+        return $htmlTag;
     }
 
-    public function _img($file = NULL, $params = array()) {
-        $config = Yaf_Registry::get("config");
-        if (strpos($file, '//') === FALSE) {
-            $strPath = $this->img($file, array('v' => $config->app->version));
-        } else {
-            $strPath = $file;
-        }
-        $strParams = '';
-        if (!empty($params)) {
-            foreach ($params as $key => $value) {
-                $strParams .= " {$key}=\"{$value}\"";
-            }
-        }
-        $strPath = '<img src="' . $strPath . '"' . $strParams . ' />';
-        return $strPath;
-    }
-
-    public static function js($path, $params = array()) {
-        $config = Yaf_Registry::get("config");
-        $strUrl = $config->domain->static;
-        $path = ltrim($path, '/');
-        $strReturn = '//' . $strUrl . '/' . $path;
-        if (!empty($params)) {
-            $strReturn .= '?' . http_build_query($params);
-        }
-        return $strReturn;
-    }
-
-    public static function css($path, $params = array()) {
-        $config = Yaf_Registry::get("config");
-        $strUrl = $config->domain->static;
-        $path = ltrim($path, '/');
-        $strReturn = '//' . $strUrl . '/' . $path;
-        if (!empty($params)) {
-            $strReturn .= '?' . http_build_query($params);
-        }
-        return $strReturn;
-    }
-
-    public static function img($path, $params = array()) {
-        $config = Yaf_Registry::get("config");
-        $strUrl = $config->domain->static;
-        $path = ltrim($path, '/');
-        $strReturn = '//' . $strUrl . '/' . $path;
-        if (!empty($params)) {
-            $strReturn .= '?' . http_build_query($params);
-        }
-        return $strReturn;
-    }
 
     /**
      * 自动获取验证属性
