@@ -46,8 +46,12 @@ class LoginController extends Core_Controller_Business {
             $error = '密码错误，不能为空！';
             return $error;
         }
-        //检查用户(管理员表)是否存在,如果存在返回用户信息;
-        $userInfo = $this->model->getUserInfo($data);
+        //检查商家用户是否存在,如果存在返回用户信息;
+        $userInfo = $this->model->getBusinessInfo($data);
+        if(!$userInfo){
+            //检查店铺用户是否存在,如果存在返回用户信息;
+            $userInfo = $this->model->getShopAdminInfo($data);
+        }
         if (!$userInfo) {
             $error = '用户名或密码错误！';
             return $error;
@@ -65,27 +69,65 @@ class LoginController extends Core_Controller_Business {
             $error = '所属行业数据有误！';
             return $error;
         }
+        //行业
         $industryPinyin=ucfirst($industryInfo['pinyin']);
         
-        //记录用户id;
-        $cR1=$this->setCookies('uid', $userInfo['businessId'],0,"/$industryPinyin");
+        //记录商家id,店铺id,用户id,管理员权限;商家账号没有所属店铺，只有店铺管理员账号有所属店铺id。
+        if(isset($userInfo['shopId']) && $userInfo['shopId']){
+            $shopId=$userInfo['shopId'];
+        }else{
+            $shopId='';
+        }
+        
+        //adminId是店铺里的管理员id；而businessId是一定存在的。cookie里uid其实没有必要记录，只是为了将来可能有需求用到，扩展用。
+        if(isset($userInfo['adminId']) && $userInfo['adminId']){
+            $uid=$userInfo['adminId'];
+            //获取用户权限
+            $acl=base64_encode($userInfo['acl']);
+        }else{
+            $uid=$userInfo['businessId'];
+            //商家账号没有权限
+            $acl='';
+        }
+        
+        $cR1=$this->setCookies('businessId', $userInfo['businessId'],0,"/$industryPinyin");
+        $cR2=$this->setCookies('shopId', $shopId,0,"/$industryPinyin");
+        $cR3=$this->setCookies('uid', $uid,0,"/$industryPinyin");
+        $cR4=$this->setCookies('acl', $acl,0,"/$industryPinyin");
         
         //方便用户再次登录时不用输入用户名
-        $cR2=$this->setCookies('uname', $data['username'],0,"/$industryPinyin");
+        $cR5=$this->setCookies('uname', $data['username'],0,"/$industryPinyin");
         
         //认证票据
-        $ticket = $this->model->setTicket($userInfo['businessId'],$industryPinyin);
-        $cR3=$this->setCookies('_TICKET', $ticket,0,"/$industryPinyin");
+        $ticketParam=array(
+            'businessId'=>$userInfo['businessId'],
+            'shopId'=>$shopId,
+            'uid'=>$uid,
+            'acl'=>$acl,
+            'industry_modules'=>$industryPinyin
+        );
+        $ticket = $this->model->setTicket($ticketParam);
+        $cR6=$this->setCookies('_TICKET', $ticket,0,"/$industryPinyin");
         
         //这块可以考虑使用通用des/3des加密
         $userInfo = base64_encode(serialize($userInfo));
-        $cR4=$this->setCookies('_USERINFO', $userInfo,0,"/$industryPinyin");
+        $cR7=$this->setCookies('_USERINFO', $userInfo,0,"/$industryPinyin");
+        //对账号信息进行签名
+        $uis=$this->model->getSign($userInfo);
+        $cR8=$this->setCookies('_UIS', $uis,0,"/$industryPinyin");
         
         //根据这个cookie和cookie作用域正确显示各行业的左侧导航和账号权限范围；
-        $cR5=$this->setCookies('industry_modules', $industryPinyin,0,"/$industryPinyin");
-//        print_r($cR5);exit;
-        if($cR1 && $cR2 && $cR3 && $cR4 && $cR5){
-            $this->redirect("/$industryPinyin/Index/index");
+        $cR9=$this->setCookies('industry_modules', $industryPinyin,0,"/$industryPinyin");
+
+        if($cR1 && $cR2 && $cR3 && $cR4 && $cR5 && $cR6 && $cR7 && $cR8 && $cR9){
+            if($shopId){
+                //商家店铺首页
+                $this->redirect("/Chaoshi/Shop/index/shopId/$shopId");
+            }else{
+                //商家首页
+                $this->redirect("/$industryPinyin/Index/index");
+            }
+            
         }else{
             $error = 'Cookie写入失败！';
             return $error;
@@ -102,8 +144,13 @@ class LoginController extends Core_Controller_Business {
         // Nullify the cookie and make it expire
         $delCookie1 = $this->setCookies('_TICKET', '', -86400);
         $delCookie2 = $this->setCookies('_USERINFO', '', -86400);
-        $delCookie3 = $this->setCookies('uid', '', -86400);
-        if (!$delCookie1 || !$delCookie2 || !$delCookie3) {
+        $delCookie3 = $this->setCookies('businessId', '', -86400);
+        $delCookie4 = $this->setCookies('shopId', '', -86400);
+        $delCookie5 = $this->setCookies('uid', '', -86400);
+        $delCookie6 = $this->setCookies('acl', '', -86400);
+        $delCookie7 = $this->setCookies('industry_modules', '', -86400);
+        $delCookie8 = $this->setCookies('_UIS', '', -86400);
+        if (!$delCookie1 || !$delCookie2 || !$delCookie3 || !$delCookie4 || !$delCookie5 || !$delCookie6 || !$delCookie7) {
             $this->jsLocation('cookie写入失败！', $url);
         }
         $this->redirect('/Login');

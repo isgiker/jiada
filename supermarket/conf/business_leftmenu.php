@@ -10,17 +10,24 @@ $leftMenu = array(
             '店铺管理' => array(
                 '商家首页' => '/Chaoshi/Index/index',
                 '新建店铺' => '/Chaoshi/Shop/add'
-            )
+            ),
+            '权限管理中心'=>array(
+            '用户组管理'=>'/Chaoshi/Agroup/index',
+            '新增用户组'=>'/Chaoshi/Agroup/add',
+            '1'=>'keep_spacing',
+            '管理员管理'=>'/Chaoshi/Admin/index',
+            '新增管理员'=>'/Chaoshi/Admin/add'
+            ),
         ),
         'Shop' => array(
             '店铺管理' => array(
-                '店铺首页' => '/Chaoshi/Shop/index/shopId/'.$shopId,
-                '店铺信息' => '/Chaoshi/Shop/edit/shopId/'.$shopId,
-                '店铺设置' => '/Chaoshi/Shop/setup/shopId/'.$shopId,
+                '店铺首页' => '/Chaoshi/Shop/index/shopId/'.$currentShopId,
+                '店铺信息' => '/Chaoshi/Shop/edit/shopId/'.$currentShopId,
+                '店铺设置' => '/Chaoshi/Shop/setup/shopId/'.$currentShopId,
             ),
             '商品管理中心' => array(
-                '我的商品' => '/Chaoshi/Shopgoods/index/shopId/'.$shopId,
-                '发布商品' => '/Chaoshi/Goods/index/shopId/'.$shopId,
+                '我的商品' => '/Chaoshi/Shopgoods/index/shopId/'.$currentShopId,
+                '发布商品' => '/Chaoshi/Goods/index/shopId/'.$currentShopId,
             )
         )
     ),

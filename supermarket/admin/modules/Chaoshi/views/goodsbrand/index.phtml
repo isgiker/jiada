@@ -1,6 +1,6 @@
 <!--breadcrumbs-->
 <ul class="breadcrumb" contenteditable="false">
-    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="/Index/index"  title="Go to Home">主页</a> </li>
     <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index" ?>">商品品牌管理</a> </li>
     <li class="active">列表</li>
 </ul>
@@ -9,24 +9,26 @@
 
     <div class="widget-event">
         <span class="submenu pull-right"><button type="submit" name="jsubmit" value="del" class="btn btn-sm btn-info" >删除</button></span>
-        <span class="submenu pull-right"><button type="submit" name="jsubmit" value="add" class="btn btn-sm btn-info" onclick="location.href = '<?php echo "/$_ModuleName/$_ControllerName/add/cateId/$cateId"; ?>';">添加品牌</button></span>
+        <span class="submenu pull-right"><button type="submit" name="jsubmit" value="add" class="btn btn-sm btn-info" onclick="location.href = '<?php echo "/$_ModuleName/$_ControllerName/add/cateParentId/$cateParentId"; ?>';">添加品牌</button></span>
     </div>
     <div class="widget-content">
-        <form name="jform" id="jform" action="" method="post" class="form-horizontal">
+        <form name="jform" id="jform" action="" method="get" class="form-horizontal">
             <div class="search">
                 <span class="col-sm-2 nopadding">
                     <select name="gcateChildren" class="form-control input-sm">
                         <?php
                             if($gcateChildren){
                                 foreach($gcateChildren as $key=>$childs){
-                                    if($childs['parentId'] == $cateId){
+                                    if($childs['parentId'] == $cateParentId){
                                         $tag = '......&nbsp;|&nbsp;';
                                     }else{
                                         $tag='';
                                     }
                         ?>
                         <option value="<?php echo $childs['cateId'];?>" <?php
-                        if ($post['gcateChildren'] == $childs['cateId']) {
+                        if ($request['gcateChildren'] == $childs['cateId']) {
+                            echo ' selected';
+                        }elseif($cateTypeId == $childs['cateId'] && !$request['gcateChildren']){
                             echo ' selected';
                         } else {
                             echo '';
@@ -41,28 +43,28 @@
                 <span class="col-sm-2 nopadding">
                     <select name="status" class="form-control input-sm">
                         <option value="all" <?php
-                        if ($post['status'] == 'all') {
+                        if ($request['status'] == 'all') {
                             echo ' selected';
                         } else {
                             echo '';
                         }
                         ?>>显示所有</option>
                         <option value="1" <?php
-                        if ((isset($post['status']) && $post['status'] == 1) || $post['status'] =='') {
+                        if ((isset($request['status']) && $request['status'] == 1) || $request['status'] =='') {
                             echo ' selected';
                         } else {
                             echo '';
                         }
                         ?>>已上线</option>
                         <option value="-1" <?php
-                        if (isset($post['status']) && $post['status'] == -1) {
+                        if (isset($request['status']) && $request['status'] == -1) {
                             echo ' selected';
                         } else {
                             echo '';
                         }
                         ?>>未公开</option>
                         <option value="-2" <?php
-                        if (isset($post['status']) && $post['status'] == -2) {
+                        if (isset($request['status']) && $request['status'] == -2) {
                             echo ' selected';
                         } else {
                             echo '';

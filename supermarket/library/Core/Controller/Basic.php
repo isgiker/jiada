@@ -226,6 +226,13 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
     }
     
     /**
+     * 返回get、Query、post和cookie的所有数据
+     */
+    public function _getRequest(){
+        return $this->getRequest()->getRequest();
+    }
+    
+    /**
      * 从客户端返回变量，这个方法将从请求参数中寻找参数name，如果没有找到的话，将从POST, GET, Cookie, Server中寻找
      * @param type $key the variable name
      * @param type $value 如果提供了此参数，当变量在未被找到的情况下，它将被返回

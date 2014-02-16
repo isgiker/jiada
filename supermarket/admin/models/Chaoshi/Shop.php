@@ -1,31 +1,38 @@
 <?php
 
 /**
- * @name Default_StorehouseModel
+ * @name Chaoshi_ShopModel
  * @desc 
  * @author Vic
  */
-class Default_StorehouseModel extends BasicModel{
+class Chaoshi_ShopModel extends BasicModel{
 
     public function __construct() {
         parent::__construct();
-        $this->db = Factory::getDBO('local_jiada');
+        $this->hydb = Factory::getDBO('local_jiada_chaoshi');
     }
 
-    public function getStorehouseList() {
-        $query = "select a.*,(select areaName from area where areaId=a.provinceId) as province,(select areaName from area where areaId=a.cityId) as city,(select areaName from area where areaId=a.districtId) as district from storehouse a";
+    public function getShopList($search = array()) {
+        $query = "select a.* from shop_basic a where 1=1";
+        if (!isset($search['status']) || !$search['status']) {
+            //默认显示已审核通过的
+            $query .=" and a.status = 1";
+        }elseif (isset($search['status']) && $search['status'] !='all') {
+            $query .=" and a.status = $search[status]";
+        }
         $query .=" order by a.createTime desc ";
+        $query .=' limit '.$this->getLimitStart().', '.$this->getLimit();
 
-        $this->db->setQuery($query);
-        $rows = $this->db->loadAssocList();
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssocList();
 
         return $rows;
     }
     
-    public function getStorehouseTotal($search=array()){
-        $query = "select count(storehouseId) from storehouse";
-        $this->db->setQuery($query);
-        $num = $this->db->loadResult();
+    public function getShopTotal($search=array()){
+        $query = "select count(shopId) from shop_basic";
+        $this->hydb->setQuery($query);
+        $num = $this->hydb->loadResult();
         return $num;
     }
 
@@ -37,8 +44,8 @@ class Default_StorehouseModel extends BasicModel{
         $query .=" and parentId=$parentId";
         $query .=" and public = 1";
         $query .=" order by sort asc,pinyin asc,areaId desc ";
-        $this->db->setQuery($query);
-        $rows = $this->db->loadAssocList();
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssocList();
 
 
         $strstr = '';
@@ -56,29 +63,17 @@ class Default_StorehouseModel extends BasicModel{
         return $strstr;
     }
     
-    public function getStorehouseInfo($storehouseId){
-        $query = "select * from storehouse where storehouseId=$storehouseId";
-        $this->db->setQuery($query);
-        $rows = $this->db->loadAssoc();
-        return $rows;
-    }
-    
-    /**
-     * 获取省份
-     */
-    public function getAreas($parentId=0){
-        $query = "select * from area where parentId=$parentId and public=1";
-        $query .=" order by sort asc,areaId desc ";
-        $this->db->setQuery($query);
-        $rows = $this->db->loadAssocList();
-        
+    public function getShopInfo($shopId){
+        $query = "select * from shop_basic where shopId=$shopId";
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssoc();
         return $rows;
     }
 
     public function add($data) {
         $time=time();
         $sql = "insert storehouse set storehouseName='$data[storehouseName]',provinceId='$data[provinceId]',cityId='$data[cityId]',districtId='$data[districtId]',address='$data[address]',tel='$data[tel]',openedTime='$data[openedTime]',createTime='$time'";
-        $result = $this->db->query($sql);
+        $result = $this->hydb->query($sql);
         if ($result == false) {
             $error = $db->ErrorMsg();
             die("$error");
@@ -87,8 +82,8 @@ class Default_StorehouseModel extends BasicModel{
     }
 
     public function edit($data) {
-        $sql = "update storehouse set storehouseName='$data[storehouseName]',provinceId='$data[provinceId]',cityId='$data[cityId]',districtId='$data[districtId]',address='$data[address]',tel='$data[tel]',openedTime='$data[openedTime]' where storehouseId=$data[storehouseId]";
-        $result = $this->db->query($sql);
+        $sql = "update shop_basic set shopName='$data[shopName]',provinceId='$data[provinceId]',cityId='$data[cityId]',districtId='$data[districtId]',address='$data[address]',lng='$data[lng]',lat='$data[lat]',shopDesc='$data[shopDesc]',contact='$data[contact]',mobile='$data[mobile]',tel='$data[tel]',workingTime='$data[workingTime]',status='$data[status]' where shopId=$data[shopId]";
+        $result = $this->hydb->query($sql);
         if ($result == false) {
             $error = $db->ErrorMsg();
             die("$error");
@@ -98,8 +93,8 @@ class Default_StorehouseModel extends BasicModel{
     
     private function getParentPath($parentId){
         $query = "select parentId from area where areaId = $parentId";
-        $this->db->setQuery($query);
-        $newParentId = $this->db->loadResult();
+        $this->hydb->setQuery($query);
+        $newParentId = $this->hydb->loadResult();
         
         static $parentPath = array();
         if($newParentId!=0){
@@ -153,8 +148,8 @@ class Default_StorehouseModel extends BasicModel{
 		  			]	
 				},
 		  		{
-			 		"value":"tel",
-			  		"label":"联系电话",
+			 		"value":"mobile",
+			  		"label":"联系人手机",
 			  		"rules":[
                                                 {
 	  						"name":"trim"
@@ -165,6 +160,23 @@ class Default_StorehouseModel extends BasicModel{
 						{
 	 						"name":"required",
 	 						"message":"%s%为必填项"
+	 					}
+		  			]	
+				},
+		  		{
+			 		"value":"tel",
+			  		"label":"联系电话",
+			  		"rules":[
+                                                {
+	  						"name":"trim"
+	  					},
+						{
+	  						"name":"clearxss"
+	  					},
+	 					{
+	 						"name":"regex",
+	 						"value":"/^\\\d{2,5}-\\\d{7,9}$/",
+	 						"message":"%s%格式为：区号-号码"
 	 					}
 		  			]	
 				},

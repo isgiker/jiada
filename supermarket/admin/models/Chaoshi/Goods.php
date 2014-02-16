@@ -14,8 +14,14 @@ class Chaoshi_GoodsModel extends BasicModel{
 
     public function getGoodsList($search = array()) {
         $query = "select a.*,b.cateName,c.brandName from goods a,goods_categary b,goods_brand c where a.cateId=b.cateId and a.brandId=c.brandId";
-        if (isset($search['cateId']) && $search['cateId'] != 'all') {
+        if (isset($search['cateId']) && $search['cateId']) {
             $query .=" and a.cateId = $search[cateId]";
+        }
+        if (isset($search['brandId']) && $search['brandId']) {
+            $query .=" and a.brandId = $search[brandId]";
+        }
+        if (isset($search['goodsName']) && $search['goodsName']) {
+            $query .=" and instr(a.goodsName, '$search[goodsName]')";
         }
         if (isset($search['onLine']) && $search['onLine'] >=0) {
             $query .=" and a.onLine = $search[onLine]";
@@ -33,9 +39,20 @@ class Chaoshi_GoodsModel extends BasicModel{
     }
     
     public function getGoodsTotal($search = array()){
-        $query = "select count(goodsId) from goods where 1=1";
-        if (isset($search['onLine']) && $search['onLine'] != 'all' && $search['onLine'] > 0) {
-            $query .=" and onLine = $search[onLine]";
+        $query = "select count(a.goodsId) from goods a,goods_categary b,goods_brand c where a.cateId=b.cateId and a.brandId=c.brandId";
+        if (isset($search['cateId']) && $search['cateId']) {
+            $query .=" and a.cateId = $search[cateId]";
+        }
+        if (isset($search['brandId']) && $search['brandId']) {
+            $query .=" and a.brandId = $search[brandId]";
+        }
+        if (isset($search['goodsName']) && $search['goodsName']) {
+            $query .=" and instr(a.goodsName, '$search[goodsName]')";
+        }
+        if (isset($search['onLine']) && $search['onLine'] >=0) {
+            $query .=" and a.onLine = $search[onLine]";
+        }else{
+            $query .=" and a.onLine = 1";
         }
 
         $this->db->setQuery($query);
@@ -66,7 +83,9 @@ class Chaoshi_GoodsModel extends BasicModel{
 
     public function add($data) {
         $time = time();
-        $query = "insert goods set cateId='$data[cateId]',brandId='$data[brandId]',goodsName='$data[goodsName]',originalPrice='$data[originalPrice]',discount='$data[discount]',currentPrice='$data[currentPrice]',marketPrice='$data[marketPrice]',activityStartTime='$data[activityStartTime]',activityEndTime='$data[activityEndTime]',onLine='$data[onLine]',recTags='$data[recTags]',publishTime='$time';";
+//        $query = "insert goods set cateId='$data[cateId]',brandId='$data[brandId]',goodsName='$data[goodsName]',originalPrice='$data[originalPrice]',discount='$data[discount]',currentPrice='$data[currentPrice]',marketPrice='$data[marketPrice]',activityStartTime='$data[activityStartTime]',activityEndTime='$data[activityEndTime]',onLine='$data[onLine]',recTags='$data[recTags]',publishTime='$time';";
+        //无价格和活动
+        $query = "insert goods set cateId='$data[cateId]',brandId='$data[brandId]',goodsName='$data[goodsName]',marketPrice='$data[marketPrice]',onLine='$data[onLine]',recTags='$data[recTags]',publishTime='$time';";
 
         $result = $this->db->query($query);
         if ($result == false) {
@@ -286,60 +305,6 @@ class Chaoshi_GoodsModel extends BasicModel{
 		  			]	
 		  		},
 		  		{
-			 		"value":"originalPrice",
-			  		"label":"商品原价",
-			  		"rules":[
-						{
-	  						"name":"clearxss"
-	  					},
-						{
-	 						"name":"required",
-	 						"message":"%s%为必填项"
-	 					},
-	 					{
-	 						"name":"regex",
-	 						"value":"/^([0-9]+)[.]([0-9]{1,2})$/",
-	 						"message":"%s%必须为数字格式为：19.88"
-	 					}
-		  			]	
-				},
-                                {
-			 		"value":"currentPrice",
-			  		"label":"商品现价",
-			  		"rules":[
-						{
-	  						"name":"clearxss"
-	  					},
-						{
-	 						"name":"required",
-	 						"message":"%s%为必填项"
-	 					},
-	 					{
-	 						"name":"regex",
-	 						"value":"/^([0-9]+)[.]([0-9]{1,2})$/",
-	 						"message":"%s%必须为数字格式为：19.88"
-	 					}
-		  			]	
-				},
-                                {
-			 		"value":"discount",
-			  		"label":"折扣比例",
-			  		"rules":[
-						{
-	  						"name":"clearxss"
-	  					},
-						{
-	 						"name":"required",
-	 						"message":"%s%为必填项"
-	 					},
-	 					{
-	 						"name":"regex",
-	 						"value":"/^([0]?)[.]*([0-9]{0,2})$/",
-	 						"message":"%s%必须为数字格式为：0.85"
-	 					}
-		  			]	
-				},
-		  		{
 			 		"value":"onLine",
 			  		"label":"是否上架",
 			  		"rules":[
@@ -384,8 +349,8 @@ class Chaoshi_GoodsModel extends BasicModel{
 	 					},
 	 					{
 	 						"name":"regex",
-	 						"value":"/^([0-9]+)[.]([0-9]{1,2})$/",
-	 						"message":"%s%必须为数字格式为：19.88"
+	 						"value":"/^\\\d+(\\\.\\\d{1,2})?$/",
+	 						"message":"%s%必须是整数或小数"
 	 					}
 		  			]	
 				},
@@ -402,8 +367,8 @@ class Chaoshi_GoodsModel extends BasicModel{
 	 					},
 	 					{
 	 						"name":"regex",
-	 						"value":"/^([0-9]+)[.]([0-9]{1,2})$/",
-	 						"message":"%s%必须为数字格式为：19.88"
+	 						"value":"/^\\\d+(\\\.\\\d{1,2})?$/",
+	 						"message":"%s%必须是整数或小数"
 	 					}
 		  			]	
 				},
@@ -420,8 +385,8 @@ class Chaoshi_GoodsModel extends BasicModel{
 	 					},
 	 					{
 	 						"name":"regex",
-	 						"value":"/^([0]?)[.]*([0-9]{0,2})$/",
-	 						"message":"%s%必须为数字格式为：0.85"
+	 						"value":"/^\\\d+(\\\.\\\d{1,2})?$/",
+	 						"message":"%s%必须是整数或小数"
 	 					}
 		  			]	
 				}
@@ -439,8 +404,8 @@ class Chaoshi_GoodsModel extends BasicModel{
 	  						"name":"clearxss"
 	  					},
 						{
-	 						"name":"required",
-	 						"message":"%s%为必填项"
+	 						"value":"/^\\\d+(\\\.\\\d{1,2})?$/",
+	 						"message":"%s%必须是整数或小数"
 	 					}
 		  			]	
 				},
@@ -474,8 +439,8 @@ class Chaoshi_GoodsModel extends BasicModel{
 	 					},
 	 					{
 	 						"name":"regex",
-	 						"value":"/^([0-9]+)[.]([0-9]{1,2})$/",
-	 						"message":"%s%必须为数字格式为：19.88"
+	 						"value":"/^\\\d+(\\\.\\\d{1,2})?$/",
+	 						"message":"%s%必须是整数或小数"
 	 					}
 		  			]	
 				}

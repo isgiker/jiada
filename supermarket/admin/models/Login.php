@@ -18,7 +18,7 @@ class LoginModel extends BasicModel{
      * @param array $data
      */
     public function getUserInfo($data){
-        $query = "select a.adminId,a.realName,a.agroupId,b.groupName from admin a, admin_group b where a.password = ? and a.userName = ? and a.agroupId=b.agroupId";
+        $query = "select a.adminId,a.realName,a.agroupId,a.status,b.groupName,b.acl from admin a, admin_group b where a.password = ? and a.userName = ? and a.agroupId=b.agroupId";
         $sth = $this->db->prepare($query);
         if($sth != FALSE){
             if($sth->execute(array($data['password'], $data['username']))){
@@ -33,11 +33,11 @@ class LoginModel extends BasicModel{
      * 构建客户端唯一ID,并进行加密;
      * @param int $userId 管理员id
      */
-    public function setTicket($userId) {
-        if (!$userId)
+    public function setTicket($ticketParam) {
+        $ticket = $this->buildTicket($ticketParam);
+        if(!$ticket){
             return false;
-
-        $ticket = $this->buildTicket($userId);
+        }
         $cryptKey = strrev(md5(self::cryptKey));
         $ticket = strrev(sha1($ticket)).$cryptKey;
         $ticket = sha1($ticket);
@@ -45,17 +45,29 @@ class LoginModel extends BasicModel{
     }
 
     /**
-     * 构建原始票据结构:用户id|浏览器代理信息|用户ip地址|用户socket端口号;
-     * @param int $userId 管理员id
+     * 对字符串进行前面,和密码加密的方式一样
+     * @param type $string
      */
-    public function buildTicket($userId) {
-        if (!$userId)
+    public function getSign($string){
+        $cryptKey = strrev(md5(self::cryptKey));
+        $string = strrev(sha1($string)).$cryptKey;
+        $strSign = sha1($string);
+        return $strSign;
+    }
+
+    /**
+     * 构建原始票据结构:用户id|acl权限|浏览器代理信息|用户ip地址|用户socket端口号;
+     * @param int $userId 管理员id
+     * @param string $industryPinyin 行业拼音
+     */
+    public function buildTicket($ticketParam) {
+        if (!$ticketParam['uid'] || !$ticketParam['acl'])
             return false;
 
         $IP = Util::getIP();
-        //犹豫端口号隔一段时间就会变动所以不能使用
+        //由于端口号隔一段时间就会变动所以不能使用
 //        $ticket = $userId.'|'.$_SERVER['HTTP_USER_AGENT'].'|'.$IP.'|' . $_SERVER['REMOTE_PORT'];
-        $ticket = $userId.'|'.$_SERVER['HTTP_USER_AGENT'].'|'.$IP;
+        $ticket = $ticketParam['uid'].'|'.$ticketParam['acl'].'|'.$_SERVER['HTTP_USER_AGENT'].'|'.$IP;
         return $ticket;
     }
 

@@ -76,46 +76,50 @@
                 <label class="col-sm-2 control-label"><b class="bold red">*</b> 所在地区 :</label>
                 <div class="col-sm-10">
                     <span class="input2">
-                        <select name="provinceId" id="provinceId" <?php echo $this->_view->getInputAttrs($rules, 'provinceId') ?> class="form-control  input-sm">
+                        <select name="provinceId" <?php echo $this->_view->getInputAttrs($rules, 'provinceId') ?> id="node1" class="form-control input-sm linkage" data-next="#node2" data-url="<?php echo "/$_ModuleName/Area/nodeArea/areaId";?>">
                             <option value="" selected>省</option>
                             <?php
                             foreach ($province as $p) {
-                                if ($businessInfo['provinceId'] == $p['areaId']) {
+                                if ($businessInfo['provinceId'] == $p['id']) {
                                     $selected = ' selected';
                                 } else {
                                     $selected = ' ';
                                 }
-                                echo '<option value="' . $p['areaId'] . '" ' . $selected . '>' . $p['areaName'] . '</option>';
+                                echo '<option value="' . $p['id'] . '" ' . $selected . '>' . $p['name'] . '</option>';
                             }
                             ?>
                         </select>
                     </span>
                     <span class="input2">
-                        <select name="cityId" id="cityId" <?php echo $this->_view->getInputAttrs($rules, 'cityId') ?>  class="form-control  input-sm">
+                        <select name="cityId" <?php echo $this->_view->getInputAttrs($rules, 'cityId') ?>  id="node2" class="form-control input-sm linkage" data-next="#node3" data-url="<?php echo "/$_ModuleName/Area/nodeArea/areaId";?>">
                             <option value="" selected>市</option>
                             <?php
-                            foreach ($city as $p) {
-                                if ($businessInfo['cityId'] == $p['areaId']) {
-                                    $selected = ' selected';
-                                } else {
-                                    $selected = ' ';
+                            if(isset($city)){
+                                foreach ($city as $p) {
+                                    if ($businessInfo['cityId'] == $p['id']) {
+                                        $selected = ' selected';
+                                    } else {
+                                        $selected = ' ';
+                                    }
+                                    echo '<option value="' . $p['id'] . '" ' . $selected . '>' . $p['name'] . '</option>';
                                 }
-                                echo '<option value="' . $p['areaId'] . '" ' . $selected . '>' . $p['areaName'] . '</option>';
                             }
                             ?>
                         </select>
                     </span>
                     <span class="input2">
-                        <select name="districtId" id="districtId" <?php echo $this->_view->getInputAttrs($rules, 'districtId') ?> class="form-control input-sm">
+                        <select name="districtId" <?php echo $this->_view->getInputAttrs($rules, 'districtId') ?> id="node3" class="form-control input-sm linkage" data-next="" data-url="">
                             <option value="" selected>区县</option>
                             <?php
-                            foreach ($district as $p) {
-                                if ($businessInfo['districtId'] == $p['areaId']) {
-                                    $selected = ' selected';
-                                } else {
-                                    $selected = ' ';
+                            if(isset($district)){
+                                foreach ($district as $p) {
+                                    if ($businessInfo['districtId'] == $p['id']) {
+                                        $selected = ' selected';
+                                    } else {
+                                        $selected = ' ';
+                                    }
+                                    echo '<option value="' . $p['id'] . '" ' . $selected . '>' . $p['name'] . '</option>';
                                 }
-                                echo '<option value="' . $p['areaId'] . '" ' . $selected . '>' . $p['areaName'] . '</option>';
                             }
                             ?>
                         </select>
@@ -204,9 +208,9 @@
                 </div>
             </div>
             <div class="form-group control-group">
-                <label class="col-sm-2 control-label"><b class="bold red">*</b> 设置密码 :</label>
+                <label class="col-sm-2 control-label">设置密码 :</label>
                 <div class="col-sm-10">
-                    <input type="password" name="password" id="password" value="" class="form-control input-sm" placeholder="密码6位以上" />
+                    <input type="password" name="password" id="password" value="" class="form-control input-sm" placeholder="密码6位以上" autocomplete="off"/>
 
                 </div>
             </div>

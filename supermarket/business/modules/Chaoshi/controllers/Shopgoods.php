@@ -94,9 +94,9 @@ class ShopgoodsController extends Core_Controller_Business {
 
     public function editAction() {
         $this->_layout = true;
-        $priceId = $this->getParam('priceId', 0);
+        $goodsId = $this->getParam('goodsId', 0);
         //获取商品信息
-        $goodsPriceInfo = $this->model->getGoodsPriceInfo($priceId, $this->currentShopId);
+        $goodsPriceInfo = $this->model->getGoodsPriceInfo($goodsId, $this->currentShopId);
         if (!$goodsPriceInfo) {
             $this->redirect("/$this->_ModuleName/$this->_ControllerName/index/shopId/$this->currentShopId");
         }
@@ -104,7 +104,7 @@ class ShopgoodsController extends Core_Controller_Business {
         $post = $this->getPost();
         $rules = $this->model->getRules();
         if ($this->isPost()) {
-            $post['priceId'] = $priceId;
+            $post['goodsId'] = $goodsId;
             $post['shopId'] = $this->currentShopId;
             
             //数据校验
@@ -151,7 +151,7 @@ class ShopgoodsController extends Core_Controller_Business {
         $this->_layout = true;
         $goodsId = $this->getParam('goodsId', 0);
         //获取商品信息
-        $goodsInfo = $this->model->getGoodsPriceInfo($goodsId);
+        $goodsInfo = $this->model->getGoodsPriceInfo($goodsId, $this->currentShopId);
         if (!$goodsInfo) {
             $this->redirect("/$this->_ModuleName/Shopgoods/index/shopId/$this->currentShopId");
         }

@@ -54,7 +54,7 @@ class Chaoshi_ShopModel extends BasicModel{
     public function add($data) {
         $time=time();
         $shopId = $this->uuid_short();
-        $businessId = @$_COOKIE['uid'];
+        $businessId = @$_COOKIE['businessId'];
         if(!$shopId || !$businessId){
             return false;
         }

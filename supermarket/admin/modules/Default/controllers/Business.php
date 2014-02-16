@@ -16,7 +16,7 @@ class BusinessController extends Core_Controller_Admin {
     }
     
     /**
-     * 
+     * 商家列表
      */
     public function indexAction(){
         $this->_layout = true;
@@ -70,17 +70,19 @@ class BusinessController extends Core_Controller_Admin {
                 $this->saveAction($post, 'add');
             }
             
-            $city = $this->areaModel->getAreas($post['provinceId']);
-            $district = $this->areaModel->getAreas($post['cityId']);
+            
+            $city = $this->areaModel->getNodeArea($post['provinceId']);
             $this->getView()->assign("city", $city);
+
+            $district = $this->areaModel->getNodeArea($post['cityId']);
             $this->getView()->assign("district", $district);
         }
         
         //获取省份
-        $province = $this->areaModel->getAreas(0);
-        
-        
+        $province = $this->areaModel->getNodeArea(0);
         $this->getView()->assign("province", $province);
+        
+        
         $this->getView()->assign("rules", json_decode($rules)->validation);
         
     }
@@ -114,13 +116,14 @@ class BusinessController extends Core_Controller_Admin {
             $businessInfo=$post;
         }
         
-        //获取省/市/区县
-        $province = $this->areaModel->getAreas(0);
-        $city = $this->areaModel->getAreas($businessInfo['provinceId']);
-        $district = $this->areaModel->getAreas($businessInfo['cityId']);
-        
+        //获取省份
+        $province = $this->areaModel->getNodeArea(0);
         $this->getView()->assign("province", $province);
+        
+        $city = $this->areaModel->getNodeArea($businessInfo['provinceId']);
         $this->getView()->assign("city", $city);
+        
+        $district = $this->areaModel->getNodeArea($businessInfo['cityId']);
         $this->getView()->assign("district", $district);
         
         $this->getView()->assign("rules", json_decode($rules)->validation);

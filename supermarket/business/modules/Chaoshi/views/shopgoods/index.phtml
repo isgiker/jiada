@@ -110,7 +110,7 @@
                         foreach ($data as $key => $item) {
                             ?>
                             <tr>
-                                <td><a href="<?php echo "/$_ModuleName/$_ControllerName/edit/priceId/$item[priceId]/shopId/$currentShopId";?>"><?php echo $item['goodsName']; ?></a></td>
+                                <td><a href="<?php echo "/$_ModuleName/$_ControllerName/edit/goodsId/$item[goodsId]/shopId/$currentShopId";?>"><?php echo $item['goodsName']; ?></a></td>
                                 <td><?php echo $item['cateName']; ?></td>
                                 <td><?php echo $item['brandName']; ?></td>
                                  <td><?php echo $item['currentPrice']; ?></td>
@@ -133,7 +133,7 @@
                     } else {
                         ?>
                         <tr>
-                            <td colspan="8" class="red">请根据分类或商品名称搜索商品！</td>
+                            <td colspan="8" class="red">当前店铺还没有发布商品！</td>
                         </tr>
                         <?php
                     }

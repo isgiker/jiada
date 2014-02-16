@@ -19,8 +19,7 @@ class IndexController extends Core_Controller_Business {
      */
     public function indexAction(){
         $this->_layout = true;
-        $businessId = @$_COOKIE['uid'];
-        $shops = $this->shopModel->getShops($businessId);
-        $this->getView()->assign('data', $shops);
+        $businessId = @$_COOKIE['businessId'];
+        $this->getView()->assign('data', $this->businessShops);
     }
 }

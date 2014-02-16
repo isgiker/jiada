@@ -67,7 +67,7 @@ class AgroupController extends Core_Controller_Admin {
         }
         
         //获取权限资源文件
-        $resourcConfig = new Yaf_Config_Ini(CONFIG_PATH . DS . 'resourc.ini');
+        $resourcConfig = new Yaf_Config_Ini(CONFIG_PATH . DS . 'resourc'.DS.'admin.ini');
         $this->getView()->assign('resourcConfig', $resourcConfig);
         $this->getView()->assign('treeAgroup', $treeAgroup);
         $this->getView()->assign("rules", json_decode($rules)->validation);
@@ -103,7 +103,7 @@ class AgroupController extends Core_Controller_Admin {
         $treeAgroup = $this->model->getTreeAgroup($agroupInfo['parentId']);
         
         //获取权限资源文件
-        $resourcConfig = new Yaf_Config_Ini(CONFIG_PATH . DS . 'resourc.ini');
+        $resourcConfig = new Yaf_Config_Ini(CONFIG_PATH . DS . 'resourc'.DS.'admin.ini');
         $this->getView()->assign('resourcConfig', $resourcConfig);
         $this->getView()->assign('treeAgroup', $treeAgroup);
         $this->getView()->assign("rules", json_decode($rules)->validation);

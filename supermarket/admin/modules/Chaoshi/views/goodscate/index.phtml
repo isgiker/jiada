@@ -1,15 +1,32 @@
 <!--breadcrumbs-->
 <ul class="breadcrumb" contenteditable="false">
-    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="/Index/index"  title="Go to Home">主页</a> </li>
     <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index" ?>">商品分类管理</a> </li>
     <li class="active">列表</li>
 </ul>
 
 <div class="widget-list">
-    <form name="jform" id="jform" action="" method="post" class="form-horizontal">
+    <form name="jform" id="jform" action="" method="get" class="form-horizontal">
 
         <div class="widget-content">
             <div class="search">
+                <span class="col-sm-2 nopadding">
+                        <select name="cateId" id="nodeCate1" class="form-control input-sm">
+                            <option value="0" selected>所有分类</option>
+                            <?php
+                            if(isset($nodeCate1)){
+                                foreach ($nodeCate1 as $cate) {
+                                    if ($cate['id']==$defaultParentId) {
+                                        $selected = ' selected';
+                                    } else {
+                                        $selected = ' ';
+                                    }
+                                    echo '<option value="' . $cate['id'] . '" ' . $selected . '>' . $cate['name'] . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </span>
                 <span class="col-sm-2 nopadding">
                     <select name="status" class="form-control input-sm">
                         <option value="all" <?php
@@ -51,7 +68,7 @@
             <table class="table table-bordered table-hover table-condensed">
                 <thead>
                     <tr>
-                        <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                        <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" onclick="checkAll(this,'checkIds[]')"/></th>
                         <th>商品分类名称</th>
                         <th>拼音</th>
                         <th>排序</th>
@@ -66,19 +83,21 @@
                             ?>
                             <tr>
                                 <td class="checkids"><input type="checkbox" name="checkIds[]" value="<?php echo $item['cateId']; ?>"/></td>
-                                <td><a href="<?php echo "/$_ModuleName/goodscate/edit/cateId/$item[cateId]"; ?>"><?php echo $item['cateName']; ?></a> <a href="<?php echo "/$_ModuleName/goodscate/add/cateId/$item[cateId]"; ?>" class="red bold">+</a></td>
+                                <td><a href="<?php echo "/$_ModuleName/goodscate/edit/cateId/$item[cateId]?refurl=$_SERVER[REQUEST_URI]"; ?>" title="编辑该分类"><?php echo $item['cateName']; ?></a> <a href="<?php echo "/$_ModuleName/goodscate/add/cateId/$item[cateId]?refurl=$_SERVER[REQUEST_URI]"; ?>" class="red bold" title="在该分类下添加子类">+</a></td>
                                 <td><?php echo $item['pinyin']; ?></td>
                                 <td><?php echo $item['sort']; ?></td>
                                 <td><?php if($item['status']==1){ echo '已公开';}else{ echo '未公开';} ?></td>
                                 <td class="span3">
+                                    【<a href="<?php echo "/$_ModuleName/$_ControllerName/del/cateId/$item[cateId]"; ?>">删除</a>】
                                     <?php
-                                    if($item['parentId']>0 && $item['childNums']){
+                                    if(!$item['childNums']){
                                         ?>
-                                    <a href="<?php echo "/$_ModuleName/goodsbrand/add/cateId/$item[cateId]"; ?>">添加</a>|<a href="<?php echo "/$_ModuleName/goodsbrand/index/cateId/$item[cateId]"; ?>">查看</a>品牌
-                                    <a href="<?php echo "/$_ModuleName/goodsattr/add/cateId/$item[cateId]"; ?>">添加</a>|<a href="<?php echo "/$_ModuleName/goodsattr/index/cateId/$item[cateId]"; ?>">查看</a>商品属性
+                                    【<a href="<?php echo "/$_ModuleName/goodsbrand/add/cateParentId/$item[parentId]/cateTypeId/$item[cateId]"; ?>">添加</a>|<a href="<?php echo "/$_ModuleName/goodsbrand/index/cateParentId/$item[parentId]/cateTypeId/$item[cateId]"; ?>">查看</a>品牌】
+                                    【<a href="<?php echo "/$_ModuleName/goodsattr/add/cateId/$item[parentId]"; ?>">添加</a>|<a href="<?php echo "/$_ModuleName/goodsattr/index/cateId/$item[parentId]"; ?>">查看</a>商品属性】
                                             <?php
                                     }
                                     ?>
+                                    
                                 </td>
                             </tr>
                             <?php

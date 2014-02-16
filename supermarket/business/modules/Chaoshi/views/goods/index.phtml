@@ -12,7 +12,7 @@
                 <!--这是一个通用的无限级联动菜单，主要参数：id data-next data-url；-->
                 <div id="search_content" class="row" style="padding-left: 15px;">
                     <span class="col-sm-2 nopadding">
-                        <select name="cateId" id="nodeCate1" class="form-control input-sm linkage" data-next="#nodeCate2" data-url="/Chaoshi/Goods/nodeGcate/cateId">
+                        <select name="cateId" id="nodeCate1" class="form-control input-sm linkage" data-next="#nodeCate2" data-url="/Chaoshi/Goods/nodeGcate/shopId/<?php echo $currentShopId;?>/cateId">
                             <option value="" selected>--选择分类--</option>
                             <?php
                             if(isset($nodeCate1)){
@@ -29,7 +29,7 @@
                         </select>
                     </span>
                     <span class="col-sm-2 nopadding">
-                        <select name="cateId" id="nodeCate2" class="form-control input-sm linkage" data-next="#nodeCate3" data-url="/Chaoshi/Goods/nodeGcate/cateId" <?php if(isset($nodeCate2)){echo ' style="display: block;"';}else{echo ' style="display: none;"';}?>>
+                        <select name="cateId" id="nodeCate2" class="form-control input-sm linkage" data-next="#nodeCate3" data-url="/Chaoshi/Goods/nodeGcate/shopId/<?php echo $currentShopId;?>/cateId" <?php if(isset($nodeCate2)){echo ' style="display: block;"';}else{echo ' style="display: none;"';}?>>
                             <option value="" selected>--选择分类--</option>
                             <?php
                             if(isset($nodeCate2)){
@@ -46,7 +46,7 @@
                         </select>
                     </span>
                     <span class="col-sm-2 nopadding">
-                        <select name="cateId" id="nodeCate3" class="form-control input-sm linkage" data-next="#catebrands" data-url="/Chaoshi/Goods/gcatebrand/cateId"  <?php if(isset($nodeCate3)){echo ' style="display: block;"';}else{echo ' style="display: none;"';}?>>
+                        <select name="cateId" id="nodeCate3" class="form-control input-sm linkage" data-next="#catebrands" data-url="/Chaoshi/Goods/gcatebrand/shopId/<?php echo $currentShopId;?>/cateId"  <?php if(isset($nodeCate3)){echo ' style="display: block;"';}else{echo ' style="display: none;"';}?>>
                             <option value="" selected>--选择分类--</option>
                             <?php
                             if(isset($nodeCate3)){
@@ -115,11 +115,11 @@
                                 <td>
                                     <?php if($item['priceId']){
                                     ?>
-                                    【<a href="<?php echo "/$_ModuleName/Shopgoods/edit/shopId/$shopId/goodsId/$item[goodsId]";?>">查看商品</a>】
+                                    【<a href="<?php echo "/$_ModuleName/Shopgoods/edit/shopId/$currentShopId/goodsId/$item[goodsId]";?>">查看商品</a>】
                                     <?php
                                     }else{
                                     ?>
-                                    【<a href="<?php echo "/$_ModuleName/$_ControllerName/price/shopId/$shopId/goodsId/$item[goodsId]";?>">发布商品</a>】
+                                    【<a href="<?php echo "/$_ModuleName/$_ControllerName/price/shopId/$currentShopId/goodsId/$item[goodsId]";?>">发布商品</a>】
                                     <?php
                                     }
                                     ?>

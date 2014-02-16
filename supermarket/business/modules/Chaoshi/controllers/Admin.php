@@ -1,17 +1,18 @@
 <?php
 
 /**
- * @name StorehouseController
- * @author Vic
- * @desc 地区控制器
+ * @name AdminController
+ * @author Vic Shiwei
+ * @desc 管理员,每个商家都可以为店铺建立管理员账号
  */
-class StorehouseController extends Core_Controller_Admin {
+class AdminController extends Core_Controller_Business {
     
     protected $model;
 
     public function init() {
         parent::init();
-        $this->model = new Default_StorehouseModel();
+        $this->model = new Chaoshi_AdminModel();
+        $this->agroupModel = new Chaoshi_AgroupModel();
     }
     
     /**
@@ -19,16 +20,34 @@ class StorehouseController extends Core_Controller_Admin {
      */
     public function indexAction(){
         $this->_layout = true;
-        $data = $this->model->getStorehouseList();        
-        $total = (int) $this->model->getStorehouseTotal();
-        
+        $post = $this->getPost();
+        $post['businessId'] = $this->currentBusinessId;
+        if($this->isPost() && $post && $post['jsubmit']){
+            switch ($post['jsubmit']) {
+                case 'search':
+                    
+                    $data = $this->model->getAdminList($post);        
+                    $total = (int) $this->model->getAdminTotal($post);       
+                    //获取用户组
+                    $treeAgroup = $this->agroupModel->getTreeAgroup($post['agroupId']);
+                    break;
+            }
+        }else{
+            $data = $this->model->getAdminList($post);
+            $total = (int) $this->model->getAdminTotal($post);
+            $treeAgroup = $this->agroupModel->getTreeAgroup();
+        }
+
         //显示分页
         $pagination = $this->showPagination($total);
+        
         
         $this->getView()->assign('data', $data);
         $this->getView()->assign('total', $total);
         $this->getView()->assign('pagination', $pagination);
-
+        $this->getView()->assign('post', $post);
+        $this->getView()->assign('treeAgroup', $treeAgroup);
+        $this->getView()->assign('businessShops', $this->businessShops);
     }
 
     
@@ -37,6 +56,7 @@ class StorehouseController extends Core_Controller_Admin {
         $rules = $this->model->getRules();
         $post = $this->getPost();
         if($this->isPost()){
+            $post['businessId']=$this->currentBusinessId;
             $v = new validation(); //数据校验
             $v->validate($rules, $post);
             if (!empty($v->error_message)) {
@@ -47,29 +67,33 @@ class StorehouseController extends Core_Controller_Admin {
                 }
             }else{
                 $this->saveAction($post, 'add');
-            }
-
+            }            
+            $treeAgroup = $this->agroupModel->getTreeAgroup($post['parentId']);
+        }else{
+            $treeAgroup = $this->agroupModel->getTreeAgroup();
         }
-        
-        //获取省份
-        $province = $this->model->getAreas(0);
-        
-        $this->getView()->assign("province", $province);
+
+        $this->getView()->assign('treeAgroup', $treeAgroup);
+        $this->getView()->assign('businessShops', $this->businessShops);
         $this->getView()->assign("rules", json_decode($rules)->validation);
         
     }
     
     public function editAction(){
         $this->_layout = true;
-        $storehouseId = $this->getParam('storehouseId',0);        
-        $storehouseInfo = $this->model->getStorehouseInfo($storehouseId);
-        if(empty($storehouseInfo)){
-            $this->redirect("/$this->_ModuleName/Storehouse/index");
+        $adminId = $this->getParam('adminId',0);
+        $adminInfo = $this->model->getAdminInfo($adminId);
+        if(empty($adminInfo)){
+            $this->redirect("/$this->_ModuleName/Admin/index");
         }
-        $rules = $this->model->getRules();
+        $rules = $this->model->getRules();        
         if($this->isPost()){
             $post = $this->getPost();
-            $post['storehouseId']=$storehouseId;
+            $post['adminId']=$adminId;
+            $post['businessId']=$this->currentBusinessId;
+            if(!trim($post['password'])){
+                unset($post['password']);
+            }
             $v = new validation(); //数据校验
             $v->validate($rules, $post);
             if (!empty($v->error_message)) {
@@ -81,32 +105,21 @@ class StorehouseController extends Core_Controller_Admin {
                 $this->saveAction($post, 'edit');
             }
             
-            $storehouseInfo=$post;
+            $adminInfo=$post;
         }
         
-        //获取省/市/区县
-        $province = $this->model->getAreas(0);
-        $city = $this->model->getAreas($storehouseInfo['provinceId']);
-        $district = $this->model->getAreas($storehouseInfo['cityId']);
+        $treeAgroup = $this->agroupModel->getTreeAgroup($adminInfo['agroupId']);
         
-        $this->getView()->assign("province", $province);
-        $this->getView()->assign("city", $city);
-        $this->getView()->assign("district", $district);
-        
+        $this->getView()->assign('treeAgroup', $treeAgroup);
         $this->getView()->assign("rules", json_decode($rules)->validation);
-        $this->getView()->assign('storehouseInfo', $storehouseInfo);
+        $this->getView()->assign('adminInfo', $adminInfo);
+        $this->getView()->assign('businessShops', $this->businessShops);
     }
     
     public function saveAction($data,$action){
         if(!$data || !$action){
-            if($this->isAjax()){
-                $this->err(null, '参数错误');
-            }else{
-                $this->redirect('/'.$this->getRequest()->getModuleName().'/'.$this->getRequest()->getControllerName().'/'.$action);
-            }
-            
+            $this->redirect('/'.$this->getRequest()->getModuleName().'/'.$this->getRequest()->getControllerName().'/'.$action);
         }
-        //保存数据 begin
         $saveR = $this->model->$action($data);
         if($saveR){
             //保存成功跳转到列表页
@@ -115,26 +128,7 @@ class StorehouseController extends Core_Controller_Admin {
             $this->ok(null, '/'.$this->getRequest()->getModuleName().'/'.$this->getRequest()->getControllerName().'/index', '保存失败！');
         }
     }
-    
-    /**
-     * ajax onchang事件联动获取市、区
-     */
-    public function ajaxAreaAction() {
-        Yaf_Dispatcher::getInstance()->autoRender(FALSE);
-        $areaid = $this->getParam('areaId');
-        if(!$areaid){
-            return false;
-        }
-        $areaList = $this->model->getAreas($areaid);
-//        $areaStr = '';
-//        foreach($areaList as $area){
-//            $areaStr .= '<option value="'.$area['areaId'].'">'.$area['areaName'].'</option>';
-//        }
-//        return $areaStr;
-        $data = json_encode($areaList);
-        echo $data;
-        exit;
-    }
+
     
 
 }

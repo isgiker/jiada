@@ -73,6 +73,26 @@ function custConfrim(obj) {
     })
 }
 
+//商品发布，自动计算价格
+$(document).ready(function() {
+	$('#originalPrice,#discount,#currentPrice').bind('change',function(){
+	var id=this.id;
+	var originalPrice=parseFloat($('#originalPrice').val()),currentPrice=parseFloat($('#currentPrice').val()),discount=parseFloat($('#discount').val());
+	if (!isNaN(originalPrice)){
+		if (isNaN(currentPrice)){
+			$('#currentPrice').val(originalPrice);
+			currentPrice=parseFloat($('#currentPrice').val())			
+		}
+		if(id=="discount"){
+			$('#currentPrice').val(Math.round(originalPrice*discount*100)/100);
+		}
+		else{
+			$('#discount').val(Math.round(currentPrice*100/originalPrice)/100);
+		}
+	}
+	})
+});
+
 /*
  打开弹层窗口
  使用方法<a href="打开页面地址（不能是跨域）" class="dialog" data-title="优先标题">标题</a>

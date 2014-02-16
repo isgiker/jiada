@@ -1,3 +1,16 @@
+<!--系统错误信息-->
 <?php
-echo "Error Msg:"  . $exception->getMessage();
+if (isset($exception)){
+	if (TJ_EVN=="development"){
+		echo "错误信息:"  . $exception->getMessage();
+	}
+	else{
+		echo "<h1>500错误</h1>";
+	}
+	echo '<br/><a href="javascript:window.history.back();">返回</a>';
+}
+else{
+	echo '<script type="text/javascript" src="http://www.qq.com/404/search_children.js" charset="utf-8"></script>';
+}
+
 ?>

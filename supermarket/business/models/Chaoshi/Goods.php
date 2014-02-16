@@ -108,8 +108,8 @@ class Chaoshi_GoodsModel extends BasicModel{
 	 					},
 	 					{
 	 						"name":"regex",
-	 						"value":"/^([0-9]+)[.]([0-9]{1,2})$/",
-	 						"message":"%s%必须为数字格式为：19.88"
+	 						"value":"/^\\\d+(\\\.\\\d{1,2})?$/",
+	 						"message":"%s%必须是整数或小数"
 	 					}
 		  			]	
 				},
@@ -126,8 +126,8 @@ class Chaoshi_GoodsModel extends BasicModel{
 	 					},
 	 					{
 	 						"name":"regex",
-	 						"value":"/^([0-9]+)[.]([0-9]{1,2})$/",
-	 						"message":"%s%必须为数字格式为：19.88"
+	 						"value":"/^\\\d+(\\\.\\\d{1,2})?$/",
+	 						"message":"%s%必须是整数或小数"
 	 					}
 		  			]	
 				},
@@ -144,8 +144,8 @@ class Chaoshi_GoodsModel extends BasicModel{
 	 					},
 	 					{
 	 						"name":"regex",
-	 						"value":"/^([0]?)[.]*([0-9]{0,2})$/",
-	 						"message":"%s%必须为数字格式为：0.85"
+	 						"value":"/^\\\d+(\\\.\\\d{1,2})?$/",
+	 						"message":"%s%必须是整数或小数"
 	 					}
 		  			]	
 				}

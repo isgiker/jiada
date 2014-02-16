@@ -76,6 +76,10 @@ class validation {
                 } else {
                     $getValue = $this->filter_array[$val];
                 }
+                if($value->name!='required' && !$getValue){
+                    //by shiwei 非必填项但是又需要验证数据格式的情况，如果数据是空值则无需验证；
+                    continue;
+                }
                 if (in_array($value->name, $checkType)) {
                     switch ($value->name) {
                         case 'clearxss':

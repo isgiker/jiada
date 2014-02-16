@@ -1,6 +1,6 @@
 <!--breadcrumbs-->
 <ul class="breadcrumb" contenteditable="false">
-    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="/Index/index"  title="Go to Home">主页</a> </li>
     <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index" ?>">商品管理</a> </li>
     <li class="active">列表</li>
 </ul>
@@ -11,29 +11,97 @@
         <span class="submenu pull-right"><button type="submit" name="jsubmit" value="add" class="btn btn-sm btn-info" onclick="location.href = '<?php echo "/$_ModuleName/$_ControllerName/add";?>';">添加商品</button></span>
     </div>
     <div class="widget-content">
-        <form name="jform" id="jform" action="" method="post" class="form-horizontal">
+        <form name="jform" id="jform" action="" method="get" class="form-horizontal">
             <div class="search">
+                <!--这是一个通用的无限级联动菜单，主要参数：id data-next data-url；-->
+                <div id="search_content" class="row" style="padding-left: 15px;">
                 <span class="col-sm-2 nopadding">
-                    <select name="cateId" id="cateId" class="form-control input-sm">
-                        <option value="all" selected>--选择分类--</option>
-                        <?php echo $treeGcate; ?>
-                    </select>
-                </span>
+                        <select name="cateId" id="nodeCate1" class="form-control input-sm linkage" data-next="#nodeCate2" data-url="<?php echo "/$_ModuleName/Goodscate/nodeGcate/cateId";?>">
+                            <option value="" selected>--选择分类--</option>
+                            <?php
+                            if(isset($nodeCate1)){
+                                foreach ($nodeCate1 as $cate) {
+                                    if (in_array($cate['id'], $post_select_cateId)) {
+                                        $selected = ' selected';
+                                    } else {
+                                        $selected = ' ';
+                                    }
+                                    echo '<option value="' . $cate['id'] . '" ' . $selected . '>' . $cate['name'] . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </span>
+                    <span class="col-sm-2 nopadding">
+                        <select name="cateId" id="nodeCate2" class="form-control input-sm linkage" data-next="#nodeCate3" data-url="<?php echo "/$_ModuleName/Goodscate/nodeGcate/cateId";?>" <?php if(isset($nodeCate2)){echo ' style="display: block;"';}else{echo ' style="display: none;"';}?>>
+                            <option value="" selected>--选择分类--</option>
+                            <?php
+                            if(isset($nodeCate2)){
+                                foreach ($nodeCate2 as $cate) {
+                                    if (in_array($cate['id'], $post_select_cateId)) {
+                                        $selected = ' selected';
+                                    } else {
+                                        $selected = ' ';
+                                    }
+                                    echo '<option value="' . $cate['id'] . '" ' . $selected . '>' . $cate['name'] . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </span>
+                    <span class="col-sm-2 nopadding">
+                        <select name="cateId" id="nodeCate3" class="form-control input-sm linkage" data-next="#catebrands" data-url="<?php echo "/$_ModuleName/Goodsbrand/gcatebrand/cateId";?>"  <?php if(isset($nodeCate3)){echo ' style="display: block;"';}else{echo ' style="display: none;"';}?>>
+                            <option value="" selected>--选择分类--</option>
+                            <?php
+                            if(isset($nodeCate3)){
+                                foreach ($nodeCate3 as $cate) {
+                                    if (in_array($cate['id'], $post_select_cateId)) {
+                                        $selected = ' selected';
+                                    } else {
+                                        $selected = ' ';
+                                    }
+                                    echo '<option value="' . $cate['id'] . '" ' . $selected . '>' . $cate['name'] . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </span>
+                    <span class="col-sm-2 nopadding">
+                        <select name="brandId" id="catebrands" class="form-control input-sm linkage" data-next="" data-url=""  <?php if(isset($catebrands)){echo ' style="display: block;"';}else{echo ' style="display: none;"';}?>>
+                            <option value="" selected>--选择品牌--</option>
+                            <?php
+                            if(isset($catebrands)){
+                                foreach ($catebrands as $brand) {
+                                    if ($brand['id']==$request['brandId']) {
+                                        $selected = ' selected';
+                                    } else {
+                                        $selected = ' ';
+                                    }
+                                    echo '<option value="' . $brand['id'] . '" ' . $selected . '>' . $brand['name'] . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </span>
+                    </div>
+                <br />
                 <span class="col-sm-2 nopadding">
                     <select name="onLine" class="form-control input-sm">
-                        <option value="1" <?php if (isset($post['onLine']) && $post['onLine'] == '1') {
+                        <option value="1" <?php if (isset($request['onLine']) && $request['onLine'] == '1') {
                             echo ' selected';
                         } else {
                             echo '';
                         } ?>>已上架</option>
-                        <option value="0" <?php if (isset($post['onLine']) && $post['onLine'] == '0') {
+                        <option value="0" <?php if (isset($request['onLine']) && $request['onLine'] == '0') {
                             echo ' selected';
                         } else {
                             echo '';
                         } ?>>已下架</option>
                     </select>
                 </span>
-
+                <span>
+                <input type="text" name="goodsName" value="<?php if (isset($request['goodsName'])) {echo $request['goodsName'];} ?>" class="input-sm form-control input3" placeholder="商品关键词：有机奶"/>
+                </span>
                 <span>
                     <button type="submit" name="jsubmit" value="search" class="btn btn-default btn-sm" >检索</button>
                 </span>
@@ -44,7 +112,7 @@
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
-                        <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                        <th><input type="checkbox" id="mcheckbox" name="mcheckbox" onclick="checkAll(this,'checkIds[]')"/></th>
                         <th>商品名称</th>
                         <th>商品分类</th>
                         <th>商品品牌</th>
@@ -60,7 +128,7 @@
                         foreach ($data as $key => $item) {
                             ?>
                             <tr>
-                                <td class="checkids"><input type="checkbox" name="checkIds[]" value="<?php echo $item['goodsId']; ?>"/></td>
+                                <td class="checkids"><input type="checkbox" name="checkIds[]" value="<?php echo $item['goodsId']; ?>" /></td>
                                 <td><a href="<?php echo "/$_ModuleName/Goods/edit/goodsId/$item[goodsId]"; ?>"><?php echo $item['goodsName']; ?></a></td>
                                 <td><?php echo $item['cateName']; ?></td>
                                 <td><?php echo $item['brandName']; ?></td>

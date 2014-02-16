@@ -34,8 +34,9 @@
                 if ($packPic) {
                     $packPic = explode(',', $packPic);
                     foreach ($packPic as $pic) {
+                        $picUrl=$fileImg_obj->generateImgUrl(array('imgUrl'=>$pic), $this->imagesConfig);
                         ?>
-                        <div class="col-md-2"><img src="<?php echo 'http://imga1.chihuobao365.com' . $pic ?>" class="img-thumbnail img-responsive" /><br /><a href="<?php echo "/$_ModuleName/Goods/delPackPic/goodsId/$goodsId"; ?>/sign/<?php echo md5($pic); ?>">删除</a></div>
+                        <div class="col-md-2"><img src="<?php echo $picUrl; ?>" class="img-thumbnail img-responsive" /><br /><a href="<?php echo "/$_ModuleName/Goods/delPackPic/goodsId/$goodsId"; ?>/sign/<?php echo md5($pic); ?>">删除</a></div>
 
                         <?php
                     }

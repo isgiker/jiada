@@ -1,0 +1,217 @@
+
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/edit" ?>">商家信息</a> </li>
+    <li class="active">编辑</li>
+</ul>
+
+
+<!--End-breadcrumbs-->
+<div class="widget-box">
+    <div class="widget-title">
+        <h5>Business-info</h5>
+    </div>
+    <div class="widget-content nopadding">
+        <form name="form" id="form" action="" method="post" class="form-horizontal">
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 商家名称 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="title" <?php echo $this->_view->getInputAttrs($rules, 'title') ?> id="title" value="<?php if (isset($businessInfo['title'])) echo $businessInfo['title'] ?>" class="form-control input-sm" placeholder="商家全称" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['title'])) {
+                            $this->_view->showValidateError($error['title']);
+                        }
+                        ?>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 所属行业 :</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">
+                        <?php
+                        if (isset($businessInfo['industryName'])) {
+                            echo $businessInfo['industryName'];
+                        }
+                        ?>
+                       </p>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 所在地区 :</label>
+                <div class="col-sm-10">
+                    <span class="input2">
+                        <select name="provinceId" <?php echo $this->_view->getInputAttrs($rules, 'provinceId') ?> id="node1" class="form-control input-sm linkage" data-next="#node2" data-url="/Area/nodeArea/areaId">
+                            <option value="" selected>省</option>
+                            <?php
+                            foreach ($province as $p) {
+                                if ($businessInfo['provinceId'] == $p['id']) {
+                                    $selected = ' selected';
+                                } else {
+                                    $selected = ' ';
+                                }
+                                echo '<option value="' . $p['id'] . '" ' . $selected . '>' . $p['name'] . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </span>
+                    <span class="input2">
+                        <select name="cityId" <?php echo $this->_view->getInputAttrs($rules, 'cityId') ?>  id="node2" class="form-control input-sm linkage" data-next="#node3" data-url="/Area/nodeArea/areaId">
+                            <option value="" selected>市</option>
+                            <?php
+                            if(isset($city)){
+                                foreach ($city as $p) {
+                                    if ($businessInfo['cityId'] == $p['id']) {
+                                        $selected = ' selected';
+                                    } else {
+                                        $selected = ' ';
+                                    }
+                                    echo '<option value="' . $p['id'] . '" ' . $selected . '>' . $p['name'] . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </span>
+                    <span class="input2">
+                        <select name="districtId" <?php echo $this->_view->getInputAttrs($rules, 'districtId') ?> id="node3" class="form-control input-sm linkage" data-next="" data-url="">
+                            <option value="" selected>区县</option>
+                            <?php
+                            if(isset($district)){
+                                foreach ($district as $p) {
+                                    if ($businessInfo['districtId'] == $p['id']) {
+                                        $selected = ' selected';
+                                    } else {
+                                        $selected = ' ';
+                                    }
+                                    echo '<option value="' . $p['id'] . '" ' . $selected . '>' . $p['name'] . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </span>
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['provinceId'])) {
+                            $this->_view->showValidateError($error['provinceId']);
+                        }
+                        ?>
+                        <?php
+                        if (isset($error['cityId'])) {
+                            $this->_view->showValidateError($error['cityId']);
+                        }
+                        ?>
+                        <?php
+                        if (isset($error['districtId'])) {
+                            $this->_view->showValidateError($error['districtId']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 详细地址 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="address" <?php echo $this->_view->getInputAttrs($rules, 'address') ?> id="address" value="<?php if (isset($businessInfo['address'])) echo $businessInfo['address'] ?>" class="form-control input-sm" placeholder="详细地址" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['address'])) {
+                            $this->_view->showValidateError($error['address']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 联系人 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="contact" <?php echo $this->_view->getInputAttrs($rules, 'contact') ?> id="tel" value="<?php if (isset($businessInfo['contact'])) echo $businessInfo['contact'] ?>" class="form-control input-sm" placeholder="联系人" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['contact'])) {
+                            $this->_view->showValidateError($error['contact']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 联系人手机 :</label>
+                <div class="col-sm-10">
+                    <span class="input2">
+                        <select name="countryCode" id="countryCode" class="form-control  input-sm">
+                            <option value="86" selected>中国【86】</option>
+                            <option value="1" >美国【1】</option>
+                        </select>
+                    </span>
+                    <input type="text" name="mobile" <?php echo $this->_view->getInputAttrs($rules, 'mobile') ?> id="tel" value="<?php if (isset($businessInfo['mobile'])) echo $businessInfo['mobile'] ?>" class="form-control input-sm input4" placeholder="手机号" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['mobile'])) {
+                            $this->_view->showValidateError($error['mobile']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label">联系电话 :</label>
+                <div class="col-sm-10">                    
+                    <input type="text" name="tel"  id="tel" value="<?php if (isset($businessInfo['tel'])) echo $businessInfo['tel'] ?>" class="form-control input-sm" placeholder="010-88888888" />
+
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 登录账号 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="userName" id="userName" <?php echo $this->_view->getInputAttrs($rules, 'userName') ?> value="<?php if (isset($businessInfo['userName'])) echo $businessInfo['userName'] ?>" class="form-control input-sm" placeholder="用户名/邮箱/手机号" />
+                    <?php
+                    if (isset($error['userName'])) {
+                        $this->_view->showValidateError($error['userName']);
+                    }
+                    ?>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 设置密码 :</label>
+                <div class="col-sm-10">
+                    <input type="password" name="password" id="password" value="" class="form-control input-sm" placeholder="密码6位以上" />
+
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label for="status" class="col-sm-2 control-label">状态设置：</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static">
+                        <?php
+                        if (isset($businessInfo['status'])) {
+                            switch ($businessInfo['status']) {
+                                case 1:
+                                    echo '已审核';
+                                    break;
+                                case -1:
+                                    echo '等待审核';
+                                    break;
+                                case -2:
+                                    echo '已关闭';
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+                        ?>
+                       </p>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" name="jsubmit" value="save" class="btn btn-success">保存</button>
+                <button type="reset" name="jsubmit" value="reset" class="btn btn-primary">重置</button>
+            </div>
+        </form>
+    </div>
+</div>

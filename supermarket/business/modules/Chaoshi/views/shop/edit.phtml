@@ -183,11 +183,6 @@
                 <label class="col-sm-2 control-label">营业时间 :</label>
                 <div class="col-sm-10">
                     <input type="text" name="workingTime" id="workingTime" value="<?php if (isset($shopInfo['workingTime'])) echo $shopInfo['workingTime'] ?>" class="form-control input-sm" placeholder="24小时营业|09:00-23:00" />
-                    <?php
-                    if (isset($error['workingTime'])) {
-                        $this->_view->showValidateError($error['workingTime']);
-                    }
-                    ?>
                 </div>
             </div>
             

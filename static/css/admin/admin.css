@@ -1,5 +1,14 @@
 @charset 'utf-8';
-
+body{
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /*font-family: "Microsoft YaHei","微软雅黑","SimSun","宋体";*/
+    background-color: #fff;
+    /*background-image: url(../../img/basic/body-bg.png);*/
+    background-repeat:repeat;
+    background-position: 0 40px;
+    line-height:1.2;
+}
 .hide{
     display: none;
 }
@@ -122,8 +131,8 @@
     padding: 5px 0;
 }
 .form-horizontal .form-group {
-margin-right: 0px;
-margin-left: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
 }
 .form-actions {
     padding: 19px 20px 20px;

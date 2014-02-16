@@ -9,7 +9,7 @@ class Chaoshi_GoodsbrandModel extends BasicModel{
 
     public function __construct() {
         parent::__construct();
-        $this->db = Factory::getDBO('local_jiada_chaoshi');
+        $this->hydb = Factory::getDBO('local_jiada_chaoshi');
     }
 
     public function getGbrandList($cateId = null, $search = array()) {
@@ -17,7 +17,7 @@ class Chaoshi_GoodsbrandModel extends BasicModel{
         if ($cateId) {
             $query .=" and cateId=$cateId";
         }
-        if(isset($search['gcateChildren']) && $search['gcateChildren']){
+        if(isset($search['gcateChildren']) && $search['gcateChildren'] && $search['gcateChildren']!=$cateId){
             $query .=" and FIND_IN_SET($search[gcateChildren],childCateType)";
         }
         if (!isset($search['status']) || !$search['status']) {
@@ -29,8 +29,8 @@ class Chaoshi_GoodsbrandModel extends BasicModel{
         $query .=" order by pinyin asc,brandId desc ";
         $query .=' limit '.$this->getLimitStart().', '.$this->getLimit();
 
-        $this->db->setQuery($query);
-        $rows = $this->db->loadAssocList();
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssocList();
 
         return $rows;
     }
@@ -40,7 +40,7 @@ class Chaoshi_GoodsbrandModel extends BasicModel{
         if ($cateId) {
             $query .=" and cateId=$cateId";
         }
-        if(isset($search['gcateChildren']) && $search['gcateChildren']){
+        if(isset($search['gcateChildren']) && $search['gcateChildren'] && $search['gcateChildren']!=$cateId){
             $query .=" and FIND_IN_SET($search[gcateChildren],childCateType)";
         }
         if (!isset($search['status']) || !$search['status']) {
@@ -49,43 +49,45 @@ class Chaoshi_GoodsbrandModel extends BasicModel{
         }elseif (isset($search['status']) && $search['status'] !='all') {
             $query .=" and status = $search[status]";
         }
-        $query .=" order by pinyin asc,brandId desc ";
 
-        $this->db->setQuery($query);
-        $num = $this->db->loadResult();
+        $this->hydb->setQuery($query);
+        $num = $this->hydb->loadResult();
         return $num;
     }
     
     public function getGcateInfo($cateId){
-        $query = "select cateId,cateName from goods_categary where cateId=$cateId";
-        $this->db->setQuery($query);
-        $rows = $this->db->loadAssoc();
+        $query = "select a.cateId,a.cateName from goods_categary a where a.cateId=$cateId";
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssoc();
         return $rows;
     }
     
     public function getGbrandInfo($brandId){
         $query = "select * from goods_brand where brandId=$brandId";
-        $this->db->setQuery($query);
-        $rows = $this->db->loadAssoc();
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssoc();
         return $rows;
     }
     
     public function childCateType($cateId){
         $query = "select cateId,cateName,parentPath from goods_categary where parentId=$cateId";
-        $this->db->setQuery($query);
-        $rows = $this->db->loadAssocList();
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssocList();
         return $rows;
     }
-    
+ 
     /**
-     * 获取分类下的所有品牌
+     * 获取分类下（该商品类型）的所有品牌
+     * @param int $cateId 分类id
+     * @return array
      */
     public function getCateBrand($cateId){
-        $query = "SELECT * FROM goods_brand where  FIND_IN_SET('$cateId',childCateType)";
-        $query .=" order by pinyin asc,brandId desc ";
+        if(!$cateId) return false;
+        $query = "SELECT a.*,a.brandId as id, a.brandName as name, a.cateId FROM goods_brand a where FIND_IN_SET('$cateId',a.childCateType)";
+        $query .=" order by a.pinyin asc, a.brandId desc ";
 
-        $this->db->setQuery($query);
-        $rows = $this->db->loadAssocList();
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssocList();
         return $rows;
     }
 
@@ -95,7 +97,7 @@ class Chaoshi_GoodsbrandModel extends BasicModel{
             $childCateType = implode(',', $data['childCateType']);
             $query = "replace into goods_brand set brandName='$data[brandName]',pinyin='$data[pinyin]',cateId='$data[cateId]',childCateType='$childCateType',status='$data[status]',createTime='$time';";
 
-            $result = $this->db->query($query);
+            $result = $this->hydb->query($query);
             if ($result == false) {
                 $error = $db->ErrorMsg();
                 die("$error");
@@ -111,7 +113,7 @@ class Chaoshi_GoodsbrandModel extends BasicModel{
             $childCateType = implode(',', $data['childCateType']);
             $query = "update goods_brand set brandName='$data[brandName]',pinyin='$data[pinyin]',cateId='$data[cateId]',childCateType='$childCateType',status='$data[status]' where brandId=$data[brandId];";
 
-            $result = $this->db->query($query);
+            $result = $this->hydb->query($query);
             if ($result == false) {
                 $error = $db->ErrorMsg();
                 die("$error");
@@ -152,26 +154,8 @@ class Chaoshi_GoodsbrandModel extends BasicModel{
 	 					},
 	 					{
 	 						"name":"regex",
-	 						"value":"/^[A-Za-z0-9]{2,}$/",
-	 						"message":"%s%长度为2位以上的字母、数字"
-	 					}
-		  			]	
-				},
-		  		{
-			 		"value":"cateId",
-			  		"label":"商品分类",
-			  		"rules":[
-						{
-	  						"name":"clearxss"
-	  					},
-						{
-	 						"name":"required",
-	 						"message":"%s%为必填项"
-	 					},
-	 					{
-	 						"name":"number",
-	 						"value":"/^[0-9]{1,}$/",
-	 						"message":"%s%长度为1位或以上的数字"
+	 						"value":"/^[a-zA-Z_\\\\s?\\\/?]{2,}$/",
+	 						"message":"%s%长度为2位以上的字母、数字、_、空格的组合"
 	 					}
 		  			]	
 				},

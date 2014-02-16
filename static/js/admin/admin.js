@@ -20,24 +20,73 @@ $("#cateId").change(function() {
     });
 });
 
-/*添加仓库，地区联动功能 begin======================================================================*/
-$("#provinceId").change(function() {
-    var areaId = $(this).val();
-    $.getJSON('/Default/Area/ajaxArea/areaId/'+areaId, function(data) {
-        var items = '<option value="0" selected>市</option>';
-        $.each(data, function(key, val) {
-            items+=('<option value="'+val.areaId+'">'+val.areaName+'</option>');            
-        });
-        $('#cityId').html(items);
-    });
+//自动计算价格
+$(document).ready(function() {
+	$('#originalPrice,#discount,#currentPrice').bind('change',function(){
+	var id=this.id;
+	var originalPrice=parseFloat($('#originalPrice').val()),currentPrice=parseFloat($('#currentPrice').val()),discount=parseFloat($('#discount').val());
+	if (!isNaN(originalPrice)){
+		if (isNaN(currentPrice)){
+			$('#currentPrice').val(originalPrice);
+			currentPrice=parseFloat($('#currentPrice').val())			
+		}
+		if(id=="discount"){
+			$('#currentPrice').val(Math.round(originalPrice*discount*100)/100);
+		}
+		else{
+			$('#discount').val(Math.round(currentPrice*100/originalPrice)/100);
+		}
+	}
+	})
 });
-$("#cityId").change(function() {
-    var areaId = $(this).val();
-    $.getJSON('/Default/Area/ajaxArea/areaId/'+areaId, function(data) {
-        var items = '<option value="0" selected>区县</option>';
-        $.each(data, function(key, val) {
-            items+=('<option value="'+val.areaId+'">'+val.areaName+'</option>');            
+
+/*复选框全选和取消全部 begin======================================================================*/
+function   checkAll(e, itemName)
+{
+    var checkbox = document.getElementsByName(itemName);
+    for (var i = 0; i < checkbox.length; i++)
+        checkbox[i].checked = e.checked;
+} 
+
+/*添加仓库，地区联动功能 begin======================================================================*/
+/**
+ *发布商品：分类节点联动
+ *这是本人写的一个通用的无限极联动菜单
+ */
+$("select.linkage").change(function() {
+    var 
+        cateId = $(this).val(),
+        next = $(this).data('next'),
+        nextObj = next ? $(next) : null;
+    if(next.length==0){
+        return false;
+    }
+    var nextNext = nextObj.data('next'),
+        nextNextObj = nextNext ? $(nextNext) : null;
+        while(nextNextObj && nextNextObj.length){
+            if (nextNextObj && nextNextObj.length) {
+                //根据data-display属性判断是否显示input
+                if(nextNextObj.data('display')==1){
+                    nextNextObj.show();
+                }else{
+                    nextNextObj.hide();
+                }
+                
+                nextNext = nextNextObj.data('next');
+                nextNextObj = nextNext ? $(nextNext) : null;
+            }
+        }
+        //先清空历史条目再追加
+        nextObj.find('option[value!=""]').remove();
+        
+    $.getJSON($(this).data('url')+'/' + cateId, function(data) {
+
+        var items = '';
+        $.each(data, function(key, row) {
+            items += ('<option value="' + row.id + '">' + row.name + '</option>');
         });
-        $('#districtId').html(items);
+        nextObj.show();
+        nextObj.append(items);
+//        $(next).trigger('change');
     });
 });

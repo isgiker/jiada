@@ -1,7 +1,7 @@
 <!--sidebar-menu-->
 <?php
 //根据shopid判断调用商家的左侧菜单还是店铺的左侧菜单
-if (isset($shopId) && $shopId) {
+if (isset($currentShopId) && $currentShopId) {
     $menuName = 'Shop';
 } else {
     $menuName = 'Business';
@@ -12,7 +12,7 @@ include_once CONFIG_PATH . DS . 'business_leftmenu.php';
 ?>
 <div id="sidetree" class="breadcrumb">
     <div id="sidetreecontrol"><a href="?#">折叠</a> | <a href="?#">展开</a></div>
-    <ul id="tree" >                        
+    <ul id="tree" class="list-group">
         
         <?php
             if(isset($leftMenu[$industry_modules][$menuName]) && $leftMenu[$industry_modules][$menuName] && is_array($leftMenu[$industry_modules][$menuName])){

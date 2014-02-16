@@ -1,7 +1,7 @@
 <!--breadcrumbs-->
 <ul class="breadcrumb" contenteditable="false">
-    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
-    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index/cateId/$gcateInfo[cateId]"; ?>">商品品牌管理</a> </li>
+    <li><a href="/Index/index"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index/cateParentId/$gcateInfo[cateId]"; ?>">商品品牌管理</a> </li>
     <li class="active">添加</li>
 </ul>
 
@@ -18,18 +18,7 @@
                 <div class="col-sm-10">
 
                     <input type="text" name="cateName"  value="<?php echo $gcateInfo['cateName']; ?>" class="form-control input-sm" readonly/>
-                    <input type="hidden" name="cateId" <?php echo $this->_view->getInputAttrs($rules, 'cateId') ?> id="cateId" value="<?php if (isset($post['cateId'])) {
-                        echo $post['cateId'];
-                    } else {
-                        echo $gcateInfo['cateId'];
-                    } ?>" class="form-control input-sm"  />
-                    <div class="showmsg">
-                        <?php
-                        if (isset($error['cateId'])) {
-                            $this->_view->showValidateError($error['cateId']);
-                        }
-                        ?>
-                    </div>
+                    
                 </div>
             </div>
             <div class="form-group control-group">
@@ -38,7 +27,7 @@
                     <?php
                     foreach ($childCateType as $key => $v) {
                         ?>
-                        <span><input type="checkbox" name="childCateType[]" <?php echo $this->_view->getInputAttrs($rules, 'childCateType') ?> value="<?php echo $v['cateId']; ?>" <?php if (isset($post['childCateType'])){ if (in_array($v['cateId'], $post['childCateType'])) echo ' checked'; }?>/> <?php echo $v['cateName']; ?></span>
+                        <span><input type="checkbox" name="childCateType[]" <?php echo $this->_view->getInputAttrs($rules, 'childCateType') ?> value="<?php echo $v['cateId']; ?>" <?php if (isset($post['childCateType'])){ if (in_array($v['cateId'], $post['childCateType'])) echo ' checked'; }elseif($cateTypeId==$v['cateId'] && !isset($post['childCateType'])){echo ' checked';}?>/> <?php echo $v['cateName']; ?></span>
                             <?php
                         }
                         ?>

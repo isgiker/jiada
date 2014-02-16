@@ -66,14 +66,14 @@ class Chaoshi_ShopgoodsModel extends BasicModel{
     
     /**
      * 获取商品信息
-     * 这里关联shopId，是防止有人篡改priceId；任何人只能修改自己店铺的商品；
-     * @param type $priceId
+     * 这里关联shopId，是防止有人篡改goodsId；任何人只能修改自己店铺的商品；
+     * @param type $goodsId
      * @param type $shopId
      * @return boolean
      */
-    public function getGoodsPriceInfo($priceId, $shopId){
-        if(!$priceId || !$shopId) return FALSE;
-        $query = "select a.*,b.goodsName,b.recTags,b.packPic,b.cateId,b.brandId,c.cateName,d.brandName from goods_price a,goods b,goods_categary c,goods_brand d  where a.priceId=$priceId and a.shopId=$shopId and a.goodsId=b.goodsId";
+    public function getGoodsPriceInfo($goodsId, $shopId){
+        if(!$goodsId || !$shopId) return FALSE;
+        $query = "select a.*,b.goodsName,b.recTags,b.packPic,b.cateId,b.brandId,c.cateName,d.brandName from goods_price a,goods b,goods_categary c,goods_brand d  where a.goodsId=$goodsId and a.shopId=$shopId and a.goodsId=b.goodsId and b.cateId=c.cateId and b.brandId=d.brandId";
         $this->hydb->setQuery($query);
         $rows = $this->hydb->loadAssoc();
         return $rows;
@@ -154,10 +154,10 @@ class Chaoshi_ShopgoodsModel extends BasicModel{
 
 
     public function edit($data) {
-        if(!$data['priceId'] || !$data['shopId']) return FALSE;
+        if(!$data['goodsId'] || !$data['shopId']) return FALSE;
         $activityStartTime = strtotime($data['activityStartTime']);
         $activityEndTime = strtotime($data['activityEndTime']);
-        $query = "update goods_price set originalPrice='$data[originalPrice]',discount='$data[discount]',currentPrice='$data[currentPrice]',marketPrice='$data[marketPrice]',activityStartTime='$activityStartTime',activityEndTime='$activityEndTime',status='$data[status]' where priceId='$data[priceId]' and shopId='$data[shopId]';";
+        $query = "update goods_price set originalPrice='$data[originalPrice]',discount='$data[discount]',currentPrice='$data[currentPrice]',marketPrice='$data[marketPrice]',activityStartTime='$activityStartTime',activityEndTime='$activityEndTime',status='$data[status]' where goodsId='$data[goodsId]' and shopId='$data[shopId]';";
         $result = $this->hydb->query($query);
         if ($result == false) {
             $error = $this->hydb->ErrorMsg();
@@ -231,8 +231,8 @@ class Chaoshi_ShopgoodsModel extends BasicModel{
 	 					},
 	 					{
 	 						"name":"regex",
-	 						"value":"/^([0-9]+)[.]([0-9]{1,2})$/",
-	 						"message":"%s%必须为数字格式为：19.88"
+	 						"value":"/^\\\d+(\\\.\\\d{1,2})?$/",
+	 						"message":"%s%必须是整数或小数"
 	 					}
 		  			]	
 				},
@@ -249,8 +249,8 @@ class Chaoshi_ShopgoodsModel extends BasicModel{
 	 					},
 	 					{
 	 						"name":"regex",
-	 						"value":"/^([0-9]+)[.]([0-9]{1,2})$/",
-	 						"message":"%s%必须为数字格式为：19.88"
+	 						"value":"/^\\\d+(\\\.\\\d{1,2})?$/",
+	 						"message":"%s%必须是整数或小数"
 	 					}
 		  			]	
 				},
@@ -267,8 +267,8 @@ class Chaoshi_ShopgoodsModel extends BasicModel{
 	 					},
 	 					{
 	 						"name":"regex",
-	 						"value":"/^([0]?)[.]*([0-9]{0,2})$/",
-	 						"message":"%s%必须为数字格式为：0.85"
+	 						"value":"/^\\\d+(\\\.\\\d{1,2})?$/",
+	 						"message":"%s%必须是整数或小数"
 	 					}
 		  			]	
 				}

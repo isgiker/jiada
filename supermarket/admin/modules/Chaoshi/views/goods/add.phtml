@@ -19,10 +19,57 @@
                 <div class="form-group control-group">
                     <label class="col-sm-2 control-label"> <b class="bold red">*</b> 商品分类 :</label>
                     <div class="col-sm-10">
-                        <select name="cateId" id="cateId" <?php echo $this->_view->getInputAttrs($rules, 'cateId') ?> class="input-sm form-control">
+                        <span class="col-sm-2 nopadding">
+                        <select name="cateId" id="nodeCate1" class="form-control input-sm linkage" data-next="#nodeCate2" data-url="<?php echo "/$_ModuleName/Goodscate/nodeGcate/cateId";?>">
                             <option value="" selected>--选择分类--</option>
-                            <?php echo $treeGcate; ?>
+                            <?php
+                            if(isset($nodeCate1)){
+                                foreach ($nodeCate1 as $cate) {
+                                    if (in_array($cate['id'], $post_select_cateId)) {
+                                        $selected = ' selected';
+                                    } else {
+                                        $selected = ' ';
+                                    }
+                                    echo '<option value="' . $cate['id'] . '" ' . $selected . '>' . $cate['name'] . '</option>';
+                                }
+                            }
+                            ?>
                         </select>
+                    </span>
+                    <span class="col-sm-2 nopadding">
+                        <select name="cateId" id="nodeCate2" class="form-control input-sm linkage" data-next="#nodeCate3" data-url="<?php echo "/$_ModuleName/Goodscate/nodeGcate/cateId";?>" data-display="1">
+                            <option value="" selected>--选择分类--</option>
+                            <?php
+                            if(isset($nodeCate2)){
+                                foreach ($nodeCate2 as $cate) {
+                                    if (in_array($cate['id'], $post_select_cateId)) {
+                                        $selected = ' selected';
+                                    } else {
+                                        $selected = ' ';
+                                    }
+                                    echo '<option value="' . $cate['id'] . '" ' . $selected . '>' . $cate['name'] . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </span>
+                    <span class="col-sm-2 nopadding">
+                        <select name="cateId" id="nodeCate3" <?php echo $this->_view->getInputAttrs($rules, 'cateId') ?> class="form-control input-sm linkage" data-next="#catebrands" data-url="<?php echo "/$_ModuleName/Goodsbrand/gcatebrand/cateId";?>" data-display="1">
+                            <option value="" selected>--选择分类--</option>
+                            <?php
+                            if(isset($nodeCate3)){
+                                foreach ($nodeCate3 as $cate) {
+                                    if (in_array($cate['id'], $post_select_cateId)) {
+                                        $selected = ' selected';
+                                    } else {
+                                        $selected = ' ';
+                                    }
+                                    echo '<option value="' . $cate['id'] . '" ' . $selected . '>' . $cate['name'] . '</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </span>
                         <div class="showmsg">
                             <?php
                             if (isset($error['cateId'])) {
@@ -36,17 +83,17 @@
                 <div class="form-group control-group">
                     <label class="col-sm-2 control-label"> <b class="bold red">*</b> 商品品牌 :</label>
                     <div class="col-sm-10">
-                        <select name="brandId" id="brandId" <?php echo $this->_view->getInputAttrs($rules, 'brandId') ?> class="input-sm form-control">                                        
-                            <option value='' selected>--选择品牌--</option>
+                        <select name="brandId" id="catebrands" <?php echo $this->_view->getInputAttrs($rules, 'brandId') ?> class="form-control input-sm linkage" data-next="" data-url="" data-display="1">
+                            <option value="" selected>--选择品牌--</option>
                             <?php
-                            if (isset($brands) && $brands) {
-                                foreach ($brands as $key => $val) {
-                                    if ($brandId == $val['brandId']) {
+                            if(isset($catebrands)){
+                                foreach ($catebrands as $brand) {
+                                    if ($brand['id']==$post['brandId']) {
                                         $selected = ' selected';
                                     } else {
-                                        $selected = '';
+                                        $selected = ' ';
                                     }
-                                    echo "<option value='" . $val[brandId] . "' $selected>" . $val['brandName'] . "</option>";
+                                    echo '<option value="' . $brand['id'] . '" ' . $selected . '>' . $brand['name'] . '</option>';
                                 }
                             }
                             ?>
@@ -65,7 +112,7 @@
                 <div class="form-group control-group">
                     <label class="col-sm-2 control-label"> <b class="bold red">*</b> 商品名称 :</label>
                     <div class="col-sm-10">
-                        <input type="text" name="goodsName" <?php echo $this->_view->getInputAttrs($rules, 'goodsName') ?> id="brandName" value="<?php if (isset($post['goodsName'])) {
+                        <input type="text" name="goodsName" <?php echo $this->_view->getInputAttrs($rules, 'goodsName') ?> id="goodsName" value="<?php if (isset($post['goodsName'])) {
                                 echo $post['goodsName'];
                             } ?>" class="input-sm form-control" placeholder="" />
                         <div class="showmsg">
@@ -79,36 +126,24 @@ if (isset($error['goodsName'])) {
 
                 </div>
                 <div class="form-group control-group">
-                    <label class="col-sm-2 control-label"> <b class="bold red">*</b> 商品价格 :</label>
+                    <label class="col-sm-2 control-label"> 商品价格 :</label>
                     <div class="col-sm-10">
-                        <input type="text" name="originalPrice" <?php echo $this->_view->getInputAttrs($rules, 'originalPrice') ?> id="brandName" value="<?php if (isset($post['originalPrice'])) {
+                        <input type="text" name="originalPrice" id="originalPrice" value="<?php if (isset($post['originalPrice'])) {
                                 echo $post['originalPrice'];
-                            } ?>" class="input-sm form-control input2" placeholder="原价:本店售价" />
-                        <input type="text" name="discount" <?php echo $this->_view->getInputAttrs($rules, 'discount') ?> id="brandName" value="<?php if (isset($post['discount'])) {
+                            } ?>" class="input-sm form-control input2" placeholder="原价:本店售价" disabled/>
+                        <input type="text" name="discount" id="discount" value="<?php if (isset($post['discount'])) {
                                 echo $post['discount'];
-                            } ?>" class="input-sm form-control input2" placeholder="折扣比例:0.85" />
-                        <input type="text" name="currentPrice" <?php echo $this->_view->getInputAttrs($rules, 'currentPrice') ?> id="brandName" value="<?php if (isset($post['currentPrice'])) {
+                            } ?>" class="input-sm form-control input2" placeholder="折扣比例:0.85" disabled/>
+                        <input type="text" name="currentPrice" id="currentPrice" value="<?php if (isset($post['currentPrice'])) {
                                 echo $post['currentPrice'];
-                            } ?>" class="input-sm form-control input2" placeholder="现价:活动促销价格" />
-                        <div class="showmsg">
-<?php
-if (isset($error['originalPrice'])) {
-    $this->_view->showValidateError($error['originalPrice']);
-}
-if (isset($error['discount'])) {
-    $this->_view->showValidateError($error['discount']);
-}
-if (isset($error['currentPrice'])) {
-    $this->_view->showValidateError($error['currentPrice']);
-}
-?>
-                        </div>
+                            } ?>" class="input-sm form-control input2" placeholder="现价:活动促销价格" disabled/>
+
                     </div>                            
                 </div>
                 <div class="form-group control-group">
                     <label class="col-sm-2 control-label">市场价格 :</label>
                     <div class="col-sm-10">
-                        <input type="text" name="marketPrice" id="brandName" value="" class="input-sm form-control input2" placeholder="" />
+                        <input type="text" name="marketPrice" id="marketPrice" value="" class="input-sm form-control input2" placeholder="" />
 
                     </div>                            
                 </div>
@@ -116,10 +151,10 @@ if (isset($error['currentPrice'])) {
                 <div class="form-group control-group">
                     <label class="col-sm-2 control-label">活动促销 :</label>
                     <div class="col-md-10">
-                        <input type="text" name="activityStartTime" id="brandName" data-date="<?php echo date('Y-m-d H:i:s'); ?>" data-date-format="yyyy-mm-dd H:i:s" value="" class="datepicker input-sm form-control input2" placeholder="开始时间" />
+                        <input type="text" name="activityStartTime" id="activityStartTime" value="" class="input-sm form-control input2" placeholder="开始时间" disabled/>
 
-                        <input type="text" name="activityEndTime" id="brandName" value="" class="input-sm form-control input2" placeholder="结束时间" />
-                    </div>                          
+                        <input type="text" name="activityEndTime" id="activityEndTime" value="" class="input-sm form-control input2" placeholder="结束时间" disabled/>
+                    </div>
                 </div>
                 <div class="form-group control-group">
                     <label class="col-sm-2 control-label">推荐标签 :</label>

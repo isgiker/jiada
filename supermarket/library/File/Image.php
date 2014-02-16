@@ -63,51 +63,32 @@ class File_Image {
     }
 
     /**
-     * @abstract 生成图片地址；sizeDesc:large/medium/small 图片大小描述是为了兼容旧版本必须设置的一个值
-     * @param type $imgParameter=array('imgSize'=>'60X60','sizeDesc'=>'small','imgUrl'=>'/800X600/2013/11/15/16/c7/16c7f5bc0450a8e797031b1e727d5925_imga.png');
+     * @abstract 生成图片地址,图片尺寸不是必要参数
+     * @param type $imgParameter=array('imgSize'=>'60X60','imgUrl'=>'/800X600/2013/11/15/16/c7/16c7f5bc0450a8e797031b1e727d5925_imga.png');
      * @param type $imagesConfig=Yaf_Registry::get("imagesConfig");
      * @example $imagesConfig = Yaf_Registry::get("imagesConfig");$fi = new File_Image();fi->generateImgUrl($imgParameter,$imagesConfig);
      * @return string
      */
     public function generateImgUrl($imgParameter, $imagesConfig) {
-        if (!trim($imgParameter['imgSize']) or !trim($imgParameter['imgUrl']) or !trim($imgParameter['sizeDesc'])) {
-            die('Images Size、sizeDesc and Url can not be null!');
+        if (!trim($imgParameter['imgUrl']) || !$imagesConfig) {
+            die('Images Url and imagesConfig can not be null!');
         }
-
-        //因为要兼容第一版的图片路径，所以判断图片地址是新版的还是旧版的。
-        $imgPathPattern = '/(\d{4})\/(\d{2})\/(\d{2})\/(\w{2})\/(\w{2})\//i';
-        $isNew = preg_match($imgPathPattern, $imgParameter['imgUrl']);
-
-        if ($isNew) {
+        if(isset($imgParameter['imgSize']) && $imgParameter['imgSize']){
             //不同图片尺寸的Url地址;
             $imgSizePattern = '/(\d+)X(\d+)/i';
-            $newImgUrl = preg_replace($imgSizePattern, $imgParameter['imgSize'], $imgParameter['imgUrl']);
+            $imgUrl = preg_replace($imgSizePattern, $imgParameter['imgSize'], $imgParameter['imgUrl']);
 
-            //获取图片服务器组名;
-            $tmpName = substr($newImgUrl, strrpos($newImgUrl, '_') + 1);
-            $serverGroupName = pathinfo($tmpName)['filename'];
-
-
-            $imgDomain = $imagesConfig->$serverGroupName->ftp->slave1->domain;
-            $completeImgUrl = 'http://' . $imgDomain . $newImgUrl;
-            return $completeImgUrl;
-        } else {
-            $oldImgUrlArr = explode('|', $imgParameter['imgUrl']);
-            if (count($oldImgUrlArr) == 1) {
-                $completeImgUrl = 'http://' . $imgDomain . $imgParameter['imgUrl'];
-                return $completeImgUrl;
-            }
-            $oldSizeArr = array('large' => 1, 'medium' => 2, 'small' => 3);
-            $imgSize = $oldSizeArr[trim($imgParameter['sizeDesc'])];
-            if ($imgSize) {
-                $imgDomain = $imagesConfig->common->setting->oldimg->domain;
-                $oldImgUrl = $oldImgUrlArr[$imgSize - 1];
-                $completeImgUrl = 'http://' . $imgDomain . $oldImgUrl;
-                return $completeImgUrl;
-            } else {
-                die('The Image path is v1.0!');
-            }
+        }else{
+            $imgUrl = $imgParameter['imgUrl'];
         }
+        
+        //获取图片服务器组名;
+        $tmpName = substr($imgUrl, strrpos($imgUrl, '_') + 1);
+        $serverGroupName = pathinfo($tmpName)['filename'];
+
+        $imgDomain = $imagesConfig->$serverGroupName->ftp->slave1->domain;
+        $completeImgUrl = '//' . $imgDomain . $imgUrl;
+        return $completeImgUrl;
     }
 
     /**

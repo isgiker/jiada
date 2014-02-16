@@ -38,7 +38,7 @@
             <div class="form-group control-group">
                 <label class="col-sm-2 control-label">拼音 :</label>
                 <div class="col-sm-10">
-                    <input type="text" name="pinyin" <?php echo $this->_view->getInputAttrs($rules, 'pinyin') ?> id="pinyin" value="<?php if (isset($gcateInfo['cateName'])) echo $gcateInfo['pinyin'] ?>" class="form-control" placeholder="beijing zhoubian yanjiao" />
+                    <input type="text" name="pinyin" <?php echo $this->_view->getInputAttrs($rules, 'pinyin') ?> id="pinyin" value="<?php if (isset($gcateInfo['pinyin'])) echo $gcateInfo['pinyin'] ?>" class="form-control" placeholder="beijing zhoubian yanjiao" />
                     <div class="showmsg">
                         <?php
                         if (isset($error['pinyin'])) {
@@ -51,7 +51,7 @@
             <div class="form-group control-group">
                 <label class="col-sm-2 control-label">排序 :</label>
                 <div class="col-sm-10">
-                    <input type="text" name="sort" <?php echo $this->_view->getInputAttrs($rules, 'sort') ?> id="sort" value="<?php if (isset($gcateInfo['cateName'])) echo $gcateInfo['sort'] ?>" class="form-control" placeholder="数字0123..." />
+                    <input type="text" name="sort" <?php echo $this->_view->getInputAttrs($rules, 'sort') ?> id="sort" value="<?php if (isset($gcateInfo['sort'])) echo $gcateInfo['sort'] ?>" class="form-control" placeholder="数字0123..." />
                     <div class="showmsg">
                         <?php
                         if (isset($error['sort'])) {

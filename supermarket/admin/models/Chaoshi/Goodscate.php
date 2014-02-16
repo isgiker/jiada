@@ -9,7 +9,7 @@ class Chaoshi_GoodscateModel extends BasicModel{
 
     public function __construct() {
         parent::__construct();
-        $this->db = Factory::getDBO('local_jiada_chaoshi');
+        $this->hydb = Factory::getDBO('local_jiada_chaoshi');
     }
 
     public function getGcateList($search=array(), $parentId = 0, $tag = '') {
@@ -23,8 +23,8 @@ class Chaoshi_GoodscateModel extends BasicModel{
         }      
         $query .=" order by sort asc,cateId desc ";
 
-        $this->db->setQuery($query);
-        $rows = $this->db->loadAssocList();
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssocList();
 
         //递归调用;	
         static $newrows = array();
@@ -33,19 +33,22 @@ class Chaoshi_GoodscateModel extends BasicModel{
             $newrows[] = $item;
             $this->getGcateList($search, $item['cateId'], $tag . "......&nbsp;|&nbsp;");
         }
-        return array_slice($newrows, $this->getLimitStart(), $this->getLimit());
+        $data['data']=array_slice($newrows, $this->getLimitStart(), $this->getLimit());
+        $data['total']=count($newrows);
+        return $data;
     }
     
-    public function getGcateTotal($search=array()){
+    public function getGcateTotal($search=array(), $parentId = 0, $tag = '') {
         $query = "select count(cateId) from goods_categary where 1=1";
+        $query .=" and parentId=$parentId";
         if (!isset($search['status']) || !$search['status']) {
             //默认显示已审核通过的
             $query .=" and status = 1";            
         }elseif (isset($search['status']) && $search['status'] !='all') {
             $query .=" and status = $search[status]";
         }
-        $this->db->setQuery($query);
-        $num = $this->db->loadResult();
+        $this->hydb->setQuery($query);
+        $num = $this->hydb->loadResult();
         return $num;
     }
 
@@ -57,8 +60,8 @@ class Chaoshi_GoodscateModel extends BasicModel{
         $query .=" and parentId=$parentId";
         $query .=" and status = 1";
         $query .=" order by sort asc,pinyin asc,cateId desc ";
-        $this->db->setQuery($query);
-        $rows = $this->db->loadAssocList();
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssocList();
 
 
         $strstr = '';
@@ -79,22 +82,80 @@ class Chaoshi_GoodscateModel extends BasicModel{
     /**
      * 根据分类id获取当前分类及子类
      * @param int $cateId
+     * @param int $self true（包含分类本身）false（只返回子类）
      * @return array
      */
-    public function getGcateChildren($cateId){
+    public function getGcateChildren($cateId, $self=false){
         if(!$cateId){
             return false;
         }
-        $query = "select cateId,cateName,parentId from goods_categary where cateId=$cateId or parentId=$cateId and status = 1";
-        $this->db->setQuery($query);
-        $rows = $this->db->loadAssocList();
+        if($self===true){
+            $query = "select cateId,cateName,parentId from goods_categary where cateId=$cateId or parentId=$cateId and status = 1";
+        }else{
+            $query = "select cateId,cateName,parentId from goods_categary where parentId=$cateId and status = 1";
+        }
+        
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssocList();
         return $rows;
+    }
+    
+    /**
+     *检查该分类下是否有子分类 
+     */
+    public function checkCateChildren($cateId){
+        if(!$cateId){
+            die('商品分类Id不能为空！');
+        }
+        $query = "select count(a.cateId) from goods_categary a where a.parentId='$cateId'";
+        $this->hydb->setQuery($query);
+        $num = $this->hydb->loadResult();
+        return $num;
+    }
+    
+    /**
+     *检查该分类下是否有品牌数据 
+     */
+    public function checkCateBrand($cateId){
+        if(!$cateId){
+            die('商品分类Id不能为空！');
+        }
+        $query = "SELECT count(a.brandId) FROM goods_brand a where a.cateId='$cateId' or FIND_IN_SET('$cateId',a.childCateType)";
+        $this->hydb->setQuery($query);
+        $num = $this->hydb->loadResult();
+        return $num;
+    }
+    
+    /**
+     *检查该分类下是否有属性数据 
+     */
+    public function checkCateAttribute($cateId){
+        if(!$cateId){
+            die('商品分类Id不能为空！');
+        }
+        $query = "SELECT count(a.attrId) FROM goods_attribute a where a.goodsCateId='$cateId'";
+        $this->hydb->setQuery($query);
+        $num = $this->hydb->loadResult();
+        return $num;
+    }
+    
+    /**
+     *检查该分类下是否有商品数据 
+     */
+    public function checkCateGoods($cateId){
+        if(!$cateId){
+            die('商品分类Id不能为空！');
+        }
+        $query = "SELECT count(a.goodsId) FROM goods a where a.cateId in(select cateId from goods_categary where cateId='$cateId' or parentId='$cateId')";
+        $this->hydb->setQuery($query);
+        $num = $this->hydb->loadResult();
+        return $num;
     }
     
     public function getGcateInfo($cateId){
         $query = "select * from goods_categary where cateId=$cateId";
-        $this->db->setQuery($query);
-        $rows = $this->db->loadAssoc();
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssoc();
         return $rows;
     }
 
@@ -106,12 +167,12 @@ class Chaoshi_GoodscateModel extends BasicModel{
         }
         $time=time();
         $sql = "insert goods_categary set cateName='$data[cateName]',pinyin='$data[pinyin]',parentId='$data[parentId]',parentPath='$parentPath',createTime='$time',sort='0',status='$data[status]'";
-        $result = $this->db->query($sql);
+        $result = $this->hydb->query($sql);
         if ($result == false) {
             $error = $db->ErrorMsg();
             die("$error");
         }
-        $cateId = $this->db->insertid();
+        $cateId = $this->hydb->insertid();
         $this->upChildNums($data['parentId']);
         return true;
     }
@@ -127,7 +188,7 @@ class Chaoshi_GoodscateModel extends BasicModel{
             return false;
         }
         $sql = "update goods_categary set cateName='$data[cateName]',pinyin='$data[pinyin]',parentId='$data[parentId]',parentPath='$parentPath',sort='0',status='$data[status]' where cateId=$data[cateId]";
-        $result = $this->db->query($sql);
+        $result = $this->hydb->query($sql);
         if ($result == false) {
             $error = $db->ErrorMsg();
             die("$error");
@@ -136,13 +197,29 @@ class Chaoshi_GoodscateModel extends BasicModel{
         return true;
     }
     
+    /**
+     * 删除分类
+     * @param type $cateId
+     * @return boolean
+     */
+    public function del($cateId){
+        if(!$cateId) return false;
+        //获取该分类信息
+        $cateInfo=$this->getGcateInfo($cateId);
+        if(!$cateInfo) return false;
+        $query = "delete from goods_categary where cateId='$cateId'";
+        $result = $this->hydb->query($query);
+        $this->upChildNums($cateInfo['parentId']);
+        return $result;
+    }
+    
     private function upChildNums($cateId){
         if(!$cateId) return false;
         $query = "select count(cateId) from goods_categary where parentId=$cateId";
-        $this->db->setQuery($query);
-        $num = $this->db->loadResult();
+        $this->hydb->setQuery($query);
+        $num = $this->hydb->loadResult();
         $sql = "update goods_categary set childNums='$num' where cateId=$cateId";
-        $result = $this->db->query($sql);
+        $result = $this->hydb->query($sql);
         if ($result == false) {
             $error = $db->ErrorMsg();
             die("$error");
@@ -152,8 +229,8 @@ class Chaoshi_GoodscateModel extends BasicModel{
     
     private function getParentPath($parentId){
         $query = "select parentId from goods_categary where cateId = $parentId";
-        $this->db->setQuery($query);
-        $newParentId = $this->db->loadResult();
+        $this->hydb->setQuery($query);
+        $newParentId = $this->hydb->loadResult();
         
         static $parentPath = array();
         if($newParentId!=0){
@@ -168,6 +245,20 @@ class Chaoshi_GoodscateModel extends BasicModel{
             $result = $parentId;
         }
         return $result;
+    }
+    
+    /**
+     * 获取分类的子分类;如果$shopGcate有值则只显示店铺的分类数据
+     * @param int $parentId 分类的父级节点id
+     * @param string $shopGcate 店铺的所有分类id，字符串形式逗号分隔;默认为空
+     * @return array
+     */
+    public function getNodeGcate($parentId=0){
+        $query = "select a.cateId as id, a.cateName as name, a.parentPath from goods_categary a where a.parentId=$parentId and a.status=1";
+        $query .=" order by a.sort asc,a.cateId desc ";
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssocList();
+        return $rows;
     }
 
     /**
@@ -200,8 +291,8 @@ class Chaoshi_GoodscateModel extends BasicModel{
 	 					},
 	 					{
 	 						"name":"regex",
-	 						"value":"/^[A-Za-z0-9]{2,}$/",
-	 						"message":"%s%长度为2位以上的字母、数字"
+	 						"value":"/^[a-zA-Z_\\\\s?\\\/?]{2,}$/",
+	 						"message":"%s%长度为2位以上的字母、数字、_、空格的组合"
 	 					}
 		  			]	
 				},
@@ -237,8 +328,8 @@ class Chaoshi_GoodscateModel extends BasicModel{
      */
     public function getCatePathName($cateIds){
         $query = "select cateName from goods_categary where cateId in ($cateIds)";
-        $this->db->setQuery($query);
-        $rows = $this->db->loadAssocList();
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssocList();
         return $rows;
     }
 }

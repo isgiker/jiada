@@ -21,15 +21,7 @@ class UserPlugin extends Yaf_Plugin_Abstract {
     }
 
     public function preDispatch(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {
-        
-    }
-
-    public function postDispatch(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {
-        
-    }
-
-    public function dispatchLoopShutdown(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {
-        if (!$this->isLogin()) {            
+        if (!$this->isLogin()) {
             if($request->module=='Index' && $request->controller == 'Login'){
      
             }else{
@@ -39,17 +31,33 @@ class UserPlugin extends Yaf_Plugin_Abstract {
         }
     }
 
+    public function postDispatch(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {
+        
+    }
+
+    public function dispatchLoopShutdown(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {
+        
+    }
+
     public function isLogin() {
-        if (isset($_COOKIE['uid']) && isset($_COOKIE['_TICKET']) && $_COOKIE['uid'] && $_COOKIE['_TICKET']) {
-            $userId = $_COOKIE['uid'];
+        if (isset($_COOKIE['uid'])&& isset($_COOKIE['acl']) && isset($_COOKIE['_TICKET']) && isset($_COOKIE['_USERINFO'])  && isset($_COOKIE['_UIS']) 
+                && $_COOKIE['uid'] && $_COOKIE['acl'] && $_COOKIE['_TICKET'] && $_COOKIE['_USERINFO'] && $_COOKIE['_UIS']) {
+            
+            //票据结构:商家id|店铺id|用户id|acl权限|浏览器代理信息|用户ip地址|行业拼音|用户socket端口号;
+            $ticketParam=array(
+                'uid'=>@$_COOKIE['uid'],
+                'acl'=>@$_COOKIE['acl']
+            );
             $cookieTicket = $_COOKIE['_TICKET'];
+            $cookieUserInfoSign = $_COOKIE['_UIS'];
 
             //服务端生成ticket
             $loginModel = new LoginModel();
-            $ticket = $loginModel->setTicket($userId);
+            $ticket = $loginModel->setTicket($ticketParam);
+            $uis = $loginModel->getSign($_COOKIE['_USERINFO']);
 
             //服务端和客户端ticket比较
-            if ($ticket === $cookieTicket) {
+            if ($ticket === $cookieTicket && $uis==$cookieUserInfoSign) {
                 return true;
             } else {
                 return false;

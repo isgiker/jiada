@@ -9,6 +9,8 @@ class GoodsController extends Core_Controller_Admin {
 
     protected $model;
     protected $cateModel;
+    protected $imagesConfig;
+
 
     public function init() {
         parent::init();
@@ -16,6 +18,9 @@ class GoodsController extends Core_Controller_Admin {
         //加载商品分类模型
         $this->cateModel = new Chaoshi_GoodscateModel();
         $this->brandModel = new Chaoshi_GoodsbrandModel();
+        
+        //加载配置文件
+        $this->imagesConfig = Yaf_Registry::get("_ImagesConfig");
     }
 
     /**
@@ -23,40 +28,72 @@ class GoodsController extends Core_Controller_Admin {
      */
     public function indexAction() {
         $this->_layout = true;
+        $request = $this->_getRequest();
+        if($request && isset($request['jsubmit']) && $request['jsubmit']){
+             //分类
+            if (isset($request['cateId']) && trim($request['cateId'])) {
+                //获取分类信息
+                $gcateInfo = $this->cateModel->getGcateInfo($request['cateId']);
+                
+                //parentPath的分类id顺序一定不能错：1级节点,2级,3级,...，全站统一就行。
+                $parentPath=array();
+                
+                //记录页面select提交的历史值；
+                $post_select_cateId = array();
+                
+                if($gcateInfo['parentPath']!=0){
+                    $parentPath = explode(',', $gcateInfo['parentPath']);
+                    $post_select_cateId=$parentPath;
+                }
+                //一级分类的parentId为0，手动写入头部;
+                array_unshift($parentPath, '0');
+                
+                //将当前分类id加入post_selecct数组
+                $post_select_cateId[]=$gcateInfo['cateId'];
+                $this->getView()->assign('post_select_cateId', $post_select_cateId);
 
-        $post = $this->getPost();
-        if ($post && $post['jsubmit']) {
-            switch ($post['jsubmit']) {
+                //按照节点路径循环获取当前分类的父级列表
+                foreach($parentPath as $k=>$parentId){
+                    $node=$k+1;
+                    $nodeGcate = $this->cateModel->getNodeGcate($parentId);
+                    $this->getView()->assign('nodeCate'.$node, $nodeGcate);
+                }
+                
+            //品牌
+            $catebrands = $this->brandModel->getCateBrand($request['cateId']);
+            $this->getView()->assign('catebrands', $catebrands);
+            
+            }elseif (isset($request['cateId']) && !trim($request['cateId'])) {
+                //获取一级商品分类
+                $nodeCate1 = $this->cateModel->getNodeGcate(0);
+                $this->getView()->assign('nodeCate1', $nodeCate1);
+            }
+            
+            switch ($request['jsubmit']) {
                 case 'search':
 
-                    $data = $this->model->getGoodsList($post);
-                    $total = (int) $this->model->getGoodsTotal($post);
+                    $data = $this->model->getGoodsList($request);
+                    $total = (int) $this->model->getGoodsTotal($request);
 
                     break;
             }
         } else {
             $data = $this->model->getGoodsList();
             $total = (int) $this->model->getGoodsTotal();
+            
+            //获取一级商品分类
+            $nodeCate1 = $this->cateModel->getNodeGcate(0);
+            $this->getView()->assign('nodeCate1', $nodeCate1);
         }
 
 
         //显示分页
         $pagination = $this->showPagination($total);
-        
-        //获取商品分类
-        if(isset($post['cateId'])){
-            $cateId=$post['cateId'];
-            
-        }else{
-            $cateId='';
-        }
-        $treeGcate = $this->cateModel->getTreeGcate($cateId);
 
         $this->getView()->assign('data', $data);
         $this->getView()->assign('total', $total);
         $this->getView()->assign('pagination', $pagination);
-        $this->getView()->assign('post', $post);
-        $this->getView()->assign('treeGcate', $treeGcate);
+        $this->getView()->assign('request', $request);
     }
 
     /**
@@ -67,6 +104,47 @@ class GoodsController extends Core_Controller_Admin {
         $post = $this->getPost();
         $rules = $this->model->getRules();
         if ($this->isPost()) {
+            //分类联动
+            if (isset($post['cateId']) && trim($post['cateId'])) {
+                //获取分类信息
+                $gcateInfo = $this->cateModel->getGcateInfo($post['cateId']);
+                
+                //parentPath的分类id顺序一定不能错：1级节点,2级,3级,...，全站统一就行。
+                $parentPath=array();
+                
+                //记录页面select提交的历史值；
+                $post_select_cateId = array();
+                
+                if($gcateInfo['parentPath']!=0){
+                    $parentPath = explode(',', $gcateInfo['parentPath']);
+                    $post_select_cateId=$parentPath;
+                }
+                //一级分类的parentId为0，手动写入头部;
+                array_unshift($parentPath, '0');
+                
+                //将当前分类id加入post_selecct数组
+                $post_select_cateId[]=$gcateInfo['cateId'];
+                $this->getView()->assign('post_select_cateId', $post_select_cateId);
+
+                //按照节点路径循环获取当前分类的父级列表
+                foreach($parentPath as $k=>$parentId){
+                    $node=$k+1;
+                    $nodeGcate = $this->cateModel->getNodeGcate($parentId);
+                    $this->getView()->assign('nodeCate'.$node, $nodeGcate);
+                }
+                
+            //品牌
+            $catebrands = $this->brandModel->getCateBrand($post['cateId']);
+            $this->getView()->assign('catebrands', $catebrands);
+            
+            }elseif (isset($post['cateId']) && !trim($post['cateId'])) {
+                //获取一级商品分类
+                $nodeCate1 = $this->cateModel->getNodeGcate(0);
+                $this->getView()->assign('nodeCate1', $nodeCate1);
+            }
+            
+            
+            
             //数据校验
             $v = new validation();
             $v->validate($rules, $post);
@@ -84,19 +162,13 @@ class GoodsController extends Core_Controller_Admin {
                 $this->saveAction($post, 'add');
             }
         }
-        isset($post['cateId'])?$cateId = $post['cateId']:$cateId='';
-        isset($post['brandId'])?$brandId = $post['brandId']:$brandId='';
-        //获取商品分类，根据分类id获取品牌列表
-        $treeGcate = $this->cateModel->getTreeGcate($cateId);
+        
+        //获取一级商品分类
+        $nodeCate1 = $this->cateModel->getNodeGcate(0);
+        $this->getView()->assign('nodeCate1', $nodeCate1);
 
-        if ($cateId) {
-            $brands = $this->brandModel->getCateBrand($cateId);
-            $this->getView()->assign('brands', $brands);
-            $this->getView()->assign('brandId', $brandId);
-        }
 
         //模板变量
-        $this->getView()->assign('treeGcate', $treeGcate);
         $this->getView()->assign("rules", json_decode($rules)->validation);
     }
 
@@ -357,10 +429,15 @@ class GoodsController extends Core_Controller_Admin {
         if (!$goodsInfo) {
             $this->redirect("/$this->_ModuleName/Goods/index");
         }
-
+        
+        $fileImg = new File_Image();
+        
+        
         //模板变量        
         $this->getView()->assign('goodsInfo', $goodsInfo);
         $this->getView()->assign('goodsId', $goodsId);
+        $this->getView()->assign('imagesConfig', $this->imagesConfig);
+        $this->getView()->assign('fileImg_obj', $fileImg);
     }
 
     /**
@@ -368,7 +445,7 @@ class GoodsController extends Core_Controller_Admin {
      */
     public function thumbnail($files, $upResult) {
         //读取图片配置文件
-        $imagesConfig = Yaf_Registry::get("_ImagesConfig");
+        $imagesConfig = $this->imagesConfig;
         //获取缩略图尺寸
         $goodsSize = $imagesConfig->admin->goods->size;
         if ($goodsSize) {
@@ -421,7 +498,7 @@ class GoodsController extends Core_Controller_Admin {
             return $this->returnResult(false, '参数错误,上传至Ftp失败！没有可上传的本地文件。');
         }
         //加载配置文件
-        $imagesConfig = Yaf_Registry::get("_ImagesConfig");
+        $imagesConfig = $this->imagesConfig;
 
         //获取图片服务器组
         $imagesServerGroups = $imagesConfig->common->setting->images->serverGroup;
