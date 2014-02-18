@@ -23,6 +23,7 @@ $leftMenu = array(
             '店铺管理' => array(
                 '店铺首页' => '/Chaoshi/Shop/index/shopId/'.$currentShopId,
                 '店铺信息' => '/Chaoshi/Shop/edit/shopId/'.$currentShopId,
+                '店铺Logo' => '/Chaoshi/Shop/logo/shopId/'.$currentShopId,
                 '店铺设置' => '/Chaoshi/Shop/setup/shopId/'.$currentShopId,
             ),
             '商品管理中心' => array(

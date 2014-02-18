@@ -174,4 +174,51 @@ class ShopController extends Core_Controller_Business {
             
         }
     }
+    
+    /**
+     * 上传店铺Logo
+     * @param type $param
+     */
+    public function logoAction() {
+        $this->_layout = true;
+        //获取当前店铺信息
+        $shopInfo = $this->model->getShopInfo($this->currentShopId);
+        if(empty($shopInfo)){
+            $this->redirect("/$this->_ModuleName/$this->_ControllerName/index");
+        }
+        
+        if($this->isPost()){
+            $this->uploadToFtpAction();
+        }
+        
+        $this->getView()->assign('shopInfo', $shopInfo);
+    }
+    
+    /**
+     * 保存切图至Ftp服务器;
+     */
+    public function uploadToFtpAction(){
+        Yaf_Dispatcher::getInstance()->autoRender(FALSE);
+        if($this->isPost()){
+            //数据校验
+            $post = $this->getPost();
+print_r($post);exit;
+            $targ_w = $targ_h = 150;
+            $jpeg_quality = 100;
+
+            $src = 'demo_files/pool.jpg';
+            $img_r = imagecreatefromjpeg($src);
+            $dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
+
+            imagecopyresampled($dst_r,$img_r,0,0,$post['x'],$post['y'],
+            $targ_w,$targ_h,$post['w'],$post['h']);
+
+            header('Content-type: image/jpeg');
+            imagejpeg($dst_r,null,$jpeg_quality);
+
+            exit;          
+            
+        }
+    }
+    
 }
