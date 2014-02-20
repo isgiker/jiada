@@ -116,6 +116,24 @@ class Chaoshi_ShopModel extends BasicModel{
     }
     
     /**
+     * 更新店铺logo
+     * @param type $shopId
+     */
+    public function upShopLogo($shopLogo, $shopId) {
+        if(!trim($data['shopId'])){
+            return false;
+        }
+        $sql = "update shop_basic set shopLogo='$shopLogo'";
+        $sql .=" where shopId='$shopId'";
+        $result = $this->hydb->query($sql);
+        if ($result == false) {
+            $error = $this->hydb->ErrorMsg();
+            die("$error");
+        }
+        return $result;
+    }
+    
+    /**
      * form 验证规则
      */
     public function getRules() {

@@ -12,13 +12,129 @@
     <div class="widget-content nopadding">
 
         <div class="widget-content nopadding tab-content">
-            <script src="//static.jiada.local/plugin/jcrop/js/jquery.min.js"></script>
-            <script src="//static.jiada.local/plugin/uploadify/jquery.uploadify-3.1.js"></script>
-            <script src="//static.jiada.local/plugin/jcrop/js/jquery.Jcrop.js"></script>
-            <link rel="stylesheet" href="//static.jiada.local/plugin/uploadify/uploadify.css" type="text/css" />
-            <link rel="stylesheet" href="//static.jiada.local/plugin/jcrop/css/jquery.Jcrop.css" type="text/css" />
+            <style type="text/css">
+                #jcropTable{
+                    margin-left: 15px;
+                }
+                .zhanshiqu{
+                    width: 100%;
+                }
+                .zhanshiqu td{
+                    line-height: 42px;
+                }
+                #avatarUpload{
+                    line-height: 30px;
+                    margin-bottom: 0px;
+                }
+                 .zhanshiqu .title{
+                    padding-left: 15px;
+                }
+                span.uploadify-button-text{
+                    padding-top: -20px;
+                }
+               
+            </style>
+            <p></p>
+            <?php
+            if (isset($uploadMsg) && $uploadMsg) {
+                ?>
+                <div class="error red"><?php echo $uploadMsg; ?></div>
+                <?php
+            }
+            ?>
+            <form action="" method="post" onsubmit="return checkCoords();">
 
-            <script type="text/javascript">
+                <table class="zhanshiqu">
+                    <tbody>
+                        <tr class="firstRow">
+                            <td width="120px" valign="top" class="title" style="word-break: break-all;">
+                                <h4>当前图像：</h4>
+                            </td>
+                            <td  valign="top"><img id="avatar" src="" /></td>
+                        </tr>
+                        <tr>
+                            <td valign="top" class="title" style="word-break: break-all;" align="left" rowspan="1" colspan="2">
+                                <input type="text" id="avatarUpload" value="" />
+                                <input type="hidden" id="img" name="img" />
+                                <input type="hidden" id="x" name="x" />
+                                <input type="hidden" id="y" name="y" />
+                                <input type="hidden" id="w" name="w" />
+                                <input type="hidden" id="h" name="h" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td valign="top" class="title"  colspan="2" rowspan="1" style="word-break: break-all;">
+                                <a href="javascript:$('#avatarUpload').uploadify('upload','*')">开始上传</a> |
+                                <a href="javascript:$('#avatarUpload').uploadify('cancel', '*')">取消上传</a>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    <br/>
+                </p>
+                    <table id="jcropTable" style="display:none;">
+                        <thead>
+
+                            <tr>
+                                <td width="620px">
+                                    <h4>原图</h4>
+                                </td>
+                                <td>
+                                    <h4>切图预览</h4>
+                                </td>
+                            </tr></thead>
+                        <tbody>
+                            <tr>
+                                <td valign="top" colspan="1" rowspan="3" style="word-break: break-all;padding-left: 5px;">
+                                    <img src="" id="target" />
+                                </td>
+                                <td valign="top" colspan="1" rowspan="1" style="word-break: break-all;">
+                                    <div style="width:60px;height:60px;overflow:hidden; float:left;"><img class="preview" id="preview" src="" /></div>
+                                   
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td valign="top" colspan="1" rowspan="1" style="word-break: break-all;">
+                                    <div style="width:160px;height:160px;overflow:hidden; float:left;"><img class="preview" id="preview2" src="" /></div>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td valign="top" colspan="1" rowspan="1" style="word-break: break-all; margin: 20px;">
+                                    <p>
+                                        <input type="submit" class="btn btn-large btn-success" value="确定，并上传图片" id="avatar_submit"/>
+                                    </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" style="height: 60px;">
+
+                                </td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                    
+                    
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<script src="//static.jiada.local/plugin/jcrop/js/jquery.js"></script>
+<script src="//static.jiada.local/plugin/uploadify/jquery.uploadify-3.1.js"></script>
+<script src="//static.jiada.local/plugin/jcrop/js/jquery.Jcrop.min.js"></script>
+<link rel="stylesheet" href="//static.jiada.local/plugin/uploadify/uploadify.css" type="text/css" />
+<link rel="stylesheet" href="//static.jiada.local/plugin/jcrop/css/jquery.Jcrop.css" type="text/css" />
+
+<script type="text/javascript">
                 jQuery(function($) {
                     $("#avatarUpload").uploadify({
                         'auto': false,
@@ -26,8 +142,8 @@
                         'uploadLimit': 1,
                         'formData': {'uid': '18'},
                         'buttonText': '请选择图片',
-                        'height': 20,
-                        'width': 120,
+                        'height': 30,
+                        'width': 90,
                         'removeCompleted': false,
                         'swf': 'http://static.jiada.local/plugin/uploadify/uploadify.swf',
                         'uploader': 'http://static.jiada.local/plugin/uploadify/upload.php',
@@ -38,9 +154,25 @@
                             if (msg.result_code == 1) {
                                 $("#img").val(msg.result_des);
                                 $("#target").attr("src", msg.result_des);
-                                $(".preview160").attr("src", msg.result_des);
-                                
+                                $(".preview").attr("src", msg.result_des);
+                                $('#target').Jcrop({
+                                    minSize: [50, 50],
+                                    setSelect: [0, 0, 200, 200],
+                                    onChange: updatePreview,
+                                    onSelect: updatePreview,
+                                    onSelect: updateCoords,
+                                            aspectRatio: 1
+                                },
+                                function() {
+                                    // Use the API to get the real image size
+                                    var bounds = this.getBounds();
+                                    boundx = bounds[0];
+                                    boundy = bounds[1];
+                                    // Store the API in the jcrop_api variable
+                                    jcrop_api = this;
+                                });
                                 $("#jcropTable").show(1000);
+                                $("#avatar_submit").show(1000);
                             } else {
                                 alert('上传失败');
                             }
@@ -54,23 +186,7 @@
                     });
 
                     //头像裁剪
-                    // Create variables (in this scope) to hold the API and image size
                     var jcrop_api, boundx, boundy;
-
-                    $("#target").Jcrop({
-                        onChange: updatePreview, //拖动选择框时的动作
-                        onSelect: updatePreview, //完成选择之后的动作
-                        onSelect: updateCoords,
-                                aspectRatio: 1
-                    }, function() {
-                        // Use the API to get the real image size
-                        var bounds = this.getBounds();
-                        boundx = bounds[0];//img的实际宽度，即width属性的值
-                        boundy = bounds[1];//height属性值
-                        // Store the API in the jcrop_api variable
-                        jcrop_api = this;
-                    });
-
 
                     function updateCoords(c)
                     {
@@ -80,127 +196,38 @@
                         $('#h').val(c.h);
                     }
                     ;
-
                     function checkCoords()
                     {
                         if (parseInt($('#w').val()))
                             return true;
-                        alert('请选择图片上合适的区域.');
+                        alert('请选择图片上合适的区域');
                         return false;
                     }
                     ;
-
-                    function updatePreview(c) {//个人理解参数c为选择框选中区域所代表的对象
+                    function updatePreview(c) {
                         if (parseInt(c.w) > 0) {
-
-                            var rx = 160 / c.w;
-                            var ry = 160 / c.h;
-                            $("#preview160").css({
-                                width: Math.round(rx * boundx) + "px",
-                                height: Math.round(ry * boundy) + "px",
-                                marginLeft: "-" + Math.round(rx * c.x) + "px",
-                                marginTop: "-" + Math.round(ry * c.y) + "px"
-                            });
-
                             var rx = 60 / c.w;
                             var ry = 60 / c.h;
-                            $("#preview60").css({
-                                width: Math.round(rx * boundx) + "px",
-                                height: Math.round(ry * boundy) + "px",
-                                marginLeft: "-" + Math.round(rx * c.x) + "px",
-                                marginTop: "-" + Math.round(ry * c.y) + "px"
+                            $('#preview').css({
+                                width: Math.round(rx * boundx) + 'px',
+                                height: Math.round(ry * boundy) + 'px',
+                                marginLeft: '-' + Math.round(rx * c.x) + 'px',
+                                marginTop: '-' + Math.round(ry * c.y) + 'px'
                             });
                         }
-                        ;
+                        {
+                            var rx = 160 / c.w;
+                            var ry = 160 / c.h;
+                            $('#preview2').css({
+                                width: Math.round(rx * boundx) + 'px',
+                                height: Math.round(ry * boundy) + 'px',
+                                marginLeft: '-' + Math.round(rx * c.x) + 'px',
+                                marginTop: '-' + Math.round(ry * c.y) + 'px'
+                            });
+                        }
                     }
                     ;
+
                 });
 
-            </script>
-            <style type="text/css">
-                #jcropTable{
-                    width: 100%;
-                    margin-top: 20px;
-                }
-                .preview160 {
-                    width: 160px;
-                    height: 160px;
-                    overflow:hidden;
-                }
-                .preview60 {
-                    width: 60px;
-                    height: 60px;
-                    overflow:hidden;
-                }
-                /*Bootstrap与jcrop冲突解决办法*/
-                .jcropBox img {
-                    max-width: none!important;               
-                }
-            </style>
-            <form action="" method="post" onsubmit="return checkCoords();">
-                <div class="row">
-                    <label><span class="label">当前头像：</span></label>
-                    <img id="avatar" src="images/default.gif" />
-                </div>
-                <div class="row">
-                    <label><span class="label">上传图片：</span></label>
-                    <input type="text" id="avatarUpload" value="" />
-                    <input type="hidden" id="img" name="img" />
-                    <input type="hidden" id="x" name="x" />
-                    <input type="hidden" id="y" name="y" />
-                    <input type="hidden" id="w" name="w" />
-                    <input type="hidden" id="h" name="h" />                        
-                    <div style="padding-top:-10px;">
-                        <a href="javascript:$('#avatarUpload').uploadify('upload','*')">开始上传</a> |
-                        <a href="javascript:$('#avatarUpload').uploadify('cancel', '*')">取消上传</a>
-                    </div>
-                </div>
-                <table id="jcropTable" style="display:none;">
-                    <thead>
-                        <tr>
-                            <td width="620px">
-                                <h4>原图</h4>
-                            </td>
-                            <td colspan="2">
-                                <h4>切图预览</h4>
-                            </td>
-                        </tr></thead>
-                    <tbody>
-                        <tr>
-                            <td valign="top" colspan="1" rowspan="2" style="word-break: break-all;">
-                                <img id="target" src="" />
-
-                            </td>
-                            <td valign="top" colspan="1" rowspan="1" style="word-break: break-all;">
-                                <div  class="preview60 jcropBox"><img id="preview60"  src="//static.jiada.local/plugin/jcrop/img/default.jpg"></div>
-                                <br />
-                                <div  class="preview160 jcropBox"><img id="preview160"  src="//static.jiada.local/plugin/jcrop/img/default.jpg"></div>
-                                <br /><br /><br /><br />
-                                <p>
-                                    <input type="submit" value="确定，并上传图片" class="btn btn-large btn-success" />
-                                </p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td valign="top" colspan="1" rowspan="1" style="word-break: break-all;">
-
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="4">
-
-
-
-                            </td>
-                        </tr>
-
-                    </tfoot>
-
-                </table>
-            </form>
-        </div>
-
-    </div>
-</div>
+</script>

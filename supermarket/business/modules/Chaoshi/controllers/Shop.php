@@ -8,11 +8,15 @@
 class ShopController extends Core_Controller_Business {
     
     protected $model;
+    protected $imagesConfig;
 
     public function init() {
         parent::init();
         $this->model = new Chaoshi_ShopModel();
         $this->areaModel = new AreaModel();
+        
+        //加载配置文件
+        $this->imagesConfig = Yaf_Registry::get("_ImagesConfig");
     }
     
     /**
@@ -181,42 +185,125 @@ class ShopController extends Core_Controller_Business {
      */
     public function logoAction() {
         $this->_layout = true;
-        //获取当前店铺信息
-        $shopInfo = $this->model->getShopInfo($this->currentShopId);
-        if(empty($shopInfo)){
-            $this->redirect("/$this->_ModuleName/$this->_ControllerName/index");
-        }
+//        //获取当前店铺信息
+//        $shopInfo = $this->model->getShopInfo($this->currentShopId);
+//        if(empty($shopInfo)){
+//            $this->redirect("/$this->_ModuleName/$this->_ControllerName/index");
+//        }
         
         if($this->isPost()){
-            $this->uploadToFtpAction();
+            $r=$this->uploadToFtpAction();
+            $this->getView()->assign('uploadMsg', $r['message']);
         }
         
-        $this->getView()->assign('shopInfo', $shopInfo);
+//        $this->getView()->assign('shopInfo', $shopInfo);
     }
     
     /**
-     * 保存切图至Ftp服务器;
+     * 单个文件上传，保存切图至Ftp服务器;
      */
     public function uploadToFtpAction(){
         Yaf_Dispatcher::getInstance()->autoRender(FALSE);
         if($this->isPost()){
-            //数据校验
+            //对提交数据校验
             $post = $this->getPost();
-print_r($post);exit;
-            $targ_w = $targ_h = 150;
-            $jpeg_quality = 100;
+            if(!trim($post['img'])){
+                return $this->returnResult(false, '提交数据没有检查到上传源文件！');
+            }
+            
+            //读取图片配置文件
+            $imagesConfig = $this->imagesConfig;
+            
+            //获取缩略图尺寸
+            $logoSize = $imagesConfig->admin->goods->size;
+            if ($logoSize) {
+                $logoSize = explode(',', $logoSize);
+            } else {
+                return $this->returnResult(false, '缩略图大小尺寸未定义！');
+            }
+            
+            //获取图片服务器组
+            $imagesServerGroups = $imagesConfig->common->setting->images->serverGroup;
 
-            $src = 'demo_files/pool.jpg';
-            $img_r = imagecreatefromjpeg($src);
-            $dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
+            $fi = new File_Image();
+            //设置此次上传到哪个ftp组;
+            $servGroup = $fi->getImageServerGroup($imagesServerGroups);
 
-            imagecopyresampled($dst_r,$img_r,0,0,$post['x'],$post['y'],
-            $targ_w,$targ_h,$post['w'],$post['h']);
+            //根据ftp组，获取组的服务器配置信息
+            $hostname = $imagesConfig->$servGroup->ftp->master->host;
+            $username = $imagesConfig->$servGroup->ftp->master->username;
+            $password = $imagesConfig->$servGroup->ftp->master->password;
+            $port = $imagesConfig->$servGroup->ftp->master->port;
 
-            header('Content-type: image/jpeg');
-            imagejpeg($dst_r,null,$jpeg_quality);
+            //连接ftp服务器
+            $config = array('hostname' => $hostname, 'username' => $username, 'password' => $password, 'port' => $port);
+            $ftp = new File_Ftp();
+            if (!$ftp->connect($config)) {
+                return $this->returnResult(false, '连接ftp服务器失败！');
+            }
+        
+            //文件扩展名
+            $fileSuffix = pathinfo($post['img'], PATHINFO_EXTENSION);
+            //文件类型
+            $finfo    = finfo_open(FILEINFO_MIME_TYPE);
+            $fileType = finfo_file($finfo, $img);
+            finfo_close($finfo);
+            //设置文件保存的目标路径,可修改;
+            $localDestPath = rtrim($_SERVER['DOCUMENT_ROOT'] . '/temp/' . date("Y") . '/' . date("m"), '/');
+            $fileName = date("YmdHis") . rand(100, 999);
+            
+            //开始上传文件
+            foreach ($logoSize as $key=>$size) {
+                //验证格式是否正确
+                $imgSizePattern = '/(\d+)X(\d+)/';
+                $isRight = preg_match($imgSizePattern, $size);
+                if (!$isRight) {
+                    return $this->returnResult(false, '缩略图大小尺寸格式配置错误！正确格式如：60X60！');
+                }
+                $sizeArr = explode('X', $size);
+                
+                //组合目标文件
+                $localDestFile = $localDestPath . '/' . $fileName. '_' . $size . ".$fileSuffix";
+                
+                //对提交的切图数据进行处理，根据缩略图尺寸生成相应图片
+                $targ_w = $sizeArr[0];
+                $targ_h = $sizeArr[1];
+                $jpeg_quality = 100;
+                $img_r = imagecreatefromjpeg($post['img']);
+                $dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
 
-            exit;          
+                imagecopyresampled($dst_r,$img_r,0,0,$post['x'],$post['y'],$targ_w,$targ_h,$post['w'],$post['h']);
+
+    //            header('Content-type: image/jpeg');
+                //将生成的图片保存到$localDestFile                
+                if ($fileType == 'image/jpeg' || $fileType == 'image/pjpeg') {
+                    imagejpeg($dst_r,$localDestFile,$jpeg_quality);
+                }
+                if ($fileType == 'image/gif') {
+                    imagegif($dst_r,$localDestFile,$jpeg_quality);
+                }
+                if ($fileType == 'image/png') {
+                    imagepng($dst_r,$localDestFile,$jpeg_quality);
+                }
+                
+                //开始将文件上传至ftp服务器；
+                //获取ftp上的文件路径
+                $ftpFile = $fi->getImagePath($size, $fileSuffix, $servGroup);
+                $ftp->createFolder($ftpFile['filePath']);
+                $remoteFilePath = $ftpFile['filePath'] . '/' . $ftpFile['fileName'];
+                $r = $ftp->upload($localDestFile, $remoteFilePath, $mode = 'auto', 777);
+                if ($r) {
+                    //更新店铺logo图片,一个文件有多个缩略图，但是每个源文件只更新一个缩略图路径到数据库
+                    if ($key==0) {
+                        if (!$this->model->upShopLogo($remoteFilePath, $this->currentShopId)) {
+                            return $this->returnResult(false, '上传至ftp成功，数据更新失败！');
+                        }
+                    }
+                } else {
+                    //上传失败，删除本地相关的源图片和缩略图
+                    return $this->returnResult(false, '上传至ftp失败！');
+                }
+            }
             
         }
     }
