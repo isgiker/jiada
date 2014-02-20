@@ -405,7 +405,6 @@ class GoodsController extends Core_Controller_Admin {
         }
         if ($this->isPost()) {
             //
-
             $upResult = new File_ImageUpload('files');
             if ($upResult->uploadFile()) {
 
@@ -460,6 +459,9 @@ class GoodsController extends Core_Controller_Admin {
             $toFtpFiles = array();
             foreach ($files as $f) {
                 $fInfo = pathinfo($f);
+                //记录文件的后缀，上传ftp的时候减少多个缩略图重复计算
+                $toFtpFiles[$fInfo['filename']]['extension']=$fInfo['extension'];
+                
                 foreach ($goodsSize as $size) {
                     //验证格式是否正确
                     $imgSizePattern = '/(\d+)X(\d+)/';
@@ -522,16 +524,17 @@ class GoodsController extends Core_Controller_Admin {
 
         foreach ($localFiles as $key => $lf) {
             $fileName = '';
+            //获取ftp上的文件路径
+            $imgParameter=array('imgType'=>$lf['extension'],'imgServer'=>$servGroup);
+            $ftpFile = $fi->getImagePath($imgParameter);
+            $ftp->createFolder($ftpFile['filePath']);
+            //循环上传该文件的缩略图至FTP
             foreach ($lf as $size => $lfPath) {
-
-                //文件扩展名
-                $fileType = pathinfo($lfPath, PATHINFO_EXTENSION);
-
-                //获取ftp上的文件路径
-                $ftpFile = $fi->getImagePath($size, $fileType, $servGroup);
-                $ftp->createFolder($ftpFile['filePath']);
-                $remoteFilePath = $ftpFile['filePath'] . '/' . $ftpFile['fileName'];
-                $r = $ftp->upload($lfPath, $remoteFilePath, $mode = 'auto', $permissions = 777);
+                if($size=='extension'){
+                    continue;                    
+                }
+                $remoteFilePath = $ftpFile['filePath'] . '/' .$size.'_'.$ftpFile['fileName'];               
+                $r = $ftp->upload($lfPath, $remoteFilePath, $mode = 'auto', 777);
                 if ($r) {
                     //更新产品包装图片,一个文件有多个缩略图，但是每个源文件只更新一个缩略图路径到数据库
                     if ($fileName != $key) {

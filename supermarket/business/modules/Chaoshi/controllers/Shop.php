@@ -185,27 +185,33 @@ class ShopController extends Core_Controller_Business {
      */
     public function logoAction() {
         $this->_layout = true;
-//        //获取当前店铺信息
-//        $shopInfo = $this->model->getShopInfo($this->currentShopId);
-//        if(empty($shopInfo)){
-//            $this->redirect("/$this->_ModuleName/$this->_ControllerName/index");
-//        }
         
         if($this->isPost()){
             $r=$this->uploadToFtpAction();
+            
             $this->getView()->assign('uploadMsg', $r['message']);
         }
-        
-//        $this->getView()->assign('shopInfo', $shopInfo);
+        //获取当前店铺信息
+        $shopInfo = $this->model->getShopInfo($this->currentShopId);
+        if(empty($shopInfo)){
+            $this->redirect("/$this->_ModuleName/$this->_ControllerName/index");
+        }
+        $fileImg = new File_Image();
+        if($shopInfo['shopLogo']){
+            $shopLogoUrl=$fileImg->generateImgUrl(array('imgUrl'=>$shopInfo['shopLogo']), $this->imagesConfig);
+        }else{
+            $shopLogoUrl='';
+        }
+        $this->getView()->assign('shopLogoUrl', $shopLogoUrl);
+
     }
     
     /**
      * 单个文件上传，保存切图至Ftp服务器;
      */
     public function uploadToFtpAction(){
-        Yaf_Dispatcher::getInstance()->autoRender(FALSE);
         if($this->isPost()){
-            //对提交数据校验
+            //对提交数据校验(图片链接不要简写如：//....jpg)
             $post = $this->getPost();
             if(!trim($post['img'])){
                 return $this->returnResult(false, '提交数据没有检查到上传源文件！');
@@ -215,7 +221,7 @@ class ShopController extends Core_Controller_Business {
             $imagesConfig = $this->imagesConfig;
             
             //获取缩略图尺寸
-            $logoSize = $imagesConfig->admin->goods->size;
+            $logoSize = $imagesConfig->business->shoplogo->size;
             if ($logoSize) {
                 $logoSize = explode(',', $logoSize);
             } else {
@@ -244,13 +250,18 @@ class ShopController extends Core_Controller_Business {
         
             //文件扩展名
             $fileSuffix = pathinfo($post['img'], PATHINFO_EXTENSION);
-            //文件类型
-            $finfo    = finfo_open(FILEINFO_MIME_TYPE);
-            $fileType = finfo_file($finfo, $img);
-            finfo_close($finfo);
+            //获取远程文件类型
+            $fileHeaders=get_headers($post['img'], 1);
+            $fileType=$fileHeaders['Content-Type'];
+            
             //设置文件保存的目标路径,可修改;
             $localDestPath = rtrim($_SERVER['DOCUMENT_ROOT'] . '/temp/' . date("Y") . '/' . date("m"), '/');
+            Util::mkdir_r($localDestPath);
             $fileName = date("YmdHis") . rand(100, 999);
+            //获取ftp上的文件路径
+            $imgParameter=array('imgType'=>$fileSuffix,'imgServer'=>$servGroup);
+            $ftpFile = $fi->getImagePath($imgParameter);
+            $ftp->createFolder($ftpFile['filePath']);
             
             //开始上传文件
             foreach ($logoSize as $key=>$size) {
@@ -270,9 +281,9 @@ class ShopController extends Core_Controller_Business {
                 $targ_h = $sizeArr[1];
                 $jpeg_quality = 100;
                 $img_r = imagecreatefromjpeg($post['img']);
-                $dst_r = ImageCreateTrueColor( $targ_w, $targ_h );
+                $dst_r = ImageCreateTrueColor( $targ_w, $targ_h);
 
-                imagecopyresampled($dst_r,$img_r,0,0,$post['x'],$post['y'],$targ_w,$targ_h,$post['w'],$post['h']);
+                @imagecopyresampled($dst_r,$img_r,0,0,$post['x'],$post['y'],$targ_w,$targ_h,$post['w'],$post['h']);
 
     //            header('Content-type: image/jpeg');
                 //将生成的图片保存到$localDestFile                
@@ -286,11 +297,8 @@ class ShopController extends Core_Controller_Business {
                     imagepng($dst_r,$localDestFile,$jpeg_quality);
                 }
                 
-                //开始将文件上传至ftp服务器；
-                //获取ftp上的文件路径
-                $ftpFile = $fi->getImagePath($size, $fileSuffix, $servGroup);
-                $ftp->createFolder($ftpFile['filePath']);
-                $remoteFilePath = $ftpFile['filePath'] . '/' . $ftpFile['fileName'];
+                //开始将文件上传至ftp服务器；                
+                $remoteFilePath = $ftpFile['filePath'] . '/' . $size.'_'.$ftpFile['fileName'];
                 $r = $ftp->upload($localDestFile, $remoteFilePath, $mode = 'auto', 777);
                 if ($r) {
                     //更新店铺logo图片,一个文件有多个缩略图，但是每个源文件只更新一个缩略图路径到数据库
@@ -299,13 +307,16 @@ class ShopController extends Core_Controller_Business {
                             return $this->returnResult(false, '上传至ftp成功，数据更新失败！');
                         }
                     }
+                    //删除本地图片文件
+                    @unlink($localDestFile);
                 } else {
                     //上传失败，删除本地相关的源图片和缩略图
                     return $this->returnResult(false, '上传至ftp失败！');
                 }
             }
-            
+            return $this->returnResult(true, '上传至ftp成功！');
         }
+        return $this->returnResult(false, '不是正确的提交方式！');
     }
     
 }

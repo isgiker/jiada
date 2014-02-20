@@ -120,7 +120,7 @@ class Chaoshi_ShopModel extends BasicModel{
      * @param type $shopId
      */
     public function upShopLogo($shopLogo, $shopId) {
-        if(!trim($data['shopId'])){
+        if(!trim($shopId)){
             return false;
         }
         $sql = "update shop_basic set shopLogo='$shopLogo'";

@@ -55,6 +55,13 @@ class Util {
 
         return $file_contents;
     }
+    
+    /**
+     * 递归创建多级目录;
+     */
+    static public function mkdir_r($path, $mode = 0755) {
+        return is_dir($path) || ( self::mkdir_r(dirname($path), $mode) && @mkdir($path, $mode) );
+    }
 
 }
 

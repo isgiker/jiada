@@ -38,7 +38,10 @@
             <?php
             if (isset($uploadMsg) && $uploadMsg) {
                 ?>
-                <div class="error red"><?php echo $uploadMsg; ?></div>
+                <div class="alert alert-warning alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>提示!</strong> <?php echo $uploadMsg; ?>
+                </div>
                 <?php
             }
             ?>
@@ -50,7 +53,16 @@
                             <td width="120px" valign="top" class="title" style="word-break: break-all;">
                                 <h4>当前图像：</h4>
                             </td>
-                            <td  valign="top"><img id="avatar" src="" /></td>
+                            <td  valign="top">
+                                <?php
+                                    if(!$shopLogoUrl){
+                                        echo '还未上传店铺Logo!';
+                                    }else{
+                                        echo '<img id="avatar" src="'.$shopLogoUrl.'" />';
+                                    }
+                                ?>
+                                
+                            </td>
                         </tr>
                         <tr>
                             <td valign="top" class="title" style="word-break: break-all;" align="left" rowspan="1" colspan="2">

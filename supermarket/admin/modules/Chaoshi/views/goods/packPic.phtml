@@ -24,7 +24,10 @@
             <?php
             if (isset($uploadMsg) && $uploadMsg) {
                 ?>
-                <div class="error red"><?php echo $uploadMsg; ?></div>
+                <div class="alert alert-warning alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>提示!</strong> <?php echo $uploadMsg; ?>
+                </div>
                 <?php
             }
             ?>
@@ -34,6 +37,9 @@
                 if ($packPic) {
                     $packPic = explode(',', $packPic);
                     foreach ($packPic as $pic) {
+                        if(!$pic){
+                            continue;
+                        }
                         $picUrl=$fileImg_obj->generateImgUrl(array('imgUrl'=>$pic), $this->imagesConfig);
                         ?>
                         <div class="col-md-2"><img src="<?php echo $picUrl; ?>" class="img-thumbnail img-responsive" /><br /><a href="<?php echo "/$_ModuleName/Goods/delPackPic/goodsId/$goodsId"; ?>/sign/<?php echo md5($pic); ?>">删除</a></div>

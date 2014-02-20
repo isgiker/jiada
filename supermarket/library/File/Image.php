@@ -24,20 +24,24 @@ class File_Image {
         return $fileName;
     }
 
-    public function getImagePath($imageSize, $imgType, $imgServer) {
-        if (!$imageSize) {
-            die('Images size parameter can not be null！');
+    /**
+     * 生成FTP服务器上的图片路径（不需要图片尺寸）
+     * @param array $imgParameter=array('imgType'=>'png','imgServer'=>'imga');
+     * @return array
+     */
+    public function getImagePath($imgParameter) {
+        if (!$imgParameter['imgType'] || !$imgParameter['imgServer']) {
+            die('imgType and imgServer parameter can not be null！');
         }
 
         $year = date("Y");
         $month = date("m");
         $day = date("d");
-        $fileName = $this->getImageName($imgType, $imgServer);
+        $fileName = $this->getImageName($imgParameter['imgType'], $imgParameter['imgServer']);
         $hashDir1 = substr($fileName, 0, 2);
         $hashDir2 = substr($fileName, 2, 2);
 
-
-        $imagePath = '/' . $imageSize . '/' . $year . '/' . $month . '/' . $day . '/' . $hashDir1 . '/' . $hashDir2;
+        $imagePath = '/' . $year . '/' . $month . '/' . $day . '/' . $hashDir1 . '/' . $hashDir2;
         $path = array(
             'filePath' => $imagePath,
             'fileName' => $fileName
@@ -91,31 +95,6 @@ class File_Image {
         return $completeImgUrl;
     }
 
-    /**
-     * @abstract 根据图片尺寸生成图片路径；
-     * @param type $imgParameter=array('imgSize'=>array('60X60','200X200'),'imgUrl'=>'/800X600/2013/11/15/16/c7/16c7f5bc0450a8e797031b1e727d5925_imga.png');
-     * @example $imagesConfig = Yaf_Registry::get("imagesConfig");$fi = new File_Image();fi->generateImgUrl($imgParameter);
-     * @return string or array
-     */
-    public function getImgSizeUrl($imgParameter) {
-        if (!$imgParameter['imgSize'] or !trim($imgParameter['imgUrl'])) {
-            die('Images Size and Url can not be null!');
-        }
-
-        //不同图片尺寸的Url地址;
-        $imgSizePattern = '/(\d+)X(\d+)/i';
-        if(is_array($imgParameter['imgSize'])){
-            $newImgUrl = array();
-            foreach($imgParameter['imgSize'] as $size){
-                $newImgUrl[$size] = preg_replace($imgSizePattern, $imgParameter['imgSize'], $imgParameter['imgUrl']);
-            }
-            return $newImgUrl;            
-        }else{
-            $newImgUrl = preg_replace($imgSizePattern, $imgParameter['imgSize'], $imgParameter['imgUrl']);
-            return $newImgUrl;
-        }
-        
-    }
     
     /**
      * 生成缩略图

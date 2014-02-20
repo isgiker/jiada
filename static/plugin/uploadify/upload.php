@@ -75,7 +75,7 @@ if (!empty($_FILES)) {
         $img = 'uploads/'.$new_file_name;
         resize($img);
         $ret['result_code'] = 1;
-        $ret['result_des'] = '//'.$domain_static.'/plugin/uploadify/'.$img;
+        $ret['result_des'] = 'http://'.$domain_static.'/plugin/uploadify/'.$img;
     }
 } else {
     $ret['result_code'] = 100;
