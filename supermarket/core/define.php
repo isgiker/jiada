@@ -1,16 +1,22 @@
 <?php
 $host = $_SERVER['HTTP_HOST'];
-$hostArr = ['admin', 'business','www'];
-$modules = ['admin' => 'Index,Default,Chaoshi,Demo', 'business' => 'Index,Default,Chaoshi','www' => 'Index'];
+/**
+ * $hostArr=['域名'=>'application目录']
+ */
+$hostArr = ['admin'=>'admin', 'business'=>'business','www'=>'front_www','chaoshi'=>'front_chaoshi'];
+/**
+ * $modules=['application目录'=>'站点模块,模块,模块']
+ */
+$modules = ['admin' => 'Index,Default,Chaoshi,Demo', 'business' => 'Index,Default,Chaoshi','front_www' => 'Index','front_chaoshi' => 'Index'];
 $curHost = explode('.', $host);
-if (in_array($curHost[0], $hostArr)) {
-    $curHost = $curHost[0];
+if (isset($hostArr[$curHost[0]]) && $hostArr[$curHost[0]]) {
+    $applicationName=$hostArr[$curHost[0]];
 } else {
-    $curHost = 'www';
+    $applicationName='front_www';
 }
 //application 改名为二级域名目录
-define('APPLICATION_PATH', BASE_PATH.DS.$curHost);
-define('MODULES', $modules[$curHost]);
+define('APPLICATION_PATH', BASE_PATH.DS.$applicationName);
+define('MODULES', $modules[$applicationName]);
 
 define('CORE_PATH', BASE_PATH.DS.'core');
 define('CONFIG_PATH', BASE_PATH.DS.'conf');

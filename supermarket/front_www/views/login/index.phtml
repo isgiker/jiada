@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>家大小区超市商家管理系统</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <link rel="stylesheet" href="//<?php echo $_config_domain['static'];?>/plugin/bootstrap303/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//<?php echo $_config_domain['static'];?>/css/admin/admin.css" />
+        <link rel="stylesheet" href="//<?php echo $_config_domain['static'];?>/css/admin/admin_login.css">
+        <script src="//<?php echo $_config_domain['static'];?>/js/basic/libs/jquery.min.js"></script>
+
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+
+    <body>
+        <div id="login-container">
+
+            <div id="login-header">
+
+                <h3>家大小区超市商家管理后台</h3>
+
+            </div> <!-- /login-header -->
+
+            <div id="login-content" class="clearfix">
+                <?php 
+                if(isset($errorMsg)){
+                    $html = '<div class="error alert-danger">' . $errorMsg . '</div>';
+                    echo($html);
+                }
+                ?>
+                <form name="form" id="form" action="" method="post" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="用户名">用户名</label>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username" value="<?php if(isset($post['username'])) echo $post['username'];?>">
+                        <div class="showmsg">
+                        <?php
+                        if (isset($error['username'])) {
+                            $this->_view->showValidateError($error['username']);
+                        }
+                        ?>
+                    </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">密码</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="<?php if(isset($post['password'])) echo $post['password'];?>">
+                        <div class="showmsg">
+                        <?php
+                        if (isset($error['password'])) {
+                            $this->_view->showValidateError($error['password']);
+                        }
+                        ?>
+                    </div>
+                    </div>
+                    <button type="submit" class="btn btn-default">登录</button>
+                </form>
+
+            </div> 
+
+        </div> <!-- /login-wrapper -->
+
+
+
+        <!-- Le javascript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="//<?php echo $_config_domain['static'];?>/plugin/bootstrap303/js/bootstrap.min.js"></script>
+    </body>
+</html>

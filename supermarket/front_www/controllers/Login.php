@@ -122,7 +122,7 @@ class LoginController extends Core_Controller_Business {
         if($cR1 && $cR2 && $cR3 && $cR4 && $cR5 && $cR6 && $cR7 && $cR8 && $cR9){
             if($shopId){
                 //商家店铺首页
-                $this->redirect("/$industryPinyin/Shop/index/shopId/$shopId");
+                $this->redirect("/Chaoshi/Shop/index/shopId/$shopId");
             }else{
                 //商家首页
                 $this->redirect("/$industryPinyin/Index/index");

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>注册 . 家大超市</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="<?php echo '//' . $_config_domain['static'] . '/plugin/bootstrap303/css/bootstrap.min.css'; ?>">
+        <link rel="stylesheet" href="<?php echo '//' . $_config_domain['static'] . '/css/front-end/www/style.css'; ?>">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+            <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div id="wrap">
+            <header>
+                <!-- Fixed navbar -->
+                <div class="navbar navbar-fixed-top " role="navigation">
+                    <div class="navbar-inner">
+                        <div class="container">
+
+                            <div class="row">
+                                <div class="col-md-4"><a href="http://videojs.com"><img src="http://www.videojs.com/img/logo.png" alt="JiaDa" class="logo"></a></div>
+                                <div class="col-md-8">
+                                    <ul class="nav pull-right">
+
+                                        <li><span>Abc您好，东贸国际花园欢迎您回家！</span></li>
+                                        <li class="dropdown">
+                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">我的家<b class="caret"></b></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#">我的订单</a></li>
+                                                <li><a href="#">Another action</a></li>
+                                                <li><a href="#">Something else here</a></li>
+                                                <li class="divider"></li>
+                                                <li class="dropdown-header">Nav header</li>
+                                                <li><a href="#">Separated link</a></li>
+                                                <li><a href="#">One more separated link</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a class="login" href="javascript:void(0);">登录</a></li>
+                                        <li><a href="#" target="_blank">免费注册</a></li>
+                                        <li class="dropdown">
+                                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">客户服务<b class="caret"></b></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="#">我的订单</a></li>
+                                                <li><a href="#">Another action</a></li>
+                                                <li><a href="#">Something else here</a></li>
+                                                <li class="divider"></li>
+                                                <li class="dropdown-header">Nav header</li>
+                                                <li><a href="#">Separated link</a></li>
+                                                <li><a href="#">One more separated link</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul></div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div style="margin-top: 75px;"></div>
+            <div class="container">
+                <p style="padding-top: 10px;"></p>
+                <h3>个人注册</h3>
+                <hr style="border-top: 1px solid #ddd;"/>
+                <form class="form-horizontal" role="form" method="post" action="">
+                    <div class="form-group">
+                        <label for="uname" class="col-sm-3 control-label"><span class="red bold">*</span> 所在地区：</label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select name="provinceId" <?php echo $this->_view->getInputAttrs($rules, 'provinceId') ?> id="node1" class="form-control input-sm linkage" data-next="#node2" data-url="/Area/nodeArea/areaId">
+                                    <option value="" selected>省</option>
+                                    <?php
+                                    foreach ($province as $p) {
+                                        if ($post['provinceId'] == $p['id']) {
+                                            $selected = ' selected';
+                                        } else {
+                                            $selected = ' ';
+                                        }
+                                        echo '<option value="' . $p['id'] . '" ' . $selected . '>' . $p['name'] . '</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <select name="cityId" <?php echo $this->_view->getInputAttrs($rules, 'cityId') ?>  id="node2" class="form-control input-sm linkage" data-next="#node3" data-url="/Area/nodeArea/areaId">
+                                    <option value="" selected>市</option>
+                                    <?php
+                                    if (isset($city)) {
+                                        foreach ($city as $p) {
+                                            if ($post['cityId'] == $p['id']) {
+                                                $selected = ' selected';
+                                            } else {
+                                                $selected = ' ';
+                                            }
+                                            echo '<option value="' . $p['id'] . '" ' . $selected . '>' . $p['name'] . '</option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <select name="districtId" <?php echo $this->_view->getInputAttrs($rules, 'districtId') ?> id="node3" class="form-control input-sm linkage" data-next="#node4" data-url="/Area/nodeArea/areaId">
+                                    <option value="" selected>区县</option>
+                                    <?php
+                                    if (isset($district)) {
+                                        foreach ($district as $p) {
+                                            if ($post['districtId'] == $p['id']) {
+                                                $selected = ' selected';
+                                            } else {
+                                                $selected = ' ';
+                                            }
+                                            echo '<option value="' . $p['id'] . '" ' . $selected . '>' . $p['name'] . '</option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="showmsg">
+                                <?php
+                                if (isset($error['provinceId'])) {
+                                    $this->_view->showValidateError($error['provinceId']);
+                                }
+                                ?>
+                                <?php
+                                if (isset($error['cityId'])) {
+                                    $this->_view->showValidateError($error['cityId']);
+                                }
+                                ?>
+                                <?php
+                                if (isset($error['districtId'])) {
+                                    $this->_view->showValidateError($error['districtId']);
+                                }
+                                ?>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"><span class="red bold">*</span> 居住小区：</label>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <select name="community" <?php echo $this->_view->getInputAttrs($rules, 'community') ?> id="node4" class="form-control input-sm linkage" data-next="" data-url="" data-display="1">
+                                    <option value="" selected>您所在小区</option>
+                                    <?php
+                                    if (isset($community)) {
+                                        foreach ($community as $p) {
+                                            if ($post['community'] == $p['id']) {
+                                                $selected = ' selected';
+                                            } else {
+                                                $selected = ' ';
+                                            }
+                                            echo '<option value="' . $p['id'] . '" ' . $selected . '>' . $p['name'] . '</option>';
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                                <div class="showmsg">
+                                    <?php
+                                    if (isset($error['community'])) {
+                                        $this->_view->showValidateError($error['community']);
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <p class="form-control-static">若没有您的小区，点击这里“<a href="javascript:void(0);">添加</a>”</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="col-sm-3 control-label"><span class="red bold">*</span> 邮箱：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control input-sm" id="email" name="email" <?php echo $this->_view->getInputAttrs($rules, 'email') ?>  placeholder="请输入您的常用邮箱地址">
+                            <div class="showmsg">
+                                    <?php
+                                    if (isset($error['email'])) {
+                                        $this->_view->showValidateError($error['email']);
+                                    }
+                                    ?>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nickname" class="col-sm-3 control-label"><span class="red bold">*</span> 昵称：</label>
+                        <div class="col-sm-8">
+                            <input type="email" class="form-control input-sm" id="nickname" name="nickname" <?php echo $this->_view->getInputAttrs($rules, 'nickname') ?>  placeholder="昵称">
+                            <div class="showmsg">
+                                    <?php
+                                    if (isset($error['nickname'])) {
+                                        $this->_view->showValidateError($error['nickname']);
+                                    }
+                                    ?>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="passwd" class="col-sm-3 control-label"><span class="red bold">*</span> 密码：</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control input-sm" id="passwd" name="passwd"  <?php echo $this->_view->getInputAttrs($rules, 'passwd') ?> placeholder="密码">
+                            <div class="showmsg">
+                                    <?php
+                                    if (isset($error['passwd'])) {
+                                        $this->_view->showValidateError($error['passwd']);
+                                    }
+                                    ?>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="repasswd" class="col-sm-3 control-label"><span class="red bold">*</span> 确认密码：</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control input-sm" id="repasswd" name="repasswd"  <?php echo $this->_view->getInputAttrs($rules, 'repasswd') ?> placeholder="确认密码">
+                            <div class="showmsg">
+                                    <?php
+                                    if (isset($error['repasswd'])) {
+                                        $this->_view->showValidateError($error['repasswd']);
+                                    }
+                                    ?>
+                                </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="repasswd" class="col-sm-3 control-label"></label>
+                        <div class="col-sm-8">
+                            <input type="checkbox"> 同意并遵守“家大.小区服务”用户使用协议
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="repasswd" class="col-sm-3 control-label"></label>
+                        <div class="col-sm-8">
+                            <button type="submit" class="btn btn-default">立即注册</button>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+
+
+
+            <footer id="footer" class="footer">
+                <div class="container">
+                    <p class="col333 about">
+                        <a href="javascript:void();">关于我们</a><em> | </em>
+                        <a href="javascript:void();">商务洽谈</a><em> | </em>
+                        <a href="javascript:void();">意见反馈</a><em> | </em>
+                        <a href="javascript:void();">联系我们</a>
+                    </p>
+                    <p>Copyright © 2011 - 2013 jiada.com</p>
+                    <p>
+                        <a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备11008151号</a>
+                    </p>
+                </div>
+
+            </footer>
+
+        </div>
+
+        <!-- /wrap end-->
+
+
+        <!-- Bootstrap core JavaScript==================================================-->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+        <script src="<?php echo '//' . $_config_domain['static'] . '/js/basic/libs/jquery.min.js'; ?>"></script>
+        <script src="<?php echo '//' . $_config_domain['static'] . '/plugin/bootstrap303/js/bootstrap.min.js'; ?>"></script>
+        <script src="<?php echo '//' . $_config_domain['static'] . '/js/front-end/www/www.js'; ?>"></script>
+
+    </body>
+</html>
