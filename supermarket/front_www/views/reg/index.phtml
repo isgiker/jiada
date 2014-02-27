@@ -169,7 +169,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-5">
-                                <p class="form-control-static">若没有您的小区，点击这里“<a href="javascript:void(0);">添加</a>”</p>
+                                <p class="form-control-static">若没有您的小区，点击这里“<a href="javascript:void(0);" class="add_community">添加</a>”</p>
                             </div>
 
                         </div>
@@ -266,14 +266,61 @@
 
         <!-- /wrap end-->
 
+        
+        
+        <div id="community_html" style="display: none;">
+                <p style="padding-top: 10px;"></p>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="location" class="col-sm-4 control-label"><h4>小区名称：</h4></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="location" name="location" placeholder="请输入完整的小区名称">
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <div class="col-sm-offset-4 col-sm-11">
+                            <button type="submit" class="btn btn-success pull-left">确定，添加</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
 
         <!-- Bootstrap core JavaScript==================================================-->
         <!-- Placed at the end of the document so the pages load faster -->
         <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
         <script src="<?php echo '//' . $_config_domain['static'] . '/js/basic/libs/jquery.min.js'; ?>"></script>
-        <script src="<?php echo '//' . $_config_domain['static'] . '/plugin/bootstrap303/js/bootstrap.min.js'; ?>"></script>
+        <script src="<?php echo '//' . $_config_domain['static'] . '/plugin/bootstrap303/js/bootstrap.min.js'; ?>"></script>        
+        <script src="<?php echo '//' . $_config_domain['static'] . '/js/basic/libs/unslider.min.js'; ?>"></script>
+        <script src="<?php echo '//' . $_config_domain['static'] . '/plugin/layer/layer.min.js'; ?>"></script>
         <script src="<?php echo '//' . $_config_domain['static'] . '/js/front-end/www/www.js'; ?>"></script>
+        <script>
+            $(function() {
+                $('.add_community').on('click', function() {
+                    $.layer({
+                        shade: false,
+                        type: 1,
+                        fix: false,
+                        offset: ['75', ''],
+                        area: ['400px', '160px', '75px'],
+                        title : '添加小区',
+                        border: [5, 0.5, '#666', true],
+                        page: {dom: '#community_html'},
+                        success: function() {
+                            layer.shift('top', 500);
 
+                        },
+                        close: function(index) {
+                            layer.close(index);
+                            $('#community_html').hide();
+                        }
+
+                    });
+                });
+            });
+            
+        </script>
     </body>
 </html>
 <?php
