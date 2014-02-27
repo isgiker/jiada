@@ -6,7 +6,7 @@
         <!-- Bootstrap -->
         <link rel="stylesheet" href="<?php echo '//' . $_config_domain['static'] . '/plugin/bootstrap303/css/bootstrap.min.css'; ?>">
         <link rel="stylesheet" href="<?php echo '//' . $_config_domain['static'] . '/css/front-end/www/style.css'; ?>">
-
+        <link rel="stylesheet" href="<?php echo '//' . $_config_domain['static'] . '/css/basic/basic.css'; ?>">
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -71,8 +71,8 @@
                 <form class="form-horizontal" role="form" method="post" action="">
                     <div class="form-group">
                         <label for="uname" class="col-sm-3 control-label"><span class="red bold">*</span> 所在地区：</label>
-                        <div class="row">
-                            <div class="col-sm-2">
+                        <div class="col-sm-8">
+                            <span class="input2">
                                 <select name="provinceId" <?php echo $this->_view->getInputAttrs($rules, 'provinceId') ?> id="node1" class="form-control input-sm linkage" data-next="#node2" data-url="/Area/nodeArea/areaId">
                                     <option value="" selected>省</option>
                                     <?php
@@ -86,8 +86,8 @@
                                     }
                                     ?>
                                 </select>
-                            </div>
-                            <div class="col-sm-2">
+                            </span>
+                            <span class="input2">
                                 <select name="cityId" <?php echo $this->_view->getInputAttrs($rules, 'cityId') ?>  id="node2" class="form-control input-sm linkage" data-next="#node3" data-url="/Area/nodeArea/areaId">
                                     <option value="" selected>市</option>
                                     <?php
@@ -103,8 +103,8 @@
                                     }
                                     ?>
                                 </select>
-                            </div>
-                            <div class="col-sm-2">
+                            </span>
+                            <span class="input2">
                                 <select name="districtId" <?php echo $this->_view->getInputAttrs($rules, 'districtId') ?> id="node3" class="form-control input-sm linkage" data-next="#node4" data-url="/Area/nodeArea/areaId">
                                     <option value="" selected>区县</option>
                                     <?php
@@ -120,7 +120,7 @@
                                     }
                                     ?>
                                 </select>
-                            </div>
+                            </span>
                             <div class="showmsg">
                                 <?php
                                 if (isset($error['provinceId'])) {
@@ -177,7 +177,7 @@
                     <div class="form-group">
                         <label for="email" class="col-sm-3 control-label"><span class="red bold">*</span> 邮箱：</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control input-sm" id="email" name="email" <?php echo $this->_view->getInputAttrs($rules, 'email') ?>  placeholder="请输入您的常用邮箱地址">
+                            <input type="email" class="form-control input-sm" id="email" name="email" <?php echo $this->_view->getInputAttrs($rules, 'email') ?>  placeholder="请输入您的常用邮箱地址">
                             <div class="showmsg">
                                     <?php
                                     if (isset($error['email'])) {
@@ -190,7 +190,7 @@
                     <div class="form-group">
                         <label for="nickname" class="col-sm-3 control-label"><span class="red bold">*</span> 昵称：</label>
                         <div class="col-sm-8">
-                            <input type="email" class="form-control input-sm" id="nickname" name="nickname" <?php echo $this->_view->getInputAttrs($rules, 'nickname') ?>  placeholder="昵称">
+                            <input type="text" class="form-control input-sm" id="nickname" name="nickname" <?php echo $this->_view->getInputAttrs($rules, 'nickname') ?>  placeholder="昵称">
                             <div class="showmsg">
                                     <?php
                                     if (isset($error['nickname'])) {
@@ -276,3 +276,9 @@
 
     </body>
 </html>
+<?php
+//添加、修改等事件发生后弹出消息
+if (isset($_event)) {
+    $this->_view->jsRedirect($_event);
+}
+?>
