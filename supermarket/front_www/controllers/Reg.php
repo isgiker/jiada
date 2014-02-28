@@ -69,6 +69,23 @@ class RegController extends Core_Controller_Www {
         
     }
     
+    public function addcommunityAction(){
+        $post = $this->getPost();
+        if(!trim($post['pid']) || !$post['location']){
+            $this->err(null, '请输入有效数据！');
+        }
+        //防恶意请求接口，判断来源地址是否为内部地址；
+        if(!stripos($_SERVER['HTTP_REFERER'],$this->_config->domain->nowww)){
+            $this->err(null, '请不要干坏事！');
+        }
+        
+        //保存数据 begin
+        $areaInfo = $this->model->addcommunity($post);
+        
+        $this->ok($areaInfo,null,'添加成功！');
+        exit;
+    }
+    
     public function saveAction($data,$action){
         if(!$data || !$action){
             if($this->isAjax()){

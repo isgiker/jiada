@@ -161,8 +161,8 @@ function ajax_Callback(data) {
         } else {
             str = msg;
         }
-        ac.showError(msg);
-        //alert(str);
+        ac.showError(str);
+//        alert(str);
     }
 }
 
@@ -336,7 +336,8 @@ $(document).ready(function() {
     var form = $('form.ajax');
     if (form.length) {
         $("form").submit(function(e) {
-            ajaxForm("form");
+            ajaxSubmit($(this));
+            return false;
         });
     }
 //    页面内显示错误

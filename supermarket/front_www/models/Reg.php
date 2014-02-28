@@ -8,6 +8,7 @@ class RegModel extends BasicModel{
 
     public function __construct() {
         parent::__construct();
+        $this->db = Factory::getDBO('local_jiada');
         $this->ssodb = Factory::getDBO('local_jiada_sso');
     }
     
@@ -75,6 +76,51 @@ class RegModel extends BasicModel{
         return true;
     }
     
+    //添加小区
+    public function addcommunity($data) {
+        if(!$data['pid']){
+            return false;
+        }
+        
+        $parentPath = $this->getParentPath($data['pid']);
+        
+        $sql = "insert area set areaName='$data[location]',pinyin='',parentId='$data[pid]',parentPath='$parentPath',domain='',sort='0',areaType='Community',public='1'";
+        $result = $this->db->query($sql);
+        
+        if ($result == false) {
+            return false;
+        }
+        $areaId=$this->db->insertid();
+        
+        return $this->getAreaInfo($areaId);
+    }
+    
+    private function getParentPath($parentId){
+        $query = "select parentId from area where areaId = $parentId";
+        $this->db->setQuery($query);
+        $newParentId = $this->db->loadResult();
+
+        static $parentPath = array();
+        if($newParentId!=0){
+            $this->getParentPath($newParentId);
+            $parentPath[] = $newParentId;
+        }
+
+        if(!empty($parentPath)){
+            $parentPathStr = implode(',', $parentPath);
+            $result = $parentPathStr.','.$parentId;
+        }else{
+            $result = $parentId;
+        }
+        return $result;
+    }
+    
+    private function getAreaInfo($areaId){
+        $query = "select areaId,areaName,pinyin from area where areaId=$areaId";
+        $this->db->setQuery($query);
+        $rows = $this->db->loadAssoc();
+        return $rows;
+    }
 
     /**
      * form 验证规则

@@ -7,32 +7,32 @@
  *这是本人写的一个通用的无限极联动菜单
  */
 $("select.linkage").change(function() {
-    var 
-        cateId = $(this).val(),
-        next = $(this).data('next'),
-        nextObj = next ? $(next) : null;
-    if(next.length==0){
+    var
+            cateId = $(this).val(),
+            next = $(this).data('next'),
+            nextObj = next ? $(next) : null;
+    if (next.length == 0) {
         return false;
     }
     var nextNext = nextObj.data('next'),
-        nextNextObj = nextNext ? $(nextNext) : null;
-        while(nextNextObj && nextNextObj.length){
-            if (nextNextObj && nextNextObj.length) {
-                //根据data-display属性判断是否显示input
-                if(nextNextObj.data('display')==1){
-                    nextNextObj.show();
-                }else{
-                    nextNextObj.hide();
-                }
-                
-                nextNext = nextNextObj.data('next');
-                nextNextObj = nextNext ? $(nextNext) : null;
+            nextNextObj = nextNext ? $(nextNext) : null;
+    while (nextNextObj && nextNextObj.length) {
+        if (nextNextObj && nextNextObj.length) {
+            //根据data-display属性判断是否显示input
+            if (nextNextObj.data('display') == 1) {
+                nextNextObj.show();
+            } else {
+                nextNextObj.hide();
             }
+
+            nextNext = nextNextObj.data('next');
+            nextNextObj = nextNext ? $(nextNext) : null;
         }
-        //先清空历史条目再追加
-        nextObj.find('option[value!=""]').remove();
-        
-    $.getJSON($(this).data('url')+'/' + cateId, function(data) {
+    }
+    //先清空历史条目再追加
+    nextObj.find('option[value!=""]').remove();
+
+    $.getJSON($(this).data('url') + '/' + cateId, function(data) {
 
         var items = '';
         $.each(data, function(key, row) {
@@ -44,131 +44,80 @@ $("select.linkage").change(function() {
     });
 });
 
-
-
-//自定义confrim信息
-//配置说明
-//<a href="提交路径" class="confirm"  data-method="post|get" data-data="{id:12,a:b}" data-msg="您确定要执行该操作吗？" ></a>
-
-function custConfrim(obj) {
-    obj.bind('click', function() {
-        var $this = $(this),
-                data = $this.data();
-        var msg = data['msg'] || '您确定要执行该操作吗？',
-                url = $this.data('url'),
-                method = data['method'] || 'post',
-                data = data['data'] || {};
-        var html = '' +
-                '<div class="confirmDialog">' +
-                '    <div>' +
-                '        <div class="desc"><span>' + msg + '</span></div>' +
-                '    </div>' +
-                '<div>' +
-                '    <div class="btnBlack">' +
-                '        <input name="ok"  type="button" value="确 定">' +
-                '    </div>' +
-                '    <div class="btnBlack">' +
-                '        <input name="cancel" type="button" value="取 消">' +
-                '    </div>' +
-                '</div>';
-        $html = $(html);
-        $html.find('input').bind('click', function() {
-            if (this.name == "ok") {
-                window.location = url;
-            } else {
-                $html.remove();
-            }
-        })
-        $('#mainPage').append($html);
-        return false;
-    })
-}
-
-/*
- 打开弹层窗口
- 使用方法<a href="打开页面地址（不能是跨域）" class="dialog" data-title="优先标题">标题</a>
+/**注册页面
+ * ==============================================================================
  */
-function openDialog(dialogs) {
-    dialogs.bind('click', function() {
-        var $this = $(this),
-                title = $this.data('title') || $this.text(),
-                url = $this.attr('href');
-        if (url.indexOf('?') > 0) {
-            url += "&mini=true";
-        } else {
-            url += '?mini=true';
-        }
-        art.dialog.open(url, {
-            title: title,
-            fixed: true,
-            padding: 0,
-            width: 780,
-            lock: true
-        });
-        return false;
-    })
-}
-
-
+//添加社区
 $(function() {
-    var
-            linkage = $('select._node'),
-            linkDialog = $('.dialog'),
-            confirmInfo = $('a.confirm,input.confirm');
+    $('.add_community').on('click', function() {
+        var districtName = $("#node3").find("option:selected").text();
+        $("#ptext").val(districtName);
+        $("#pid").val($("#node3").val());
+        if (!$("#pid").val()) {
+            alert('请选择所属区域');
+            return false;
+        }
+        $.layer({
+            shade: false,
+            type: 1,
+            fix: false,
+            offset: ['75', ''],
+            area: ['400px', '220px', '75px'],
+            title: '添加小区',
+            border: [5, 0.5, '#666', true],
+            page: {dom: '#community_html'},
+            success: function() {
+                layer.shift('top', 500);
 
-    if (linkage.length > 1) {
-        LinkageInput(linkage);
-    }
-    if (confirmInfo.length) {
-        custConfrim(confirmInfo);
-    }
-    if (linkDialog.length) {
-        openDialog(linkDialog);
-    }
+            },
+            close: function(index) {
+                layer.close(index);
+                $('#community_html').hide();
+            }
 
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*添加仓库，地区联动功能 begin======================================================================*/
-$("#provinceId").change(function() {
-    var areaId = $(this).val();
-    $.getJSON('/Default/Area/ajaxArea/areaId/' + areaId, function(data) {
-        var items = '<option value="0" selected>市</option>';
-        $.each(data, function(key, val) {
-            items += ('<option value="' + val.areaId + '">' + val.areaName + '</option>');
         });
-        $('#cityId').html(items);
     });
 });
-$("#cityId").change(function() {
-    var areaId = $(this).val();
-    $.getJSON('/Default/Area/ajaxArea/areaId/' + areaId, function(data) {
-        var items = '<option value="0" selected>区县</option>';
-        $.each(data, function(key, val) {
-            items += ('<option value="' + val.areaId + '">' + val.areaName + '</option>');
-        });
-        $('#districtId').html(items);
-    });
+
+$('#addcommunity').submit(function(e) {
+    form=$(this);
+    $.ajax({
+        url: form.attr('action'),
+        data: form.serialize(),
+        type: form.attr('method'),
+        dataType: 'json',
+        success: function(data) {
+            if (data.result == "ok") {
+                var win;
+                if (window.location == top.window.location) {
+                    win = window;
+                } else {
+                    win = top.window;
+                }
+                //
+                alert(data.data['areaName']);
+                if (!data.url) {
+                    data.url = win.location;
+                }
+                if (data.msg) {
+                    ac.showMsg(data.msg, data.url);
+                } else {
+                    win.location = data.url;
+                }
+            } else {
+                var msg = data.msg,
+                        str = '';
+                if (typeof(msg) == 'object') {
+                    for (var v in msg) {
+                        str += msg[v] + '<br>';
+                    }
+                } else {
+                    str = msg;
+                }
+                ac.showError(str);
+//        alert(str);
+            }
+        }
+    })
+    return false;
 });
