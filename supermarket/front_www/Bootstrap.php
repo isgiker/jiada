@@ -46,8 +46,8 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
     */
     public function _initPlugin(Yaf_Dispatcher $dispatcher) {
         //用户插件
-//        $objUserPlugin = new UserPlugin();
-//        $dispatcher->registerPlugin($objUserPlugin);
+        $objUserPlugin = new UserPlugin();
+        $dispatcher->registerPlugin($objUserPlugin);
 
     }
 

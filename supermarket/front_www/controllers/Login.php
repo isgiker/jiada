@@ -86,7 +86,8 @@ class LoginController extends Core_Controller_Www {
         $cR5=$this->setCookies('_UIS', $uis);
         
         if($cR1 && $cR2 && $cR3 && $cR4 && $cR5){
-            $this->redirect('//'.$this->_config->domain->chaoshi);
+            //目前暂跳转到超市首页，日后会跳转到小区主页
+            $this->redirect('//'.$this->_config->domain->www.'/Chaoshi/Index/index');
         }else{
             $error = 'Cookie写入失败！';
             return $error;
