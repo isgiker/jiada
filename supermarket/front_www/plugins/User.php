@@ -41,26 +41,21 @@ class UserPlugin extends Yaf_Plugin_Abstract {
     }
 
     public function isLogin() {
-        if (
-                isset($_COOKIE['businessId']) && isset($_COOKIE['_TICKET']) && isset($_COOKIE['industry_modules']) && isset($_COOKIE['_USERINFO'])  && isset($_COOKIE['_UIS']) 
-                && trim($_COOKIE['businessId']) && trim($_COOKIE['_TICKET']) && trim($_COOKIE['industry_modules']) && trim($_COOKIE['_USERINFO']) && trim($_COOKIE['_UIS'])
-           ) {
-            //票据结构:商家id|店铺id|用户id|acl权限|浏览器代理信息|用户ip地址|行业拼音|用户socket端口号;
+        if (isset($_COOKIE['uid'])&& isset($_COOKIE['_TICKET']) && isset($_COOKIE['_USERINFO'])  && isset($_COOKIE['_UIS']) 
+                && $_COOKIE['uid'] && $_COOKIE['_TICKET'] && $_COOKIE['_USERINFO'] && $_COOKIE['_UIS']) {
+            
+            //票据结构:用户id|浏览器代理信息|用户ip地址|行业拼音|用户socket端口号;
             $ticketParam=array(
-                'businessId'=>@$_COOKIE['businessId'],
-                'shopId'=>@$_COOKIE['shopId'],
-                'uid'=>@$_COOKIE['uid'],
-                'acl'=>@$_COOKIE['acl'],
-                'industry_modules'=>@$_COOKIE['industry_modules']
+                'uid'=>@$_COOKIE['uid']
             );
             $cookieTicket = $_COOKIE['_TICKET'];
             $cookieUserInfoSign = $_COOKIE['_UIS'];
-                        
+
             //服务端生成ticket
             $loginModel = new LoginModel();
             $ticket = $loginModel->setTicket($ticketParam);
             $uis = $loginModel->getSign($_COOKIE['_USERINFO']);
-            
+
             //服务端和客户端ticket比较
             if ($ticket === $cookieTicket && $uis==$cookieUserInfoSign) {
                 return true;

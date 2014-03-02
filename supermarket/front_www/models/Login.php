@@ -15,26 +15,11 @@ class LoginModel extends BasicModel{
     }
     
     /**
-     * 根据用户名密码获取商家信息
+     * 根据用户名密码获取用户信息，为了安全用户密码和联系信息不能记录在cookie
      * @param array $data
      */
-    public function getBusinessInfo($data){
-        $query = "select a.businessId,a.userName,a.contact,a.mobile,a.title,a.provinceId,a.cityId,a.districtId,a.address,a.industryId,a.createTime,a.status from business a where a.password = ? and a.userName = ?";
-        $sth = $this->ssodb->prepare($query);
-        if($sth != FALSE){
-            if($sth->execute(array($data['password'], $data['username']))){
-                $rows = $sth->fetch();
-                return $rows;
-            }
-        }
-        return false;
-    }
-    /**
-     * 根据用户名密码获取店铺管理员信息
-     * @param array $data
-     */
-    public function getShopAdminInfo($data){
-        $query = "select a.adminId,a.userName,a.realName,a.agroupId,a.shopId,a.businessId,b.industryId,a.createTime,a.status,c.acl from business_shop_admin a,business b,business_admin_group c where a.password = ? and a.userName = ? and a.businessId=b.businessId and a.agroupId=c.agroupId";
+    public function getUserInfo($data){
+        $query = "select a.userId,a.areaId,a.userName,a.status,a.avatar from user a where a.password = ? and a.email = ?";
         $sth = $this->ssodb->prepare($query);
         if($sth != FALSE){
             if($sth->execute(array($data['password'], $data['username']))){
@@ -46,20 +31,21 @@ class LoginModel extends BasicModel{
     }
     
     /**
-     * 根据行业id获取行业信息；
-     * @param array $data
+     * 获取地区信息
+     * @param int $parentId 分类的父级节点id
+     * @return array
      */
-    public function getIndustryInfo($industryId){
-        $query = "select a.industryName,a.pinyin,a.public from industry a where a.industryId = $industryId";
+    public function getAreaInfo($areaId){
+        if(!$areaId) return false;
+        $query = "select a.areaId,a.areaName,a.parentPath,a.lng,a.lat from area a where a.areaId=$areaId";
         $this->db->setQuery($query);
-        $rows = $this->db->loadAssoc();
+        $rows = $this->db->loadAssoc();       
         return $rows;
     }
     
     /*
      * 构建客户端唯一ID,并进行加密;
      * @param int $userId 管理员id
-     * @param string $industryPinyin 行业拼音
      */
     public function setTicket($ticketParam) {
         $ticket = $this->buildTicket($ticketParam);
@@ -71,7 +57,7 @@ class LoginModel extends BasicModel{
         $ticket = sha1($ticket);
         return $ticket;
     }
-    
+
     /**
      * 对字符串进行前面,和密码加密的方式一样
      * @param type $string
@@ -84,19 +70,15 @@ class LoginModel extends BasicModel{
     }
 
     /**
-     * 构建原始票据结构:商家id|店铺id|用户id|acl权限|浏览器代理信息|用户ip地址|行业拼音|用户socket端口号;
-     * 如果是商家那么店铺id为空，用户id等于商家id，acl权限也为空；商家是主账号拥有所有权限。
+     * 构建原始票据结构:用户id|浏览器代理信息|用户ip地址;
      * @param int $userId 管理员id
-     * @param string $industryPinyin 行业拼音
      */
     public function buildTicket($ticketParam) {
-        if (!$ticketParam['businessId'] || !$ticketParam['industry_modules'])
+        if (!$ticketParam['uid'])
             return false;
 
         $IP = Util::getIP();
-        //由于端口号隔一段时间就会变动所以不能使用
-//        $ticket = $userId.'|'.$_SERVER['HTTP_USER_AGENT'].'|'.$IP.'|' . $industryPinyin.'|' . $_SERVER['REMOTE_PORT'];
-        $ticket = $ticketParam['businessId'].'|'.$ticketParam['shopId'].'|'.$ticketParam['uid'].'|'.$ticketParam['acl'].'|'.$_SERVER['HTTP_USER_AGENT'].'|'.$IP.'|' . $ticketParam['industry_modules'];
+        $ticket = $ticketParam['uid'].'|'.$_SERVER['HTTP_USER_AGENT'].'|'.$IP;
         return $ticket;
     }
 
@@ -107,7 +89,7 @@ class LoginModel extends BasicModel{
         $rules = '{"validation":[
                                 {
 			 		"value":"username",
-			  		"label":"登录名",
+			  		"label":"账号",
 			  		"rules":[
                                                 {
 	  						"name":"trim"
@@ -118,12 +100,7 @@ class LoginModel extends BasicModel{
 	 					},
 						{
 		  					"name":"clearxss"
-	 					},
-	 					{
-		  					"name":"regex",
-		  					"value":"/^[A-Za-z0-9_\\\\-]{3,20}$/",
-			  				"message":"%s%应为3到20位的字母、数字、字符和下划线"
-	  					}
+	 					}
 		  			]
 		  		},
                                 {

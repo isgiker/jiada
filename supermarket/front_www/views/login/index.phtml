@@ -1,73 +1,200 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
-        <meta charset="utf-8" />
-        <title>家大小区超市商家管理系统</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <link rel="stylesheet" href="//<?php echo $_config_domain['static'];?>/plugin/bootstrap303/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//<?php echo $_config_domain['static'];?>/css/admin/admin.css" />
-        <link rel="stylesheet" href="//<?php echo $_config_domain['static'];?>/css/admin/admin_login.css">
-        <script src="//<?php echo $_config_domain['static'];?>/js/basic/libs/jquery.min.js"></script>
+        <title>家大小区服务</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="<?php echo '//' . $_config_domain['static'] . '/plugin/bootstrap303/css/bootstrap.min.css'; ?>">
+        <style>
+            /**
+            set the width and height to match your images 
+            */
 
-        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+            #slideshow {
+                position:relative;
+                z-index:-1;
+            }
+
+            #slideshow IMG {
+                position:absolute;
+                top:0;
+                left:0;
+                z-index:8;
+                opacity:0.0;
+            }
+
+            #slideshow IMG.active {
+                z-index:10;
+                opacity:1.0;
+            }
+
+            #slideshow IMG.last-active {
+                z-index:9;
+            }
+
+            #slideshow img {
+                /* Set rules to fill background */
+                min-width: 1024px;
+
+                /* Set up proportionate scaling */
+                width: 100%;
+
+                /* Set up positioning */
+                position: fixed;
+                top: 0;
+                left: 0;
+            }
+
+            @media screen and (max-width: 1024px){
+                img.bg {
+                    left: 50%;
+                    margin-left: -512px; 
+                }
+            }
+            /*==================================================================*/
+            .authcenter-body {
+                position: relative;
+                width: 990px;
+                height: auto;
+                min-height: 450px;
+                margin: 0 auto;
+                padding: 50px 0;
+                background-position: 0 70px;
+                background-repeat: no-repeat;
+            }
+            .fn-clear {
+                zoom: 1;
+            }
+            .authcenter-body-logo a {
+                color: #fff;
+                font-size: 38px;
+                line-height: 43px;
+                cursor: pointer;
+            }
+            .authcenter-body-login {
+                float: right;
+                margin: 27px 95px;
+                width: 286px;
+                height: auto;
+                position: relative;
+            }
+
+            .login-modern {
+                border: 1px solid transparent;
+                background: rgba(0,0,0,.4);
+                _background: 0;
+                _border: 0;
+                filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#66000000', EndColorStr='#66000000');
+            }
+
+            .login {
+                width: 300px;
+                padding: 0 31px 0 33px;
+                position: relative;
+                overflow: hidden;
+                border: 1px solid #a7a7a7;
+            }
+            .authcenter-body-login form label{
+                line-height: 30px;
+                height: 30px;
+            }
+            .authcenter-body-login form button{
+                margin-bottom: 20px;
+            }
+        </style>
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
-          <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+            <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+            <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
-
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
-
+    </head>
     <body>
-        <div id="login-container">
-
-            <div id="login-header">
-
-                <h3>家大小区超市商家管理后台</h3>
-
-            </div> <!-- /login-header -->
-
-            <div id="login-content" class="clearfix">
-                <?php 
+        <div class="authcenter-body fn-clear">
+            <h1 class="authcenter-body-logo">
+                <a href="<?php echo '//' . $_config_domain['www']; ?>" class="link" title="家大超市首页" target="_top" seed="authcenter-homepage">
+                    <span class="title">家大超市</span>
+                </a>
+            </h1>
+            <div class="authcenter-body-login">
+                <div class="login login-modern well">
+                    <?php 
                 if(isset($errorMsg)){
                     $html = '<div class="error alert-danger">' . $errorMsg . '</div>';
                     echo($html);
                 }
                 ?>
-                <form name="form" id="form" action="" method="post" class="form-horizontal">
-                    <div class="form-group">
-                        <label for="用户名">用户名</label>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username" value="<?php if(isset($post['username'])) echo $post['username'];?>">
-                        <div class="showmsg">
-                        <?php
-                        if (isset($error['username'])) {
-                            $this->_view->showValidateError($error['username']);
-                        }
-                        ?>
-                    </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">密码</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="<?php if(isset($post['password'])) echo $post['password'];?>">
-                        <div class="showmsg">
-                        <?php
-                        if (isset($error['password'])) {
-                            $this->_view->showValidateError($error['password']);
-                        }
-                        ?>
-                    </div>
-                    </div>
-                    <button type="submit" class="btn btn-default">登录</button>
-                </form>
+                    <form class="form-horizontal" role="form" method="post" action="">
+                        <div class="form-group">
+                            <label for="username">账号</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="邮箱地址"  <?php echo $this->_view->getInputAttrs($rules, 'username') ?>  value="<?php if (isset($post['username'])) echo $post['username'] ?>" >
+                            <div class="showmsg">
+                                <?php
+                                if (isset($error['username'])) {
+                                    $this->_view->showValidateError($error['username']);
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">密码</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="输入密码" <?php echo $this->_view->getInputAttrs($rules, 'password') ?>  value="<?php if (isset($post['password'])) echo $post['password'] ?>">
+                            <div class="showmsg">
+                                <?php
+                                if (isset($error['password'])) {
+                                    $this->_view->showValidateError($error['password']);
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">立即登录</button>
+                    </form>
+                </div><!-- //login -->
+            </div>
+        </div>    
 
-            </div> 
+        <div id="slideshow">
+            <img src="http://pic.pp3.cn/uploads/pic1/0521/1egp2lf2vyg.jpg" alt="Slideshow Image 1" class="active" />
+            <img src="http://pic.pp3.cn/uploads/pic1/0521/by2je20qfcr.jpg" alt="Slideshow Image 2" />
+            <img src="http://pic.pp3.cn/uploads/pic1/0521/fbneiojeicm.jpg" />
+        </div>
 
-        </div> <!-- /login-wrapper -->
-
-
-
-        <!-- Le javascript
-        ================================================== -->
+        <!-- Bootstrap core JavaScript==================================================-->
         <!-- Placed at the end of the document so the pages load faster -->
-        <script src="//<?php echo $_config_domain['static'];?>/plugin/bootstrap303/js/bootstrap.min.js"></script>
+        <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+        <script src="<?php echo '//' . $_config_domain['static'] . '/js/basic/libs/jquery.min.js'; ?>"></script>
+        <script type="text/javascript">
+
+            function slideSwitch() {
+                var $active = $('#slideshow IMG.active');
+
+                if ($active.length == 0)
+                    $active = $('#slideshow IMG:last');
+
+                // use this to pull the images in the order they appear in the markup
+                var $next = $active.next().length ? $active.next()
+                        : $('#slideshow IMG:first');
+
+                // uncomment the 3 lines below to pull the images in random order
+
+                // var $sibs  = $active.siblings();
+                // var rndNum = Math.floor(Math.random() * $sibs.length );
+                // var $next  = $( $sibs[ rndNum ] );
+
+
+                $active.addClass('last-active');
+
+                $next.css({opacity: 0.0})
+                        .addClass('active')
+                        .animate({opacity: 1.0}, 5000, function() {
+                    $active.removeClass('active last-active');
+                });
+            }
+
+            $(function() {
+                setInterval("slideSwitch()", 10000);
+            });
+
+        </script>
     </body>
 </html>

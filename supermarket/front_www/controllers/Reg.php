@@ -98,7 +98,7 @@ class RegController extends Core_Controller_Www {
         //保存数据 begin
         $saveR = $this->model->$action($data);
         
-        $_event_success_Url = "http://chaoshi.jiada.local";
+        $_event_success_Url = '//'.$this->_config->domain->chaoshi;
         $_event_fail_Url = "/$this->_ModuleName/$this->_ControllerName/reg";
         if($saveR){
             //如果是注册成功，则发送激活邮件

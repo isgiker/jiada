@@ -57,6 +57,7 @@ $(function() {
             alert('请选择所属区域');
             return false;
         }
+
         $.layer({
             shade: false,
             type: 1,
@@ -72,7 +73,7 @@ $(function() {
             },
             close: function(index) {
                 layer.close(index);
-                $('#community_html').hide();
+                $('#community_html').hide(300);
             }
 
         });
@@ -94,16 +95,19 @@ $('#addcommunity').submit(function(e) {
                 } else {
                     win = top.window;
                 }
-                //
-                alert(data.data['areaName']);
-                if (!data.url) {
-                    data.url = win.location;
-                }
+                //把返回数据写入页面
+                var select_option='<option value="' + data.data['areaId'] + '" selected>' + data.data['areaName'] + '</option>';
+                $('#node4').append(select_option);
+                
                 if (data.msg) {
-                    ac.showMsg(data.msg, data.url);
-                } else {
-                    win.location = data.url;
+                    alert(data.msg);
                 }
+                //关闭layer弹层
+                window.setTimeout(function() {
+                    layer.close($('.xubox_layer').attr('times'));
+                    $('#community_html').hide(300);
+                }, 200)
+        
             } else {
                 var msg = data.msg,
                         str = '';

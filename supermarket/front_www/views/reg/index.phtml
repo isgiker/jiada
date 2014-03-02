@@ -177,7 +177,7 @@
                     <div class="form-group">
                         <label for="email" class="col-sm-3 control-label"><span class="red bold">*</span> 邮箱：</label>
                         <div class="col-sm-8">
-                            <input type="email" class="form-control input-sm" id="email" name="email" <?php echo $this->_view->getInputAttrs($rules, 'email') ?>  placeholder="请输入您的常用邮箱地址">
+                            <input type="email" class="form-control input-sm" id="email" name="email" <?php echo $this->_view->getInputAttrs($rules, 'email') ?>  value="<?php if (isset($post['email'])) echo $post['email'] ?>" placeholder="请输入您的常用邮箱地址">
                             <div class="showmsg">
                                     <?php
                                     if (isset($error['email'])) {
@@ -190,7 +190,7 @@
                     <div class="form-group">
                         <label for="nickname" class="col-sm-3 control-label"><span class="red bold">*</span> 昵称：</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control input-sm" id="nickname" name="nickname" <?php echo $this->_view->getInputAttrs($rules, 'nickname') ?>  placeholder="昵称">
+                            <input type="text" class="form-control input-sm" id="nickname" name="nickname" <?php echo $this->_view->getInputAttrs($rules, 'nickname') ?>  value="<?php if (isset($post['nickname'])) echo $post['nickname'] ?>" placeholder="昵称">
                             <div class="showmsg">
                                     <?php
                                     if (isset($error['nickname'])) {
@@ -203,7 +203,7 @@
                     <div class="form-group">
                         <label for="passwd" class="col-sm-3 control-label"><span class="red bold">*</span> 密码：</label>
                         <div class="col-sm-8">
-                            <input type="password" class="form-control input-sm" id="passwd" name="passwd"  <?php echo $this->_view->getInputAttrs($rules, 'passwd') ?> placeholder="密码">
+                            <input type="password" class="form-control input-sm" id="passwd" name="passwd"  <?php echo $this->_view->getInputAttrs($rules, 'passwd') ?> value="<?php if (isset($post['passwd'])) echo $post['passwd'] ?>" placeholder="密码">
                             <div class="showmsg">
                                     <?php
                                     if (isset($error['passwd'])) {
@@ -236,7 +236,7 @@
                     <div class="form-group">
                         <label for="repasswd" class="col-sm-3 control-label"></label>
                         <div class="col-sm-8">
-                            <button type="submit" class="btn btn-default">立即注册</button>
+                            <button type="submit" class="btn btn-success">立即注册</button>
                         </div>
                     </div>
 
@@ -270,11 +270,18 @@
         
         <div id="community_html" style="display: none;">
                 <p style="padding-top: 10px;"></p>
-                <form class="form-horizontal" role="form">
+                <form class="form-horizontal" name="addcommunity" id="addcommunity" role="form" method="post" action="<?php echo "/$_ModuleName/$_ControllerName/addcommunity" ?>">
                     <div class="form-group">
-                        <label for="location" class="col-sm-4 control-label"><h4>小区名称：</h4></label>
+                        <label for="location" class="col-sm-4 control-label"><h5>所属区县：</h5></label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="location" name="location" placeholder="请输入完整的小区名称">
+                            <input type="text" class="form-control  input-sm"  id="ptext" value="" placeholder="请先选择好所属区县">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="location" class="col-sm-4 control-label"><h5>小区名称：</h5></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control  input-sm" id="location" name="location" placeholder="请输入完整的小区名称">
+                            <input type="hidden" class="form-control  input-sm" id="pid" name="pid" value="" readonly="readonly">
                         </div>
                     </div>
                     <br />
@@ -291,34 +298,13 @@
         <!-- Placed at the end of the document so the pages load faster -->
         <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
         <script src="<?php echo '//' . $_config_domain['static'] . '/js/basic/libs/jquery.min.js'; ?>"></script>
+        <script src="<?php echo '//' . $_config_domain['static'] . '/js/basic/form.js'; ?>"></script>
         <script src="<?php echo '//' . $_config_domain['static'] . '/plugin/bootstrap303/js/bootstrap.min.js'; ?>"></script>        
         <script src="<?php echo '//' . $_config_domain['static'] . '/js/basic/libs/unslider.min.js'; ?>"></script>
         <script src="<?php echo '//' . $_config_domain['static'] . '/plugin/layer/layer.min.js'; ?>"></script>
         <script src="<?php echo '//' . $_config_domain['static'] . '/js/front-end/www/www.js'; ?>"></script>
         <script>
-            $(function() {
-                $('.add_community').on('click', function() {
-                    $.layer({
-                        shade: false,
-                        type: 1,
-                        fix: false,
-                        offset: ['75', ''],
-                        area: ['400px', '160px', '75px'],
-                        title : '添加小区',
-                        border: [5, 0.5, '#666', true],
-                        page: {dom: '#community_html'},
-                        success: function() {
-                            layer.shift('top', 500);
-
-                        },
-                        close: function(index) {
-                            layer.close(index);
-                            $('#community_html').hide();
-                        }
-
-                    });
-                });
-            });
+            
             
         </script>
     </body>
