@@ -41,12 +41,13 @@ class UserPlugin extends Yaf_Plugin_Abstract {
     }
 
     public function isLogin() {
-        if (isset($_COOKIE['uid'])&& isset($_COOKIE['_TICKET']) && isset($_COOKIE['_USERINFO'])  && isset($_COOKIE['_UIS']) 
-                && $_COOKIE['uid'] && $_COOKIE['_TICKET'] && $_COOKIE['_USERINFO'] && $_COOKIE['_UIS']) {
+        if (isset($_COOKIE['uid']) && isset($_COOKIE['lt']) && isset($_COOKIE['_TICKET']) && isset($_COOKIE['_USERINFO'])  && isset($_COOKIE['_UIS']) 
+                && $_COOKIE['uid'] && $_COOKIE['lt'] && $_COOKIE['_TICKET'] && $_COOKIE['_USERINFO'] && $_COOKIE['_UIS']) {
             
             //票据结构:用户id|浏览器代理信息|用户ip地址|行业拼音|用户socket端口号;
             $ticketParam=array(
-                'uid'=>@$_COOKIE['uid']
+                'uid'=>@$_COOKIE['uid'],
+                'lt'=>@$_COOKIE['lt']
             );
             $cookieTicket = $_COOKIE['_TICKET'];
             $cookieUserInfoSign = $_COOKIE['_UIS'];

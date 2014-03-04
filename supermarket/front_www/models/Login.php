@@ -30,6 +30,23 @@ class LoginModel extends BasicModel{
         return false;
     }
     
+    public function writeLoginLog($data){
+        if(!$data['userId'] || !$data['loginTime'] || !$data['keyValue'] ){
+            return false;
+        }
+        $sql = "replace into user_login_log set 
+                                    `userId`='$data[userId]',
+                                    `loginTime`='$data[loginTime]',
+                                    `keyValue`='$data[keyValue]'
+                ";
+        $result = $this->ssodb->query($sql);
+        if ($result == false) {
+            $error = $this->ssodb->ErrorMsg();
+            return FALSE;
+        }
+        return true;
+    }
+    
     /**
      * 获取地区信息
      * @param int $parentId 分类的父级节点id
@@ -45,7 +62,7 @@ class LoginModel extends BasicModel{
     
     /*
      * 构建客户端唯一ID,并进行加密;
-     * @param int $userId 管理员id
+     * @param int $userId 用户id
      */
     public function setTicket($ticketParam) {
         $ticket = $this->buildTicket($ticketParam);
@@ -70,15 +87,15 @@ class LoginModel extends BasicModel{
     }
 
     /**
-     * 构建原始票据结构:用户id|浏览器代理信息|用户ip地址;
-     * @param int $userId 管理员id
+     * 构建原始票据结构:用户id|登录时间|浏览器代理信息|用户ip地址;
+     * @param int $userId 用户id
      */
     public function buildTicket($ticketParam) {
-        if (!$ticketParam['uid'])
+        if (!$ticketParam['uid'] || !$ticketParam['lt'])
             return false;
 
         $IP = Util::getIP();
-        $ticket = $ticketParam['uid'].'|'.$_SERVER['HTTP_USER_AGENT'].'|'.$IP;
+        $ticket = $ticketParam['uid'].'|'.$ticketParam['lt'].'|'.$_SERVER['HTTP_USER_AGENT'].'|'.$IP;
         return $ticket;
     }
 

@@ -39,6 +39,8 @@ class LoginController extends Core_Controller_Www {
     }
     
     private function login($data){
+        header('P3P: CP="CAO DSP COR CUR ADM DEV TAI PSA PSD IVAi IVDi CONi TELo OTPi OUR DELi SAMi OTRi UNRi PUBi IND PHY ONL UNI PUR FIN COM NAV INT DEM CNT STA POL HEA PRE GOV"');
+
         if (isset($data['password']) && $data['password']) {
             $password=strrev(sha1($data['password']));
             $data['password']=md5($password);
@@ -69,23 +71,41 @@ class LoginController extends Core_Controller_Www {
         $cR1=$this->setCookies('uname', $data['username']);
         $cR2=$this->setCookies('uid', $userInfo['userId']);
 
-
+        //登录时间
+        $loginTime=microtime(true);
+        $cR3=$this->setCookies('lt', $loginTime);
+           
         //认证票据
         $ticketParam=array(
-            'uid'=>$userInfo['userId']
+            'uid'=>$userInfo['userId'],
+            'lt'=>$loginTime
         );
         $ticket = $this->model->setTicket($ticketParam);
-        $cR3=$this->setCookies('_TICKET', $ticket);    
+        $cR4=$this->setCookies('_TICKET', $ticket); 
         
         //这块可以考虑使用通用des/3des加密
-        $userInfo = base64_encode(serialize($userInfo));
-        $cR4=$this->setCookies('_USERINFO', $userInfo);
+        $userInfo_encrypt = base64_encode(serialize($userInfo));
+        $cR5=$this->setCookies('_USERINFO', $userInfo_encrypt);
         
         //对账号信息进行签名
-        $uis=$this->model->getSign($userInfo);
-        $cR5=$this->setCookies('_UIS', $uis);
+        $uis=$this->model->getSign($userInfo_encrypt);
+        $cR6=$this->setCookies('_UIS', $uis);
         
-        if($cR1 && $cR2 && $cR3 && $cR4 && $cR5){
+        //记录用户登录日志，日志包含登录cookie
+        $logParam=array(
+            'userId'=>$userInfo['userId'],
+            'loginTime'=>$loginTime,
+            'keyValue'=>'uname:'.$data['username'].','.'uid:'.$userInfo['userId'].','.'lt:'.$loginTime.','.'_USERINFO:'.$userInfo_encrypt.','.'_UIS:'.$uis.','.'_TICKET:'.$ticket
+        );
+        //跨域时根据用户id和登录时间获取cookie
+        $writeR=$this->model->writeLoginLog($logParam);
+        if($writeR){
+            $this->corssDomain(array(
+                'userId' => $userInfo['userId'],
+                'loginTime' => $loginTime));
+        }
+
+        if($cR1 && $cR2 && $cR3 && $cR4 && $cR5 && $cR6){
             //目前暂跳转到超市首页，日后会跳转到小区主页
             $this->redirect('//'.$this->_config->domain->www.'/Chaoshi/Index/index');
         }else{
@@ -94,6 +114,19 @@ class LoginController extends Core_Controller_Www {
         }
     }
     
+    /*
+     * 跨域设置cookie
+     * 每一个APP下面都有一个setCookie.php页面
+     */
+    private function corssDomain($data) {
+        $front_domains = array('www' => $this->_config->domain->www, 'chaoshi' => $this->_config->domain->chaoshi);
+        $q=$data['userId'].'|'.$data['loginTime'];
+        $html = '';
+        foreach ($front_domains as $key => $host) {
+            $html .='<script type="text/javascript" src="http://' . $host . '/Index/setCookie?q='.$q.'"></script>' . "\n";
+        }
+        echo $html;
+    }
     
     
     public function logoutAction(){

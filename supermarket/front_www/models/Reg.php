@@ -70,8 +70,8 @@ class RegModel extends BasicModel{
                                     `registerTime`='$time'";
         $result = $this->ssodb->query($sql);
         if ($result == false) {
-            $error = $db->ErrorMsg();
-            die("$error");
+            $error = $this->ssodb->ErrorMsg();
+            return FALSE;
         }
         return true;
     }
