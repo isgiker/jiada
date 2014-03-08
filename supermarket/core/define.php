@@ -3,11 +3,11 @@ $host = $_SERVER['HTTP_HOST'];
 /**
  * $hostArr=['域名'=>'application目录']
  */
-$hostArr = ['admin'=>'admin', 'business'=>'business','www'=>'front_www','chaoshi'=>'front_chaoshi'];
+$hostArr = ['admin'=>'admin', 'business'=>'business','my'=>'my','www'=>'front_www','chaoshi'=>'front_chaoshi'];
 /**
  * $modules=['application目录'=>'站点模块,模块,模块']
  */
-$modules = ['admin' => 'Index,Default,Chaoshi,Demo', 'business' => 'Index,Default,Chaoshi','front_www' => 'Index,Default,Chaoshi','front_chaoshi' => 'Index'];
+$modules = ['admin' => 'Index,Default,Chaoshi,Demo', 'business' => 'Index,Default,Chaoshi','my' => 'Index','front_www' => 'Index,Default,Chaoshi','front_chaoshi' => 'Index'];
 $curHost = explode('.', $host);
 if (isset($hostArr[$curHost[0]]) && $hostArr[$curHost[0]]) {
     $applicationName=$hostArr[$curHost[0]];

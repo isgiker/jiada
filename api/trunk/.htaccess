@@ -1,0 +1,26 @@
+# Turn on URL rewriting
+RewriteEngine On
+
+#阻止目录浏览
+Options All -Indexes
+
+#禁止.htaccess文件被查看
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+
+#禁止.ini文件被查看
+<Files *.ini>
+order allow,deny
+deny from all
+</Files>
+
+#常用的客户端请求错误返回代码：
+ErrorDocument 401 /errors/401.html
+#ErrorDocument 403 "Error 403, Access forbidden!You don't have permission to access the requested directory."
+ErrorDocument 403 /errors/403.html
+ErrorDocument 404 /errors/404.html
+
+#常见的服务器错误返回代码：
+ErrorDocument 500 /errors/500.html

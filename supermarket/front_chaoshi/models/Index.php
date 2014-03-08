@@ -4,7 +4,7 @@
  * @desc 登录
  * @author Vic Shiwei
  */
-class LoginModel extends BasicModel{
+class ChaoshiModel extends BasicModel{
 
     const cryptKey= '~!@#*w.(KLH)^F/,W6[jIi]-%kXz+K_w3%+=';
     
@@ -34,7 +34,7 @@ class LoginModel extends BasicModel{
         if(!$data['userId'] || !$data['loginTime'] || !$data['keyValue'] ){
             return false;
         }
-        $sql = "replace into user_login_cookie set 
+        $sql = "replace into user_login_log set 
                                     `userId`='$data[userId]',
                                     `loginTime`='$data[loginTime]',
                                     `keyValue`='$data[keyValue]'

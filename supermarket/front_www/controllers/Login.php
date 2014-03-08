@@ -95,19 +95,32 @@ class LoginController extends Core_Controller_Www {
         $logParam=array(
             'userId'=>$userInfo['userId'],
             'loginTime'=>$loginTime,
-            'keyValue'=>'uname:'.$data['username'].','.'uid:'.$userInfo['userId'].','.'lt:'.$loginTime.','.'_USERINFO:'.$userInfo_encrypt.','.'_UIS:'.$uis.','.'_TICKET:'.$ticket
+            'keyValue'=>'uname=>'.$data['username'].','.'uid=>'.$userInfo['userId'].','.'lt=>'.$loginTime.','.'_USERINFO=>'.$userInfo_encrypt.','.'_UIS=>'.$uis.','.'_TICKET=>'.$ticket
         );
         //跨域时根据用户id和登录时间获取cookie
         $writeR=$this->model->writeLoginLog($logParam);
         if($writeR){
-            $this->corssDomain(array(
+//            $cdR=$this->corssDomainAction(array(
+//                'userId' => $userInfo['userId'],
+//                'loginTime' => $loginTime));
+//            if($cdR){
+//                echo $cdR;
+//                sleep(10);
+//            }else{
+//                $error = 'Cookie写入失败！';
+//                return $error;
+//            }
+            
+            //异步调用；
+            Util::curlAsyncTriggerRequest('http://'.$this->_config->domain->www.'/Login/corssDomain',array(
                 'userId' => $userInfo['userId'],
-                'loginTime' => $loginTime));
+                'loginTime' => $loginTime),'POST');
+            sleep(1);
         }
 
         if($cR1 && $cR2 && $cR3 && $cR4 && $cR5 && $cR6){
-            //目前暂跳转到超市首页，日后会跳转到小区主页
-            $this->redirect('//'.$this->_config->domain->www.'/Chaoshi/Index/index');
+            //这里一定要用js跳转，目前暂跳转到超市首页，日后会跳转到小区主页
+            $this->jsLocation(null,'//'.$this->_config->domain->chaoshi.'/Index');
         }else{
             $error = 'Cookie写入失败！';
             return $error;
@@ -118,14 +131,25 @@ class LoginController extends Core_Controller_Www {
      * 跨域设置cookie
      * 每一个APP下面都有一个setCookie.php页面
      */
-    private function corssDomain($data) {
-        $front_domains = array('www' => $this->_config->domain->www, 'chaoshi' => $this->_config->domain->chaoshi);
+    public function corssDomainAction($data=array()) {
+        Yaf_Dispatcher::getInstance()->autoRender(FALSE);
+        $this->_layout = false;
+        //ob_函数nginx下不起作用，只有在apache下才有用，要想立刻输出内容就需要输出足够的内容才行。
+        ob_implicit_flush();
+        echo str_pad(" ", 1024*4);
+        
+        if(!$data){
+            $data=$_POST;
+        }
+        $front_domains = array('chaoshi' => $this->_config->domain->chaoshi);
         $q=$data['userId'].'|'.$data['loginTime'];
+        
         $html = '';
         foreach ($front_domains as $key => $host) {
-            $html .='<script type="text/javascript" src="http://' . $host . '/Index/setCookie?q='.$q.'"></script>' . "\n";
+            $html .='<script type="text/javascript" src="http://' . $host . '/Setcookie?q='.$q.'"></script>' . "\n";
         }
         echo $html;
+        return $html;
     }
     
     
@@ -141,6 +165,16 @@ class LoginController extends Core_Controller_Www {
         $delCookie4 = $this->setCookies('_UIS', '', -86400);
 
         $this->redirect('/Login');
+    }
+    
+    public function testAction() {
+        ob_implicit_flush(1);
+        echo str_pad(" ", 1024 * 1024);
+        echo str_repeat(" ", 1024 * 1024);
+        for ($i = 0; $i < 1000; $i++) {
+            echo $i . "<br>";
+            sleep(1);
+        }
     }
 
 }

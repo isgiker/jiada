@@ -62,6 +62,37 @@ class Util {
     static public function mkdir_r($path, $mode = 0755) {
         return is_dir($path) || ( self::mkdir_r(dirname($path), $mode) && @mkdir($path, $mode) );
     }
+    
+    /**
+     * 异步请求;
+     */    
+    static public function curlAsyncTriggerRequest($url, $param, $httpMethod = 'GET', $timeout=30) {
+        $oCurl = curl_init();
+        if (stripos($url, "https://") !== FALSE) {
+            curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, FALSE);
+            curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, FALSE);
+        }
+        if ($httpMethod == 'GET') {
+            curl_setopt($oCurl, CURLOPT_URL, $url . "?" . http_build_query($param));
+            curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, 1);
+        } else {
+            curl_setopt($oCurl, CURLOPT_URL, $url);
+            curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($oCurl, CURLOPT_POST, 1);
+            curl_setopt($oCurl, CURLOPT_POSTFIELDS, http_build_query($param));
+        }
+        curl_setopt($oCurl, CURLOPT_CONNECTTIMEOUT, $timeout);
+        
+        $sContent = curl_exec($oCurl);
+        $aStatus = curl_getinfo($oCurl);
+        curl_close($oCurl);
+        if (intval($aStatus["http_code"]) == 200) {
+            echo $sContent;
+            return $sContent;
+        } else {
+            return FALSE;
+        }
+    }
 
 }
 

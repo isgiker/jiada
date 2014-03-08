@@ -239,7 +239,7 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
      * @param type $type int|float|word|string|none
      * @return string
      */
-    public function get($key, $value, $type='none') {
+    public function get($key, $value=null, $type='none') {
         $var = $this->getRequest()->get($key, $value);
         if (!$var) {
             return $value;
@@ -258,7 +258,7 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
      * @param type $type int|float|word|string|none
      * @return string
      */
-    public function getQuery($key, $value, $type='none') {
+    public function getQuery($key, $value=null, $type='none') {
         $var = $this->getRequest()->getQuery($key, $value);
         if (!$var) {
             return $value;
