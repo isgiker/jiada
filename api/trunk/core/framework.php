@@ -2,49 +2,67 @@
 
 /**
  * @abstract 程序架构入口
- * @author 石维(shiwei)
- * @version 1.0
+ * @author Vic shiwei(石维)
  * @2011-01-14
+ * 系统使用__autoload自动加载类文件,所以类名称必须与文件名相同；
+ * 所有类文件在使用前必须提前到config.regclass.php文件注册;
+ * 全局变量都以下划线“_”开头
  */
 
-/* 注册类库 */
-include_once(JPATH_CORE . DS . 'config.regclass.php');
-
+/*加载注册类库*/
+include_once(CORE_PATH . DS . 'config.regclass.php');
 $config_reg_class = new JRegClass();
 
-/* 自动加载注册文件 */
-
+/*自动加载注册文件*/
 function __autoload($className) {
-
     global $config_reg_class;
-
     //获取类文件路径;
     $classPath = $config_reg_class->$className();
-
     //加载文件;
     include_once($classPath);
 }
 
-require_once (JPATH_CORE . DS . 'util.php');
+//创建工厂对象
+$factory = new Factory();
 
-//数据库类文件;
-require_once (JPATH_LIBRARIES . DS . 'mysqldb.php');
+/**加载站点配置文件
+ * =============================================================================
+ */
 
+/* 获取站点配置文件 */
+$_setting_config = $factory->getConfig('setting', 'ini');
 
+/* 获取数据库配置文件 */
+$_db_config = $factory->getConfig('databases', 'ini');
+//$factory->getDBO('jiada');
 
-/* 配置文件 */
+/**站点设置
+ * =============================================================================
+ */
 
-//数据库配置文件
-$_config_db = parse_ini_file(JPATH_CONFIGS . DS . "config.db.ini", true);
+/* DEBUG 设置 */
+if (isset($_setting_config['common']['setting']['errorLevel']) && $_setting_config['common']['setting']['errorLevel']) {
+    $error_reporting = $_setting_config['common']['setting']['errorLevel'];
+} else {
+    $error_reporting = 0;
+}
 
-$_setting = parse_ini_file(JPATH_CONFIGS . DS . "setting.ini", true);
+error_reporting($error_reporting);
 
+if (isset($_setting_config['common']['setting']['debug']) && $_setting_config['common']['setting']['debug']==1) {
+    ini_set('display_errors', 'On');
+} else if (isset($_setting_config['common']['setting']['debug']) && $_setting_config['common']['setting']['debug']==2) {
+    ini_set('display_errors', 'Off');
+    Error::attachHandler();
+} else {
+    ini_set('display_errors', 'Off');
+}
 
 /* 设置时区 */
-date_default_timezone_set('Asia/Shanghai');
+date_default_timezone_set($_setting_config['common']['setting']['offset']);
 
 /* 以(i)分为单位 */
-$lifeTime = $_setting['lifetime'] * 60;
+$lifeTime = $_setting_config['common']['setting']['lifetime'] * 60;
 
 /* 以(s)秒为单位 */
 if (!$lifeTime)
@@ -55,19 +73,7 @@ ini_set('session.gc_maxlifetime', $lifeTime);
 ini_set('session.cookie_lifetime', $lifeTime);
 setcookie(session_name(), session_id(), time() + $lifeTime, '/');
 
-/* DEBUG 设置 */
-if ($_setting['error_reporting']) {
-    $error_reporting = $_setting['error_reporting'];
-} else {
-    $error_reporting = 0;
-}
 
-if ($_setting['debug'] == 1) {
-    ini_set('display_errors', 'On');
-} else {
-    ini_set('display_errors', 'Off');
-}
-error_reporting($error_reporting);
 
 //设置超时;用于解决file_get_contents 连接超时的问题
 $opts = array(
@@ -77,37 +83,3 @@ $opts = array(
     )
 );
 $context = stream_context_create($opts);
-
-
-
-/*
- * 使用CURL替代file_get_contents方案
- * $timeout超时时间默认30秒
- * $url HTTP地址
- */
-
-function curl_file_get_contents($url, $timeout = 10) {
-
-    if (!$url)
-        return false;
-
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-    $file_contents = curl_exec($ch);
-    curl_close($ch);
-
-    return $file_contents;
-}
-
-/*
- * 全局函数
- */
-
-function getDBO($option) {
-    $db = new Mysqldb();
-    $db->connect($option['host'], $option['username'], $option['password'], $option['dbname']);
-
-    return $db;
-}

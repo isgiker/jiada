@@ -53,7 +53,7 @@ class Request {
         return $var;
     }
 
-    public function _addslashes($param) {
+    static public function _addslashes($param) {
         //if magic_quotes_gpc=Off
         if (!get_magic_quotes_gpc()) {
             //if $param is an array

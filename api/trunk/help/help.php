@@ -1,11 +1,11 @@
 <?
 
 require('../global.php');
-if ($_SERVER[argv][0]) {
+if (isset($_SERVER['argv'][0]) && $_SERVER['argv'][0]) {
     $modulePath = BASE_PATH . DS . '_api/';
     //$fileArray=scandir($modulePath);
     //foreach($fileArray as $file){
-    $file = str_replace(':', DS, $_SERVER[argv][0]);
+    $file = str_replace(':', DS, $_SERVER['argv'][0]);
     if (!preg_match("/^\./i", $file)) {
         $fileContent = file_get_contents($modulePath . $file);
         preg_match_all("/\/\*\*.*?\*\//is", $fileContent, $remark_array);

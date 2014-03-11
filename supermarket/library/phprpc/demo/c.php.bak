@@ -1,0 +1,14 @@
+<?php
+ini_set('display_errors', On);
+require_once('../client/phprpc_client.php');
+$client = new PHPRPC_Client('http://mytest.local/phprpc/demo/s.php'); 
+
+
+
+echo $client->HelloWorld();
+
+
+echo $client->multiply(2.5);
+
+echo $client->add(66);
+

@@ -166,7 +166,7 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
     }
 
     /**
-     * 返回结果函数
+     * 用于接口,返回结果函数
      * @param array $data
      * @param string $format array|json|xml
      * @return $format
