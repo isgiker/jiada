@@ -1591,20 +1591,35 @@
                         </div>
                     </div>
                     <!--floor-->
-                    <div class="floor"  data-floor="1">
-                        <div class="row floor_hd_1">
-                            <div class="floor_title_1">
-                                1F
+                    <?php
+                        
+                        if(isset($floor) && $floor && is_array($floor)){
+                            foreach ($floor as $key => $f) {
+                    ?>
+                    <div class="floor"  data-floor="<?php echo $key;?>">
+                        <div class="row floor_hd_<?php echo $key;?>">
+                            <div class="floor_title_<?php echo $key;?>">
+                                <?php echo $key;?>F-<?php echo $f['floorName'];?>
                             </div>
-                            <div class="floor_category_1">
-                                <ul class="category_nav_1">
-                                    <li class="cname curr_category_nav_1" data-id="1f_right_cate_0000"><a href="javascript:void(0)">特惠专区</a></li>
-                                    <li class="cname " data-id="1f_right_cate_1001"><a href="javascript:void(0)">鲜奶蛋品</a></li>
-                                    <li class="cname " data-id="1f_right_cate_1002"><a href="javascript:void(0)">家禽类</a></li>
-                                    <li class="cname " data-id="1f_right_cate_1003"><a href="javascript:void(0)">肉类</a></li>
+                            <div class="floor_category_<?php echo $key;?>">
+                                <ul class="category_nav_<?php echo $key;?>">
+                                    <?php
+                                    if (isset($f['floorData']['catesGoods']) && $f['floorData']['catesGoods']) {
+                                        foreach ($f['floorData']['catesGoods'] as $k=>$item) {
+                                            if($k==1){
+                                                $curr_class=' curr_category_nav_'.$key;
+                                            }  else {
+                                                $curr_class='';
+                                            }
+                                    ?>
+                                            <li class="cname <?php echo $curr_class;?>" data-id="<?php echo $key;?>f_right_cate_<?php echo $k;?>"><a href="javascript:void(0)"><?php echo $item['name'];?></a></li>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
                                 </ul>
                             </div>
-                            <div class="floor_keyword_1">
+                            <div class="floor_keyword_<?php echo $key;?>">
                                 <span><a href="http://www.tootoo.cn/category-14248.html?ttad_source=ttad&amp;ttad_pos=hom_cate_second_sublink_01" target="_blank" title="酸奶">酸奶</a></span>
                                 <span><a href="http://www.tootoo.cn/category-12524-8981--p-s.html?ttad_source=ttad&amp;ttad_pos=hom_cate_second_sublink_02" target="_blank" title="科尔沁">科尔沁</a></span>
                                 <span class="floor_keyword_last"><a href="http://www.tootoo.cn/category-12607.html?ttad_source=ttad&amp;ttad_pos=hom_cate_second_sublink_03" target="_blank" title="进口牛羊肉">进口牛羊肉</a></span>
@@ -1615,23 +1630,29 @@
                         <div class="row floor_content">
                             <div class="floor_content_left">
                                 <div class="tags">
-
-                                    <a href="http://list.tmall.com/search_product.htm?spm=a3204.7084713.1996500505.9.jqdpXk&amp;cat=50498005&amp;s=0&amp;n=40&amp;sort=s&amp;style=g&amp;search_condition=1&amp;user_id=725677994&amp;active=1" data-spm-anchor-id="a3204.7084713.1996500505.9">常温奶</a>
-                                    <a href="http://list.tmall.com/search_product.htm?spm=a3204.7084713.1996500505.10.jqdpXk&amp;cat=50498005&amp;q=%CB%E1%C4%CC&amp;style=g&amp;user_id=725677994" data-spm-anchor-id="a3204.7084713.1996500505.10">酸奶</a>
-                                    <a href="http://list.tmall.com/search_product.htm?spm=a3204.7084713.1996500505.11.jqdpXk&amp;cat=50498005&amp;q=%B6%F9%CD%AF&amp;style=g&amp;user_id=725677994" data-spm-anchor-id="a3204.7084713.1996500505.11">儿童奶</a>
-                                    <a href="http://list.tmall.com/search_product.htm?spm=a3204.7084713.1996500505.12.jqdpXk&amp;cat=50498005&amp;q=%B6%B9%C4%CC&amp;style=g&amp;user_id=725677994" data-spm-anchor-id="a3204.7084713.1996500505.12">豆奶</a>
-                                    <a href="http://list.tmall.com/search_product.htm?spm=a3204.7084713.1996500505.13.jqdpXk&amp;cat=50498005&amp;q=%B5%CD%D6%AC%C5%A3%C4%CC&amp;style=g&amp;user_id=725677994" data-spm-anchor-id="a3204.7084713.1996500505.13">低脂奶</a>
-                                    <a href="http://list.tmall.com/search_product.htm?spm=a3204.7084713.1996500505.14.jqdpXk&amp;cat=50498005&amp;q=%C8%AB%D6%AC%C5%A3%C4%CC&amp;style=g&amp;user_id=725677994" data-spm-anchor-id="a3204.7084713.1996500505.14">全脂奶</a>
-                                    <a href="http://list.tmall.com/search_product.htm?spm=a3204.7084713.1996500505.15.jqdpXk&amp;cat=50498005&amp;q=%B9%E2%C3%F7&amp;style=g&amp;user_id=725677994" data-spm-anchor-id="a3204.7084713.1996500505.15">光明</a>
-                                    <a href="http://list.tmall.com/search_product.htm?spm=a3204.7084713.1996500505.16.jqdpXk&amp;cat=50498005&amp;q=%D2%C1%C0%FB&amp;style=g&amp;user_id=725677994" data-spm-anchor-id="a3204.7084713.1996500505.16">伊利</a>
-                                    <a href="http://list.tmall.com/search_product.htm?spm=a3204.7084713.1996500505.17.jqdpXk&amp;user_action=initiative&amp;at_topsearch=1&amp;sort=st&amp;cat=50514008&amp;user_id=725677994&amp;q=%C3%C9%C5%A3&amp;tp_id=725677994&amp;userBucket=8&amp;userCell=28" data-spm-anchor-id="a3204.7084713.1996500505.17">蒙牛</a>
-                                    <a href="http://list.tmall.com/search_product.htm?spm=a3204.7084713.1996500505.18.jqdpXk&amp;cat=50498005&amp;q=%CD%FA%CD%FA&amp;style=g&amp;user_id=725677994" data-spm-anchor-id="a3204.7084713.1996500505.18">旺仔</a>
-                                    <a href="http://list.tmall.com/search_product.htm?spm=a3204.7084713.1996500505.19.jqdpXk&amp;cat=50498005&amp;q=%CD%DE%B9%FE%B9%FE&amp;style=g&amp;user_id=725677994" data-spm-anchor-id="a3204.7084713.1996500505.19">娃哈哈</a>
-                                    <a href="http://list.tmall.com/search_product.htm?spm=a3204.7084713.1996500505.20.jqdpXk&amp;user_action=initiative&amp;at_topsearch=1&amp;sort=st&amp;cat=50514008&amp;user_id=725677994&amp;q=%C7%E5%C3%C0&amp;tp_id=725677994&amp;userBucket=8&amp;userCell=28" data-spm-anchor-id="a3204.7084713.1996500505.20">清美</a>
-                                    <a href="http://list.tmall.com/search_product.htm?spm=a3204.7084713.1996500505.21.jqdpXk&amp;cat=50498005&amp;q=%CE%AC%CB%FB%C4%CC&amp;style=g&amp;user_id=725677994" data-spm-anchor-id="a3204.7084713.1996500505.21">维他奶</a>
-                                    <a href="http://list.tmall.com/search_product.htm?spm=a3204.7084713.1996500505.22.jqdpXk&amp;cat=50498005&amp;q=%D7%E6%C3%FB&amp;style=g&amp;user_id=725677994" data-spm-anchor-id="a3204.7084713.1996500505.22">祖名</a>
-                                    <a class="promo" href="http://list.tmall.com/search_product.htm?spm=a3204.7084713.1996500505.23.jqdpXk&amp;cat=50498005&amp;s=0&amp;n=40&amp;sort=s&amp;style=g&amp;search_condition=1&amp;user_id=725677994&amp;active=1" data-spm-anchor-id="a3204.7084713.1996500505.23">常温奶</a>
-                                </div>
+                                    
+                                    <?php
+                                    //商品类型
+                                    if (isset($f['floorData']['goodsType']) && $f['floorData']['goodsType']) {
+                                        foreach ($f['floorData']['goodsType'] as $item) {
+                                    ?>
+                                            <a href="javascript:void();" ><?php echo $item['cateName']; ?></a>
+                                    <?php
+                                        }
+                                    }
+                                    ?>
+                                    <?php
+                                    //品牌
+                                    if (isset($f['floorData']['catesBrand']) && $f['floorData']['catesBrand']) {
+                                        foreach ($f['floorData']['catesBrand'] as $item) {
+                                    ?>
+                                            <a href="javascript:void();" ><?php echo $item['brandName']; ?></a>
+                                    <?php
+                                        }
+                                    }
+                                    ?>
+                                    
+                                   </div>
                                 <div class="goods_selltop">
                                     <div class="goods_selltop">
                                         <p class="selltop_tit"></p>
@@ -1741,41 +1762,49 @@
                                 </div>
                             </div>
                             <div class="floor_content_right">
-                                <div class="cate_nav_content" id="1f_right_cate_0000" style="display: block;">
+                                <?php
+                                    if (isset($f['floorData']['catesGoods']) && $f['floorData']['catesGoods']) {
+                                        foreach ($f['floorData']['catesGoods'] as $k=>$items) {
+                                            if($k==1){
+                                                $curr_display=' block;';
+                                            }  else {
+                                                $curr_display=' none;';
+                                            }
+                                    ?>
+                                <div class="cate_nav_content" id="<?php echo $key;?>f_right_cate_<?php echo $k;?>" style="display:<?php echo $curr_display;?>;">
                                     <ul class="goods">
+                                        
+                                    <?php
+                                        $catesGoods=@$items['data'];
+                                        if(isset($catesGoods) && $catesGoods){
+                                            foreach ($catesGoods as $item) {
+                                                if($item['packPic']){
+                                                    $goodsPic=$fileImg_obj->generateImgUrl(array('imgSize'=>'160X160','imgUrl'=>$item['packPic']), $imagesConfig);
+                                                }else{
+                                                    $goodsPic='';
+                                                }
+                                    ?>    
                                     <li class="goods_info">
                                         <div class="goods_img">
-                                            <a target="_blank" href="http://www.tootoo.cn/product-1016741.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_01" id="cms_pic" title="【沱沱工社】有机娃娃菜" alt="【沱沱工社】有机娃娃菜">                                            
-                                                <img src="http://img02.ttmimg.com/30/00/20140115162328264_160.jpg" alt="【沱沱工社】有机娃娃菜" title="【沱沱工社】有机娃娃菜" style="" height="160px" width="160px">                                        
+                                            <a target="_blank" href="" id="cms_pic" >                                            
+                                                <img src="<?php echo $goodsPic;?>" height="160px" width="160px">                                        
                                             </a>                               
                                         </div>                                    
                                         <p class="goods_name">
-                                            <a id="cms_name" title="【沱沱工社】有机娃娃菜" href="http://www.tootoo.cn/product-1016741.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_01" target="_blank">【沱沱工社】有机娃娃菜</a> 
+                                            <a id="cms_name" title="<?php echo $item['goodsName'];?>" href="<?php echo '/detail?p='.$item['priceId'];?>" target="_blank"><?php echo $item['goodsName'];?></a> 
                                         </p>                                    
-                                        <p class="goods_price">  ￥<span id="cms_sprice">16.80</span>/<i class="price_i cms_market">斤</i></p>
+                                        <p class="goods_price">￥<span id="cms_sprice"><?php echo $item['currentPrice'];?></span></p>
                                     </li>
-                                    <li class="goods_info"><div class="goods_img">                                        <a target="_blank" href="http://www.tootoo.cn/product-1016580.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_02" id="cms_pic" title="【沱沱工社】有机结球生菜 " alt="【沱沱工社】有机结球生菜 ">                                            <img src="http://img01.ttmimg.com/C5/92/2035094757600_160.jpg" alt="【沱沱工社】有机结球生菜 " title="【沱沱工社】有机结球生菜 " style="" height="160px" width="160px">                                        </a>                                        <div class="activity_icon1" id="cms_mark" style="display: none;"><span><img class="transparent" src="http://misc.ttmimg.com/images/cn/2013/2013_public2.png"></span></div>                                    </div>                                    <p class="goods_name"> <a id="cms_name" title="【沱沱工社】有机结球生菜 " href="http://www.tootoo.cn/product-1016580.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_02" target="_blank">【沱沱工社】有机结球生菜 </a> </p>                                    <p class="goods_price">  ￥<span id="cms_sprice">13.80</span>/<i class="price_i cms_market">斤</i></p></li>
-                                    <li class="goods_info"><div class="goods_img">                                        <a target="_blank" href="http://www.tootoo.cn/product-1022958.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_03" id="cms_pic" title="【沱沱工社】有机大白菜" alt="【沱沱工社】有机大白菜">                                            <img src="http://img03.ttmimg.com/C5/14/20480313816_160.jpg" alt="【沱沱工社】有机大白菜" title="【沱沱工社】有机大白菜" style="" height="160px" width="160px">                                        </a>                                        <div class="activity_icon1" id="cms_mark" style="display: none;"><span><img class="transparent" src="http://misc.ttmimg.com/images/cn/2013/2013_public2.png"></span></div>                                    </div>                                    <p class="goods_name"> <a id="cms_name" title="【沱沱工社】有机大白菜" href="http://www.tootoo.cn/product-1022958.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_03" target="_blank">【沱沱工社】有机大白菜</a> </p>                                    <p class="goods_price">  ￥<span id="cms_sprice">10.00</span>/<i class="price_i cms_market">个</i></p></li>
-                                    <li class="goods_info">
-                                        <div class="goods_img">
-                                            <a target="_blank" href="http://www.tootoo.cn/product-1016741.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_01" id="cms_pic" title="【沱沱工社】有机娃娃菜" alt="【沱沱工社】有机娃娃菜">                                            
-                                                <img src="http://img02.ttmimg.com/30/00/20140115162328264_160.jpg" alt="【沱沱工社】有机娃娃菜" title="【沱沱工社】有机娃娃菜" style="" height="160px" width="160px">                                        
-                                            </a>                                  
-                                        </div>                                    
-                                        <p class="goods_name">
-                                            <a id="cms_name" title="【沱沱工社】有机娃娃菜" href="http://www.tootoo.cn/product-1016741.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_01" target="_blank">【沱沱工社】有机娃娃菜</a> 
-                                        </p>                                    
-                                        <p class="goods_price">  ￥<span id="cms_sprice">16.80</span>/<i class="price_i cms_market">斤</i></p>
-                                    </li>
-                                    <li class="goods_info" pro_id="1016580" id="1016580"><div class="goods_img">                                        <a target="_blank" href="http://www.tootoo.cn/product-1016580.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_02" id="cms_pic" title="【沱沱工社】有机结球生菜 " alt="【沱沱工社】有机结球生菜 ">                                            <img src="http://img01.ttmimg.com/C5/92/2035094757600_160.jpg" alt="【沱沱工社】有机结球生菜 " title="【沱沱工社】有机结球生菜 " style="" height="160px" width="160px">                                        </a>                                        <div class="activity_icon1" id="cms_mark" style="display: none;"><span><img class="transparent" src="http://misc.ttmimg.com/images/cn/2013/2013_public2.png"></span></div>                                    </div>                                    <p class="goods_name"> <a id="cms_name" title="【沱沱工社】有机结球生菜 " href="http://www.tootoo.cn/product-1016580.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_02" target="_blank">【沱沱工社】有机结球生菜 </a> </p>                                    <p class="goods_price">  ￥<span id="cms_sprice">13.80</span>/<i class="price_i cms_market">斤</i></p></li>
-                                    <li class="goods_info" pro_id="1022958" id="1022958"><div class="goods_img">                                        <a target="_blank" href="http://www.tootoo.cn/product-1022958.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_03" id="cms_pic" title="【沱沱工社】有机大白菜" alt="【沱沱工社】有机大白菜">                                            <img src="http://img03.ttmimg.com/C5/14/20480313816_160.jpg" alt="【沱沱工社】有机大白菜" title="【沱沱工社】有机大白菜" style="" height="160px" width="160px">                                        </a>                                        <div class="activity_icon1" id="cms_mark" style="display: none;"><span><img class="transparent" src="http://misc.ttmimg.com/images/cn/2013/2013_public2.png"></span></div>                                    </div>                                    <p class="goods_name"> <a id="cms_name" title="【沱沱工社】有机大白菜" href="http://www.tootoo.cn/product-1022958.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_03" target="_blank">【沱沱工社】有机大白菜</a> </p>                                    <p class="goods_price">  ￥<span id="cms_sprice">10.00</span>/<i class="price_i cms_market">个</i></p></li>
-                                    <li class="goods_info" pro_id="1016580" id="1016580"><div class="goods_img">                                        <a target="_blank" href="http://www.tootoo.cn/product-1016580.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_02" id="cms_pic" title="【沱沱工社】有机结球生菜 " alt="【沱沱工社】有机结球生菜 ">                                            <img src="http://img01.ttmimg.com/C5/92/2035094757600_160.jpg" alt="【沱沱工社】有机结球生菜 " title="【沱沱工社】有机结球生菜 " style="" height="160px" width="160px">                                        </a>                                        <div class="activity_icon1" id="cms_mark" style="display: none;"><span><img class="transparent" src="http://misc.ttmimg.com/images/cn/2013/2013_public2.png"></span></div>                                    </div>                                    <p class="goods_name"> <a id="cms_name" title="【沱沱工社】有机结球生菜 " href="http://www.tootoo.cn/product-1016580.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_02" target="_blank">【沱沱工社】有机结球生菜 </a> </p>                                    <p class="goods_price">  ￥<span id="cms_sprice">13.80</span>/<i class="price_i cms_market">斤</i></p></li>
-                                    <li class="goods_info" pro_id="1022958" id="1022958"><div class="goods_img">                                        <a target="_blank" href="http://www.tootoo.cn/product-1022958.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_03" id="cms_pic" title="【沱沱工社】有机大白菜" alt="【沱沱工社】有机大白菜">                                            <img src="http://img03.ttmimg.com/C5/14/20480313816_160.jpg" alt="【沱沱工社】有机大白菜" title="【沱沱工社】有机大白菜" style="" height="160px" width="160px">                                        </a>                                        <div class="activity_icon1" id="cms_mark" style="display: none;"><span><img class="transparent" src="http://misc.ttmimg.com/images/cn/2013/2013_public2.png"></span></div>                                    </div>                                    <p class="goods_name"> <a id="cms_name" title="【沱沱工社】有机大白菜" href="http://www.tootoo.cn/product-1022958.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_03" target="_blank">【沱沱工社】有机大白菜</a> </p>                                    <p class="goods_price">  ￥<span id="cms_sprice">10.00</span>/<i class="price_i cms_market">个</i></p></li>
-                                    <li class="goods_info" pro_id="1016580" id="1016580"><div class="goods_img">                                        <a target="_blank" href="http://www.tootoo.cn/product-1016580.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_02" id="cms_pic" title="【沱沱工社】有机结球生菜 " alt="【沱沱工社】有机结球生菜 ">                                            <img src="http://img01.ttmimg.com/C5/92/2035094757600_160.jpg" alt="【沱沱工社】有机结球生菜 " title="【沱沱工社】有机结球生菜 " style="" height="160px" width="160px">                                        </a>                                        <div class="activity_icon1" id="cms_mark" style="display: none;"><span><img class="transparent" src="http://misc.ttmimg.com/images/cn/2013/2013_public2.png"></span></div>                                    </div>                                    <p class="goods_name"> <a id="cms_name" title="【沱沱工社】有机结球生菜 " href="http://www.tootoo.cn/product-1016580.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_02" target="_blank">【沱沱工社】有机结球生菜 </a> </p>                                    <p class="goods_price">  ￥<span id="cms_sprice">13.80</span>/<i class="price_i cms_market">斤</i></p></li>
-                                    <li class="goods_info" pro_id="1022958" id="1022958"><div class="goods_img">                                        <a target="_blank" href="http://www.tootoo.cn/product-1022958.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_03" id="cms_pic" title="【沱沱工社】有机大白菜" alt="【沱沱工社】有机大白菜">                                            <img src="http://img03.ttmimg.com/C5/14/20480313816_160.jpg" alt="【沱沱工社】有机大白菜" title="【沱沱工社】有机大白菜" style="" height="160px" width="160px">                                        </a>                                        <div class="activity_icon1" id="cms_mark" style="display: none;"><span><img class="transparent" src="http://misc.ttmimg.com/images/cn/2013/2013_public2.png"></span></div>                                    </div>                                    <p class="goods_name"> <a id="cms_name" title="【沱沱工社】有机大白菜" href="http://www.tootoo.cn/product-1022958.html?ttad_source=ttad&amp;ttad_pos=hom_cate_first_one_rightgoods_03" target="_blank">【沱沱工社】有机大白菜</a> </p>                                    <p class="goods_price">  ￥<span id="cms_sprice">10.00</span>/<i class="price_i cms_market">个</i></p></li>
-                                    
+                                    <?php
+                                        }
+                                    }
+                                    ?>
                                 </ul>
                                 </div>
+                                <?php
+                                        }
+                                    }
+                                    ?>
                                 <div class="cate_nav_content" id="1f_right_cate_1001" style="display: none;">
                                     <ul class="goods">
                                         <li class="goods_info" pro_id="1016741" id="1016741">
@@ -1795,7 +1824,10 @@
                             </div>
                         </div>
                     </div>
-                    
+                    <?php
+                            }
+                        }
+                    ?>
                     
                     <div class="floor"  data-floor="2">
                         <div class="row floor_hd_2">

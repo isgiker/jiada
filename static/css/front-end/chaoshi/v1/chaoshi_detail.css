@@ -1,0 +1,31 @@
+/* 
+    Document   : chaoshi_detail
+    Created on : 2014-3-15, 22:42:30
+    Author     : vic
+    Description:
+        Purpose of the stylesheet follows.
+*/
+.w {
+width: 1210px;
+margin: 0 auto;
+border: 1px solid #000;
+}
+#product-intro {
+    position: relative;
+    z-index: 1;
+    padding-left: 370px;
+    min-height: 474px;
+    height: auto!important;
+    height: 474px;
+}
+#preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 352px;
+}
+.product_name {
+    padding-bottom: 10px;
+    border-bottom: 1px dotted #ccc;
+    zoom: 1;
+}

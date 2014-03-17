@@ -75,7 +75,8 @@ class File_Image {
      */
     public function generateImgUrl($imgParameter, $imagesConfig) {
         if (!trim($imgParameter['imgUrl']) || !$imagesConfig) {
-            die('Images Url and imagesConfig can not be null!');
+            return false;
+//            die('Images Url and imagesConfig can not be null!');
         }
         if(isset($imgParameter['imgSize']) && $imgParameter['imgSize']){
             //不同图片尺寸的Url地址;

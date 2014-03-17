@@ -27,9 +27,7 @@ class IndexController extends Core_Controller_Api{
         Yaf_Dispatcher::getInstance()->autoRender(FALSE);
         $this->_layout = false;        
         $phprpcServer = new PHPRPC_Server();
-        $phprpcServer->add(array('multiply','aRr'),  $this);
-        $phprpcServer->add('add', IndexController);
-        $phprpcServer->add('getGoodsType',  $this);
+        $phprpcServer->add(array('getGoodsType','getCatesGoods','getCatesBrand'),  $this);
         
         $phprpcServer->start();
     }
@@ -52,17 +50,43 @@ class IndexController extends Core_Controller_Api{
         }
         return $this->returnData($data);
     }
-
-    static public function add($number) {
-        return $number + 22;
-    }
-
-    public function multiply($number) {
-        return $number * 2;
+    
+    /**
+     * 根据分类(商品类型)/多个分类(商品类型)获取旗下的商品
+     * @param string $shopId,多个店铺id用逗号分隔。
+     * @param string $catesId 分类(商品类型)id,分类(商品类型)id;多个分类id用逗号分隔。
+     * @param int $limit 条数
+     * @return array|json
+     */
+    public function getCatesGoods($shopId, $catesId, $limit=10) {
+        $catesId=trim($catesId);
+        if(!$catesId){
+            return $this->errorMessage();
+        }
+        
+        $data=$this->model->getCatesGoods($shopId, $catesId, $limit);
+        if(!$data){
+            return $this->errorMessage();
+        }
+        return $this->returnData($data);
     }
     
-    public function aRr(){
-        $data=array('a'=>array('a1','a2'),'b'=>array('b1'),'d'=>array('c1'));
-        return json_encode($data);
+    /**
+     * 获取分类下的品牌
+     * @param int $cateId 分类id
+     * @param int $limit 条数
+     * @return array|json
+     */
+    public function getCatesBrand($cateId, $limit=12) {
+        $cateId=trim($cateId);
+        if(!$cateId){
+            return $this->errorMessage();
+        }
+        
+        $data=$this->model->getCatesBrand($cateId, $limit);
+        if(!$data){
+            return $this->errorMessage();
+        }
+        return $this->returnData($data);
     }
 }

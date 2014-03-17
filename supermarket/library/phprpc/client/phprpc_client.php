@@ -109,7 +109,7 @@ class _PHPRPC_Client {
     // Public Methods
     function _PHPRPC_Client($serverURL = '') {
         global $_PHPRPC_SID;
-        require_once('../common/compat.php');
+//        require_once('../common/compat.php');
         //register_shutdown_function(array(&$this, "_disconnect"));
         $this->_proxy = NULL;
         $this->_timeout = 30;
@@ -524,8 +524,8 @@ class _PHPRPC_Client {
         }
         if (array_key_exists('phprpc_encrypt', $result)) {
             $encrypt = unserialize(base64_decode($result['phprpc_encrypt']));
-            require_once('../common/bigint.php');
-            require_once('../common/xxtea.php');
+//            require_once('../common/bigint.php');
+//            require_once('../common/xxtea.php');
             $x = bigint_random($this->_keylen - 1, true);
             $key = bigint_powmod(bigint_dec2num($encrypt['y']), $x, bigint_dec2num($encrypt['p']));
             if ($this->_keylen == 128) {

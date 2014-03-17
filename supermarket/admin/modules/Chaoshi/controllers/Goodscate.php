@@ -163,7 +163,7 @@ class GoodscateController extends Core_Controller_Admin {
         $saveR = $this->model->$action($data);
         $refurl = $this->getQuery('refurl',0);
         if($refurl){
-            $_eventUrl = $refurl;
+            $_eventUrl = str_replace('{*}', '&', $refurl);
         }else{
             $_eventUrl = "/$this->_ModuleName/$this->_ControllerName/index";
         }

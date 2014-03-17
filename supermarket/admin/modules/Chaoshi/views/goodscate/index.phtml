@@ -80,10 +80,11 @@
                     <?php
                     if (is_array($data) && !empty($data)) {
                         foreach ($data as $key => $item) {
+                            $REQUEST_URI=  str_replace('&', '{*}', $_SERVER['REQUEST_URI']);
                             ?>
                             <tr>
                                 <td class="checkids"><input type="checkbox" name="checkIds[]" value="<?php echo $item['cateId']; ?>"/></td>
-                                <td><a href="<?php echo "/$_ModuleName/goodscate/edit/cateId/$item[cateId]?refurl=$_SERVER[REQUEST_URI]"; ?>" title="编辑该分类"><?php echo $item['cateName']; ?></a> <a href="<?php echo "/$_ModuleName/goodscate/add/cateId/$item[cateId]?refurl=$_SERVER[REQUEST_URI]"; ?>" class="red bold" title="在该分类下添加子类">+</a></td>
+                                <td><a href="<?php echo "/$_ModuleName/goodscate/edit/cateId/$item[cateId]?refurl=$REQUEST_URI"; ?>" title="编辑该分类"><?php echo $item['cateName']; ?></a> <a href="<?php echo "/$_ModuleName/goodscate/add/cateId/$item[cateId]?refurl=$_SERVER[REQUEST_URI]"; ?>" class="red bold" title="在该分类下添加子类">+</a></td>
                                 <td><?php echo $item['pinyin']; ?></td>
                                 <td><?php echo $item['sort']; ?></td>
                                 <td><?php if($item['status']==1){ echo '已公开';}else{ echo '未公开';} ?></td>

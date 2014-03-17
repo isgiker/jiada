@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>家大.小区超市</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="<?php echo '//' . $_config_domain['static'] . '/plugin/bootstrap303/css/bootstrap.min.css'; ?>">
+        <link rel="stylesheet" href="<?php echo '//' . $_config_domain['static'] . '/css/front-end/common/common.css'; ?>">
+        <link rel="stylesheet" href="<?php echo '//' . $_config_domain['static'] . '/css/front-end/chaoshi/v1/chaoshi_detail.css'; ?>">
+         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+            <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+        <base target="_blank"/>
+    </head>
+    <body>
+        <div id="wrap">
+            <div class="w">
+                <div id="product-intro" class="">
+                    <div id="preview">
+                        
+                    </div>
+                    <div id="info">
+                        <div class="product_name"><?php echo $goodsInfo['goodsName'];?></div>
+                        <div class="clearfix" clstag="">
+                            <ul id="summary">
+                                <li id="summary-market"><div class="dt">参&nbsp;考&nbsp;价：</div><div class="dd"><del id="page_maprice">￥<?php echo $goodsInfo['marketPrice'];?></del></div></li>
+                                <li id="summary-price">
+                                    <div class="dt">家&nbsp;大&nbsp;价：</div>
+                                    <div class="dd">
+                                        <strong class="p-price" id="jd-price">￥<?php echo $goodsInfo['currentPrice'];?></strong>
+                                    </div>
+                                </li>
+                            </ul>
+                            <!--summary end-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- /wrap end-->
+
+
+        <!-- Bootstrap core JavaScript==================================================-->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+        <script src="<?php echo '//' . $_config_domain['static'] . '/js/basic/libs/jquery.min.js'; ?>"></script>
+        <script src="<?php echo '//' . $_config_domain['static'] . '/plugin/bootstrap303/js/bootstrap.min.js'; ?>"></script>
+        <script type="text/javascript">
+        </script>
+    </body>
+</html>
