@@ -11,7 +11,15 @@ class UserPlugin extends Yaf_Plugin_Abstract {
     const cryptKey= '~!@#*w.(KLH)^F/,W6[jIi]-%kXz+K_w3%+=';
 
     public function routerStartup(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {
-        
+        if (!isset($_COOKIE['user-key']) || !$_COOKIE['user-key']) {
+            //生成user-key cookie
+            $time = uniqid(getmypid(), true);
+            $IP = Util::getIP();
+            //时间|浏览器代理信息|用户ip地址
+            $userKey = sha1($time . $_SERVER['HTTP_USER_AGENT'] . $IP);
+
+            setcookie('user-key', $userKey, null, null, null, null, true);
+        }
     }
 
     public function routerShutdown(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {

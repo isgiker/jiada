@@ -68,7 +68,7 @@ class LoginController extends Core_Controller_Www {
         $areaInfo=$this->model->getAreaInfo($userInfo['areaId']);
 
         //方便用户再次登录时不用输入用户名
-        $cR1=$this->setCookies('uname', $data['username']);
+        $cR1=$this->setCookies('uname', $data['username'],3600*24*100);
         $cR2=$this->setCookies('uid', $userInfo['userId']);
 
         //登录时间

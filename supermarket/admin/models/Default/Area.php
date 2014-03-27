@@ -111,7 +111,7 @@ class Default_AreaModel extends BasicModel{
         $sql = "insert area set areaName='$data[areaName]',pinyin='$data[pinyin]',parentId='$data[parentId]',parentPath='$parentPath',domain='',sort='$data[sort]',areaType='$data[areaType]',public='$data[public]'";
         $result = $this->db->query($sql);
         if ($result == false) {
-            $error = $db->ErrorMsg();
+            $error = $this->db->ErrorMsg();
             die("$error");
         }
         return true;
@@ -126,7 +126,7 @@ class Default_AreaModel extends BasicModel{
         $sql = "update area set areaName='$data[areaName]',pinyin='$data[pinyin]',parentId='$data[parentId]',parentPath='$parentPath',domain='',sort='$data[sort]',areaType='$data[areaType]',public='$data[public]' where areaId=$data[areaId]";
         $result = $this->db->query($sql);
         if ($result == false) {
-            $error = $db->ErrorMsg();
+            $error = $this->db->ErrorMsg();
             die("$error");
         }
         return true;

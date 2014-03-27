@@ -157,8 +157,11 @@ class Db_Driver_Pdo_Ext extends Db_Adapter {
             $this->_errorNum = $this->errorcode();
             $this->_errorMsg = $this->errorInfo();
             return false;
+        }elseif($result===0){
+            $this->_errorMsg = '受影响行数为0!';
+            return 0;
         }
-        return true;
+        return $result;
     }
 
     function insert($sql = NULL) {

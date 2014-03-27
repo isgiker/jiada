@@ -154,6 +154,7 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
      */
     public function errorMessage($msg = 'fail', $format='json') {
         $returnResult =array(
+                'result' => 'err',
                 'status' => false,
                 'message' => $msg,
                 'code' => -200
@@ -173,6 +174,7 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
      */
     public function returnData($data = null, $format='json') {
         $returnResult = array(
+            'result' => 'ok',
             'status' => true,
             'message' => 'success',
             'code' => 200

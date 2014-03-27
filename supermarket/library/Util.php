@@ -13,8 +13,8 @@ class Util {
         $uuid = uniqid(getmypid()) . mt_rand(1, 10000000000);
         return $uuid;
     }
-    
-    /** 
+
+    /**
      * @abstract获取订单编号
      */
     static public function getOrdersn() {
@@ -34,7 +34,7 @@ class Util {
 
         RETURN $ip;
     }
-    
+
     /*
      * 使用CURL替代file_get_contents方案
      * $timeout超时时间默认30秒
@@ -55,18 +55,18 @@ class Util {
 
         return $file_contents;
     }
-    
+
     /**
      * 递归创建多级目录;
      */
     static public function mkdir_r($path, $mode = 0755) {
         return is_dir($path) || ( self::mkdir_r(dirname($path), $mode) && @mkdir($path, $mode) );
     }
-    
+
     /**
      * 异步请求;
-     */    
-    static public function curlAsyncTriggerRequest($url, $param, $httpMethod = 'GET', $timeout=30) {
+     */
+    static public function curlAsyncTriggerRequest($url, $param, $httpMethod = 'GET', $timeout = 30) {
         $oCurl = curl_init();
         if (stripos($url, "https://") !== FALSE) {
             curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -82,7 +82,7 @@ class Util {
             curl_setopt($oCurl, CURLOPT_POSTFIELDS, http_build_query($param));
         }
         curl_setopt($oCurl, CURLOPT_CONNECTTIMEOUT, $timeout);
-        
+
         $sContent = curl_exec($oCurl);
         $aStatus = curl_getinfo($oCurl);
         curl_close($oCurl);
@@ -94,6 +94,10 @@ class Util {
         }
     }
 
-}
+    //四舍五入,保留两位小数;$n=123.464760;
+    static public function formatNum($n) {
+//        round($n, 2);
+        return sprintf("%.2f", $n);
+    }
 
-?>
+}
