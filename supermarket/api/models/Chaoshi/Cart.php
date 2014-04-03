@@ -148,5 +148,21 @@ class Chaoshi_CartModel extends BasicModel{
         $rows = $this->hydb->loadAssocList();
         return $rows;
     }
+    
+    /**
+     * 根据商品价格id获取商品
+     * @param string $shopId_str 多个店铺id逗号分隔
+     * @return array 
+     */
+    public function getShops($shopId_str){
+        if (!$shopId_str) {
+            return false;
+        }
+        
+        $sql = "select a.shopId,a.shopName,a.provinceId,a.cityId,a.districtId,a.lng,a.lat from shop_basic a  where a.shopId in ($shopId_str)";
+        $this->hydb->setQuery($sql);
+        $rows = $this->hydb->loadAssocList();
+        return $rows;
+    }
 
 }

@@ -156,7 +156,7 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
         $returnResult =array(
                 'result' => 'err',
                 'status' => false,
-                'message' => $msg,
+                'msg' => $msg,
                 'code' => -200
             );
         if($format=='json'){
@@ -176,7 +176,7 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
         $returnResult = array(
             'result' => 'ok',
             'status' => true,
-            'message' => 'success',
+            'msg' => 'success',
             'code' => 200
         );
         if ($data)

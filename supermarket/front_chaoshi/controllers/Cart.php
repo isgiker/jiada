@@ -88,7 +88,7 @@ class CartController extends Core_Controller_Www {
      * 重新计算购物车（购物车里的添加、修改、活动等事件都需要重新计算价格）
      * @param type $userId 登录情况：根据用户id获取用户购物车内商品数据
      * @param type $userKey 未登录情况：根据用户key获取用户购物车内商品数据
-     * @example /cart/mini
+     * @example /cart/recount
      * @return array|json
      */
     public function recountAction() {
@@ -100,11 +100,21 @@ class CartController extends Core_Controller_Www {
         
         //请求接口,返回json数据
         $recountResult = $this->phprpcClient->recount($parameter);
+//        $recountResult = json_decode($recountResult,true);
+//        print_r($recountResult);
         exit($recountResult);
     }
     
     public function indexAction() {
+        $parameter=array(
+            'userId'=>  $this->uid,
+            'userKey'=>  $this->userKey
+        );
         
+        //请求接口,返回json数据
+        $recountResult = $this->phprpcClient->recount($parameter);
+        $recountResult = json_decode($recountResult,true);
+        $this->getView()->assign('data', $recountResult['data']);
     }
 
 }

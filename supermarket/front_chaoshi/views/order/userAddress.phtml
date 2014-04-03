@@ -1,0 +1,189 @@
+<div id="step-1" class="step step-complete step-current">
+    <div class="step-title">
+        <div id="save-consignee-tip" class="step-right">
+        </div>
+        <strong id="consigneeTitleDiv">收货人信息</strong>
+        <span class="step-action" id="consignee_edit_action" style="display: inline;"><a href="#none" id="saveConsigneeTitleMinDiv" style="color:#005EA7;" onclick="saveConsignee()">保存收货人信息</a></span>
+    </div>
+    <div class="step-content">
+        <div id="consignee" class="sbox-wrap"> <div class="sbox">
+                <div class="form">
+                    <div id="consignee-list" name="consignee-list">
+                        <input type="hidden" id="hidden_consignees_size" value="4">
+                        <?php
+                        if (isset($data['addressItems']) && $data['addressItems']) {
+                            foreach ($data['addressItems'] as $k => $item) {
+                                ?>
+                                <div class="item <?php if ($item['status'] == 1) {
+                            echo ' item-selected';
+                        } ?>" index="consignee_index_<?php echo $k + 1; ?>">
+                                    <!--hidden 隐藏参数 开始 -->
+                                    <input type="hidden" id="hidden_consignee_id_37622519" value="37622519">
+                                    <input type="hidden" id="hidden_consignee_type_37622519" value="1">
+                                    <input type="hidden" id="hidden_consignee_name_37622519" value="姜玉民">
+                                    <input type="hidden" id="hidden_consignee_provinceName_37622519" value="">
+                                    <input type="hidden" id="hidden_consignee_cityName_37622519" value="">
+                                    <input type="hidden" id="hidden_consignee_countyName_37622519" value="">
+                                    <input type="hidden" id="hidden_consignee_townName_37622519" value="">
+                                    <input type="hidden" id="hidden_consignee_provinceId_37622519" value="10">
+                                    <input type="hidden" id="hidden_consignee_cityId_37622519" value="698">
+                                    <input type="hidden" id="hidden_consignee_countyId_37622519" value="702">
+                                    <input type="hidden" id="hidden_consignee_townId_37622519" value="46144">
+                                    <input type="hidden" id="hidden_consignee_address_37622519" value="林兴小区20号楼谷风超市">
+                                    <input type="hidden" id="hidden_consignee_email_37622519" value="longteng_jiang@sina.com">
+                                    <input type="hidden" id="hidden_consignee_mobile_37622519" value="15246762851">
+                                    <input type="hidden" id="hidden_consignee_phone_37622519" value="">
+                                    <input type="hidden" id="hidden_consignee_where_37622519" value="黑龙江哈尔滨市五常市山河屯林业局林兴小区20号楼谷风超市">
+                                    <!--hidden 隐藏参数 结束-->
+                                    <input type="radio" class="hookbox" name="consignee_radio" id="consignee_radio_<?php echo $item['addressId']; ?>" value="<?php echo $item['addressId']; ?>" <?php if ($item['status'] == 1) {
+                            echo ' checked="checked"';
+                        } else {
+                            echo '';
+                        } ?> onclick="chose_Consignee('<?php echo $item['addressId']; ?>')">
+                                    <label for="consignee_radio_<?php echo $item['addressId']; ?>" onclick="chose_Consignee('<?php echo $item['addressId']; ?>')">
+                                        <b><?php echo $item['contact']; ?></b>&nbsp; <?php echo $data['areas'][$item['provinceId']]['areaName'] . $data['areas'][$item['cityId']]['areaName'] . $data['areas'][$item['districtId']]['areaName'] . $data['areas'][$item['communityId']]['areaName'] . $item['address']; ?> &nbsp; <?php if ($item['mobile'] && $item['tel']) {
+                            echo $item['mobile'] . '(' . $item['tel'] . ')';
+                        } elseif ($item['mobile']) {
+                            echo $item['mobile'];
+                        } else {
+                            echo $item['tel'];
+                        } ?> &nbsp;
+                                    </label>
+                                    <span class="item-action" style="display: inline;">				
+                                        <a href="#none" onclick="show_ConsigneeDetail('37622519')">编辑</a> &nbsp; 
+                                        <a href="#none" onclick="delete_Consignee('37622519')">删除</a>&nbsp;						
+                                    </span>
+                                </div>
+
+        <?php
+    }
+}
+?>
+                    </div>
+
+                    <!--更多常用收货人--->
+
+
+                    <!---详细收货人信息表单--->
+                    <div class="item" id="use-new-address"><a name="editConsignee"></a>
+                        <input type="radio" onclick="use_NewConsignee()" class="hookbox" name="consignee_radio" id="consignee_radio_new">
+                        <label for="consignee_radio_new">使用新地址 </label><span id="addNumLimitNote" class="status error" style="display:none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 当前地址数量已达上限，若要继续添加新地址，请先删除部分收货地址。</span>
+                    </div>
+                    <form>
+                        <div class="consignee-form" id="consignee-form" name="consignee-form" style="padding-left:12px; display:none">
+                            <input type="hidden" id="addressId" name="addressId" value="">
+                            <div class="list" id="name_div">
+                                <span class="label"><em>*</em>收货人：</span>
+                                <div class="field">
+                                    <input type="text" class="textbox" id="consignee_name" name="contact" maxlength="20" onblur="check_Consignee('name_div')">
+                                </div>
+                                <span class="status error" id="name_div_error"></span>
+                            </div>
+                            <div class="list select-address" id="area_div">
+                                <span class="label"><em>*</em>所在地区：</span>
+                                <div class="field">
+                                    <span id="span_area">
+                                        <span id="span_province">
+                                            <select  name="provinceId" id="node1" class="linkage consignee_province" data-next="#node2" data-url="/Area/nodeArea/areaId">
+                                                <option value="">请选择：</option>
+                                            </select>
+                                        </span>
+                                        <span id="span_city">
+                                            <select  name="cityId"  id="node2" class="linkage consignee_city" data-next="#node3" data-url="/Area/nodeArea/areaId">
+                                                <option value="">请选择：</option>
+                                            </select>
+                                        </span>
+                                        <span id="span_county">
+                                            <select  name="districtId"  id="node3" class="linkage consignee_county" data-next="#node4" data-url="/Area/nodeArea/areaId">
+                                                <option value="">请选择：</option>
+                                            </select>
+                                        </span>
+                                        <span id="span_town" >
+                                            <select  name="communityId"  id="node4" class="linkage consignee_community" data-next="" data-url="">
+                                                <option value="">请选择：</option>
+                                            </select>
+                                        </span>
+                                    </span>
+                                    <span class="form-tip"><span class="status error" id="area_div_error"></span>&nbsp;&nbsp;如果没有您所在的小区名称则说明暂时不支持配送</span>
+                                </div>
+                            </div>
+                            <div class="list full-address" id="address_div">
+                                <span class="label"><em>*</em>详细地址：</span>
+                                <div class="field">
+                                    <span class="fl selected-address" id="areaNameTxt"></span>
+                                    <input type="text" class="textbox" id="consignee_address" name="address" maxlength="50" onblur="check_Consignee('address_div')">
+                                </div>
+                                <span class="status error" id="address_div_error"></span>
+                            </div>
+                            <div class="list" id="call_div">
+                                <span class="label"><em>*</em>手机号码：</span>
+                                <div class="field">
+                                    <div class="phone">
+                                        <input type="text" class="textbox" id="consignee_mobile" name="mobile" onblur="check_Consignee('call_mobile_div')" maxlength="11" onkeyup="check_Phone('call_mobile_div')">
+                                        <em>或</em>
+                                        <span>固定电话：</span>
+                                        <input type="text" class="textbox" id="consignee_phone" name="tel" onblur="check_Consignee('call_phone_div')" maxlength="20">
+                                    </div>
+                                    <span class="status error" id="call_div_error"></span>
+                                </div>
+                            </div>
+                            <div class="list" id="email_div">
+                                <span class="label"><em></em>邮箱：</span>
+                                <div class="field">
+                                    <input type="text" class="textbox" id="consignee_email" name="email" maxlength="50" onblur="check_Consignee('email_div')">
+                                    <span class="form-tip">用来接收订单提醒邮件，便于您及时了解订单状态</span>
+                                </div>
+                                <span class="status error" id="email_div_error"></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="form-btn group">
+                        <a href="#none" class="btn-submit" onclick="saveConsignee()"><span id="saveConsigneeTitleDiv">保存收货人信息</span></a>
+                        <div class="loading loading-1" style="display:none"><b></b>正在提交信息，请等待！</div>
+                    </div>
+                    <div style="display:none"><input id="consignee_form_reset" name="" type="reset"></div>
+
+                </div>
+            </div>
+
+        </div><!--@end div#consignee-->
+    </div>
+</div>
+<script type="text/javascript">
+
+/**
+ *发布商品：分类节点联动
+ *这是本人写的一个通用的无限极联动菜单
+ */
+$("select.linkage").change(function() {
+    var
+            cateId = $(this).val(),
+            next = $(this).data('next'),
+            nextObj = next ? $(next) : null;
+    if (next.length == 0) {
+        return false;
+    }
+    var nextNext = nextObj.data('next'),
+            nextNextObj = nextNext ? $(nextNext) : null;
+    while (nextNextObj && nextNextObj.length) {
+        if (nextNextObj && nextNextObj.length) {
+            nextNextObj.hide();
+            nextNext = nextNextObj.data('next');
+            nextNextObj = nextNext ? $(nextNext) : null;
+        }
+    }
+    //先清空历史条目再追加
+    nextObj.find('option[value!=""]').remove();
+
+    $.getJSON($(this).data('url') + '/' + cateId, function(data) {
+
+        var items = '';
+        $.each(data, function(key, row) {
+            items += ('<option value="' + row.id + '">' + row.name + '</option>');
+        });
+        nextObj.show();
+        nextObj.append(items);
+//        $(next).trigger('change');
+    });
+});
+</script>

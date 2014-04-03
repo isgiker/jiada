@@ -1,1 +1,169 @@
-购物车
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>我的购物车 - 家大小区超市</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="<?php echo '//' . $_config_domain['static'] . '/css/front-end/chaoshi/v1/chaoshi_cart.css'; ?>">
+    </head>
+    <body>
+        <div class="w w1 header clearfix">
+            <div id="logo">
+                <a href="http://www.jd.com/">
+                    <img src="http://misc.360buyimg.com/lib/img/e/logo-201305.png" title="返回家大首页" alt="返回家大首页">
+                </a>
+            </div>
+            <div class="progress clearfix">
+                    <ul class="progress-1">
+                            <li class="step-1"><b></b>1.我的购物车</li>
+                            <li class="step-2"><b></b>2.填写核对订单信息</li>
+                            <li class="step-3">3.成功提交订单</li>
+                    </ul>
+            </div>
+        </div>
+        <div class="w cart">
+            <div class="cart-hd group">
+                <h2>我的购物车</h2>
+            </div>
+            <?php
+                if (isset($data['goodsItems']) && $data['goodsItems']) {
+            ?>
+            <div class="cart-inner cart-content">
+                <div class="cart-thead clearfix">
+                    <div class="column t-checkbox form">
+                        <input data-cart="toggle-cb" id="toggle-checkboxes" type="checkbox" checked="" value="">
+                        <label for="toggle-checkboxes">全选</label>
+                    </div>
+                    <div class="column t-goods">商品名称</div>
+                    <div class="column t-price">价格</div>
+                    <div class="column t-quantity">数量</div>
+                    <div class="column t-action">操作</div>
+                </div>
+                <div id="product-list" class="cart-tbody">
+                    <?php
+                    
+                        foreach ($data['goodsItems'] as $shopId => $shopGoods) {
+                            $shopInfo=$data['shops'][$shopId];
+                            //这里以后要统计各个店铺的活动和配送费
+
+                    ?>
+                    <div class="shopInfo">
+                        <span class="shopName">
+                            <?php echo $shopInfo['shopName'];?>
+                        </span>
+                        <span class="shopFreight">
+                            运费：5元(满50元免配送费)
+                        </span>
+                        <span class="shopActive">
+                            活动：-20(满300元立减20元)
+                        </span>
+                    </div>
+                    <?php
+                        //店铺循环
+                            $goodsNum=count($shopGoods);
+                            if (isset($shopGoods[0]) && $shopGoods[0]) {
+                                //店铺内商品循环
+                                foreach ($shopGoods as $k => $p) {
+                                    if (isset($data['cartItems'][$p['priceId']]['buyNum']) && $data['cartItems'][$p['priceId']]['buyNum']) {
+                                        $buyNum = $data['cartItems'][$p['priceId']]['buyNum'];
+                                    } else {
+                                        $buyNum = 0;
+                                    }
+
+                    ?>
+                    <div  class="item item_selected <?php if($k==($goodsNum-1)){echo ' item-last';}else{echo '';}?>" data-shopid="<?php echo $shopId;?>" data-pid="<?php echo $p['priceId'];?>">
+                        <div class="item_form clearfix">
+                            <div class="cell p-checkbox">
+                                <input class="checkbox" type="checkbox" name="checkItem" checked="checked" value="1016437159-13-179320974">
+                            </div>
+                            <div class="cell p-goods">
+                                <div class="p-img">
+                                    <a href="http://item.jd.com/1016437159.html" target="_blank">
+                                        <img src="http://img10.360buyimg.com/n5/g12/M00/02/09/rBEQYVMxL4kIAAAAAARiQQjylBsAADRogEJKzYABGJZ777.jpg" alt="幸运谷 有机三黑组合（绿芯大黑豆410g+黑米490g+黑芝麻340g）补肾杂粮">
+                                    </a>
+                                </div>
+                                <div class="p-name">
+                                    <a href="<?php echo '/detail?p='.$p['priceId'];?>" target="_blank">
+                                        <?php echo $p['goodsName'];?>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="cell p-price">
+                                <span class="originalPrice">¥<?php echo $p['originalPrice'];?></span>
+                                <span class="currentPrice">¥<?php echo $p['currentPrice'];?></span>
+                            </div>
+                            <div class="cell p-quantity">
+                                <div class="quantity-form">
+                                    <a href="javascript:void(0);" class="btnMinus">-</a>
+                                    <input type="text" class="quantity-text" value="<?php echo $buyNum;?>">
+                                    <a href="javascript:void(0);" class="btnPlus">+</a>
+                                </div>
+                            </div>
+                            <div class="cell p-remove  col-2">
+                                <a class="cart-remove" href="javascript:void(0);">删除</a>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                                }
+                            }
+                    ?>
+                    
+                    <?php
+                        }
+                    ?>
+                </div>
+                <!--product list end-->
+                <div class="cart-toolbar clearfix">
+                    <div class="control fl">
+                        <span class="delete"><b></b><a href="javascript:void(0);" clstag="clickcart|keycount|xincart|clearcartlink" id="remove-batch">删除选中的商品</a></span>
+                        
+                    </div>
+                    <div class="total fr">
+                        <p class="clearfix"><span class="price_hj" id="totalSkuPrice">¥<?php echo $data['statistics']['currentPriceTotal'];?></span><span>合计：</span></p>
+                        <p><span class="price_hj" id="totalRePrice">- ¥0.00</span><span>返现合计：</span></p>
+                        <p><span class="price_hj" id="totalFreightPrice">¥0.00</span><span>运费合计：</span></p>
+                        
+                    </div>
+                    <div class="amout fr"><span id="selectedCount"><?php echo $data['statistics']['goodsCn'];?></span> 件商品</div>
+                </div>
+                <div class="cart-total clearfix">
+                    <div class="total fr"><span id="finalPrice">¥<?php echo $data['statistics']['payPriceTotal'];?></span>总计（含运费以结算页为准）：</div>
+                </div>
+                
+                
+            </div>
+            <div class="cart-inner cart-empty" style="display:none;">
+                <div class="message">
+                            <ul>
+                                    <li>购物车内暂时没有商品，<a href="javascript:goToLogin();">登录</a>后，将显示您之前加入的商品
+                                    </li><li><a href="/">去首页</a>挑选喜欢的商品<!-- ，或<a href="###" class="btn-takeout">取出之前寄存的商品</a> --></li>
+                            </ul>
+                </div>
+            </div>
+            <?php
+                }else{
+            ?>
+            <div class="cart-inner cart-empty">
+                <div class="message">
+                            <ul>
+                                    <li>购物车内暂时没有商品，<a href="javascript:goToLogin();">登录</a>后，将显示您之前加入的商品
+                                    </li><li><a href="/">去首页</a>挑选喜欢的商品<!-- ，或<a href="###" class="btn-takeout">取出之前寄存的商品</a> --></li>
+                            </ul>
+                </div>
+            </div>
+            <?php
+                }
+             ?>
+            
+            <!--cart inner end-->
+            <div class="cart-button clearfix">
+                <a href='/' class='button fl continue'>继续购物</a>
+                <a href='/order/index' class='button fr checkout'>去结算</a>
+            </div>
+        </div>
+
+        <script src="<?php echo '//' . $_config_domain['static'] . '/js/basic/libs/jquery.min.js'; ?>"></script>
+        <script src="<?php echo '//' . $_config_domain['static'] . '/js/front-end/chaoshi/v1/chaoshi.js'; ?>" type="text/javascript" ></script>
+
+    </body>
+</html>

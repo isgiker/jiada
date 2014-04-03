@@ -1,0 +1,90 @@
+html, body, div, span, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, address, big, cite, code, del, em, font, img, ins, small, strong, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font: 12px/150% Arial,Verdana,"\5b8b\4f53";
+    color: #666;
+}
+.clearfix {
+    display: block;
+}
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.fl {
+float: left;
+}
+.fr {
+float: right;
+}
+a {
+    color: #666;
+    text-decoration: none;
+}
+a:hover {
+    color: #E4393C;
+    text-decoration: underline;
+}
+a img {
+border: 0;
+}
+img {
+vertical-align: middle;
+}
+
+/*全局---End
+=============================================================================*/
+
+.w {
+    width: 990px;
+    margin: 0 auto;
+    border: 0px solid #000;
+}
+.header {
+padding: 20px 0 10px;
+}
+.w1 {
+margin-bottom: 10px;
+}
+#logo {
+padding-left: 5px;
+float: left;
+}
+.progress {
+padding-top: 6px;
+}
+.progress .progress-1 {
+background: url("http://misc.360buyimg.com/purchase/cart/skin/i/step1.png") no-repeat;
+width: 481px;
+padding-top: 23px;
+overflow: hidden;
+height: 23px;
+float: right;
+list-style: none;
+}
+.progress li.step-1 {
+color: #7abd54;
+}
+.progress li {
+width: 160px;
+height: 23px;
+float: left;
+color: #bce8a3;
+line-height: 23px;
+text-align: center;
+}
+.progress li.step-2 {
+color: #aaaaaa;
+width: 161px;
+}
+.progress li.step-3 {
+color: #aaaaaa;
+}
+
+/*通用header---End
+=============================================================================*/

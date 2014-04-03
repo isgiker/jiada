@@ -1,0 +1,175 @@
+h2, h3 {
+    font-size: 14px;
+}
+#checkout {
+    width: 988px;
+    border: 1px solid #ddd;
+}
+#checkout .mt {
+    height: 40px;
+    background-color: #f7f7f7;
+    line-height: 40px;
+}
+.mt, .smt {
+    cursor: default;
+}
+.m, .mt, .mc, .mb, .sm, .smt, .smc, .smb {
+    overflow: hidden;
+    zoom: 1;
+}
+#checkout .mt h2 {
+    font-size: 16px;
+    color:#333;
+    padding-left: 10px;
+}
+.mt h2, .smt h3 {
+    font-family: "microsoft yahei";
+}
+
+
+/*收货地址---Begin
+=============================================================================*/
+.checkout-steps .step {
+    border-top: 1px solid #ddd;
+}
+.checkout-steps .step-current {
+    width: 984px;
+    margin: -1px;
+    border: 3px solid #f60;
+    position: relative;
+}
+.checkout-steps .step-title {
+    height: 45px;
+    padding: 0 20px;
+    line-height: 45px;
+    position: relative;
+}
+
+.checkout-steps .step-complete .step-title strong {
+    color: #000;
+
+    font-size: 14px;
+}
+.checkout-steps .step-action {
+    padding-left: 10px;
+    color: #005ea7;
+    font-size: 12px;
+    font-weight: 400;
+}
+.checkout-steps .step-action a, .checkout-steps .step-action a:visited, .checkout-steps .step-action a:hover {
+    color: #005ea7;
+}
+/*收货内容*/
+#checkout .step-complete .sbox-wrap {
+    padding: 0 44px;
+}
+#checkout .sbox {
+    padding: 0px 0 20px;
+}
+.sbox {
+    width: 900px;
+    overflow: hidden;
+}
+#checkout .s-content p {
+    line-height: 22px;
+}
+/*收货地址编辑状态
+==========================*/
+#checkout .step-complete .sbox-wrap {
+    padding: 0 44px;
+}
+#consignee .item, #part-invoice .item {
+    height: 28px;
+    margin-bottom: 5px;
+    overflow: hidden;
+    zoom: 1;
+    line-height: 28px;
+}
+#consignee .item-selected, #part-invoice .item-selected {
+    background-color: #fff4d3;
+}
+
+/*新增收货地址*/
+#consignee .list, .invoice-form .list {
+    padding: 5px 0;
+    overflow: hidden;
+}
+#consignee .message, .invoice-form .message {
+    border: 1px solid #db9a9a;
+    padding: 4px 0;
+    background-color: #ffe8e8;
+}
+
+#consignee .list .label, .invoice-form .list .label {
+    width: 85px;
+    height: 26px;
+    margin-right: 5px;
+    float: left;
+    color: #666;
+    line-height: 26px;
+    text-align: right;
+}
+#consignee .list .field {
+    height: 26px;
+    float: left;
+    line-height: 26px;
+}
+#consignee .list .label em, .invoice-form .list .label em {
+    margin-right: 5px;
+    color: #f60;
+    font-family: sans-serif;
+}
+#consignee .form .form-tip {
+    padding-left: 10px;
+    float: left;
+}
+em {
+    font-style: normal;
+}
+#consignee .textbox, .invoice-form .textbox {
+    width: 138px;
+    height: 16px;
+    border: 1px solid #ccc;
+    padding: 4px 3px;
+    font-family: Arial,"\5b8b\4f53",sans-serif;
+}
+#consignee .full-address .textbox, .invoice-form .full-address .textbox {
+    width: 308px;
+}
+#consignee .phone, .invoice-form .phone {
+    float: left;
+}
+#consignee .phone em, .invoice-form .phone em {
+    padding: 0 20px 0 5px;
+    color: #999;
+}
+#consignee .phone span, #consignee .phone em, .invoice-form .phone span, .invoice-form .phone em {
+    float: left;
+}
+.form label, .form input, .form select, .form textarea, .form button, .form .label {
+    float: left;
+    font-size: 12px;
+}
+.loading-1, .checkout-state {
+    height: 28px;
+    border: 1px solid #edd28b;
+    padding: 0 10px;
+    float: left;
+    line-height: 28px;
+}
+.loading, .checkout-state {
+    background: #fff;
+}
+#consignee .item label b {
+    font-weight: normal;
+}
+#consignee .item-selected label b {
+    font-weight: bold;
+}
+#consignee .message .error, .invoice-form .error {
+    height: 26px;
+    padding-left: 6px;
+    float: left;
+    color: #c00;
+    line-height: 26px;
+}
