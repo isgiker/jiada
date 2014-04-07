@@ -41,7 +41,7 @@ class Chaoshi_OrderModel extends BasicModel{
     
     /**
      * 获取用户的默认收货地址
-     * @param array $parameter
+     * @param string $userId
      */
     public function getDefaultAddress($userId) {
         if (!$userId) {
@@ -82,6 +82,223 @@ class Chaoshi_OrderModel extends BasicModel{
             `cityId`='$param[cityId]',`districtId`='$param[districtId]',`communityId`='$param[communityId]',`address`='$param[address]',
                 `mobile`='$param[mobile]',`tel`='$param[tel]',`email`='$param[email]',status=1,createTime=$createTime;";
         return $this->ssodb->query($sql);
+    }
+    
+    /**
+     * 修改用户的收货地址
+     * @param array $param
+     * @param string userId 用户id必要参数
+     * @param int addressId 地址id必要参数
+     */
+    public function editAddress($param) {
+        //验证参数
+        if (!$param['userId'] || !$param['addressId'] || !$param['contact'] || !$param['provinceId'] || !$param['cityId'] || !$param['districtId']
+                || !$param['communityId'] || !$param['address'] || !$param['mobile']) {
+            return false;
+        }
+
+        $sql = "update user_address set `status`=0 where userId='$param[userId]' and `status`=1;";
+        $sql .="update user_address set `contact`='$param[contact]',`provinceId`='$param[provinceId]',
+            `cityId`='$param[cityId]',`districtId`='$param[districtId]',`communityId`='$param[communityId]',`address`='$param[address]',
+                `mobile`='$param[mobile]',`tel`='$param[tel]',`email`='$param[email]',status=1 
+                    where addressId='$param[addressId]' and userId='$param[userId]'";
+        return $this->ssodb->query($sql);
+    }
+    
+    /**
+     * 获取用户指定的收货地址信息
+     * @param array $param
+     * @param string userId 用户id
+     * @param string addressId 用户收货id
+     * @return array
+     */
+    public function getAddressInfo($param) {
+        if (!$param['userId'] || !$param['addressId']) {
+            return false;
+        }
+        $sql = "select * from user_address where addressId='$param[addressId]' and userId='$param[userId]';";
+        $this->ssodb->setQuery($sql);
+        $rows = $this->ssodb->loadAssoc();
+        return $rows;
+    }
+    
+    public function uuid_short(){
+       $sql = "select uuid_short();";
+       $this->hydb->setQuery($sql);
+       $uuid_short = $this->hydb->loadResult();
+       return $uuid_short;
+    }
+    
+    public function submitOrder($param){
+        $orderNo=$this->uuid_short();
+        if (!$orderNo) {
+            return false;
+        }
+        $param['orderNo']=$orderNo;
+        
+        //下单时间
+        $createTime = time();
+        $param['createTime']=$createTime;
+               
+        //保存订单
+        
+        $rollback=false;
+        
+        $saveOrder=$this->saveOrder($param);
+        if($saveOrder){
+            //保存订单收货人信息
+            $saveConsignee=$this->saveOrderConsignee($orderNo,$param['userId'],$param['pConsignee'],$param['payAndShip']);
+            if($saveConsignee){
+                //保存订单商品
+                $saveProduct=$this->saveOrderProduct($param);
+                if(!$saveProduct){
+                    $rollback=true;
+                }
+            }else{
+                $rollback=true;
+            }
+        }else{
+            $rollback=true;
+        }
+        //保证数据的原子性;
+        if($rollback===true){
+            $this->delOrder($orderNo,$param['userId']);
+            return false;
+        }else{
+            //订单保存成功后的逻辑处理...
+            
+            //删除用户购物车内数据
+            $this->delUserCart($param['userId']);
+        }
+        return $orderNo;
+    }
+    
+    /**
+     * 如果订单商品涉及多个店铺，那么该订单将被拆分成多个订单分发给各个店铺。
+     */
+    private function saveOrder($param){
+        $orderStatus = 0;
+        $shippingStatus = 0;
+        $payStatus = -1;
+        $activityRemark='';
+        $payMode = $param['payAndShip']['payMode'];
+        
+        $shopStatistics=@$param['product']['shop_statistics'];
+        $shopStatisticsCn=count($shopStatistics);
+        
+        //拆单
+        if ($shopStatistics && $shopStatisticsCn > 0) {
+            $sql='';
+            foreach ($shopStatistics as $shopId => $statistics) {
+                if($shopStatisticsCn==1){
+                    //订单id可以和订单编号相同
+                    $orderId=$param[orderNo];
+                }else{
+                    $orderId=$this->uuid_short();
+                }
+                $sql.="insert `order` set "
+                        . "orderId='$orderId',"
+                        . "orderNo='$param[orderNo]',"
+                        . "userId='$param[userId]',"
+                        . "shopId='$shopId',"
+                        . "productAmount='$statistics[currentPriceTotal]',"
+                        . "orderAmount='$statistics[orderPriceTotal]',"
+                        . "actLower='$statistics[actLower]',"
+                        . "actGiveaway='$statistics[actGiveaway]',"
+                        . "deliveryFee='$statistics[deliveryFee]',"
+                        . "payAmount='$statistics[payPriceTotal]',"
+                        . "orderStatus='$orderStatus',"
+                        . "shippingStatus='$shippingStatus',"
+                        . "payStatus='$payStatus',"
+                        . "payMode='$payMode',"
+                        . "createTime='$param[createTime]',"
+                        . "activityRemark='$activityRemark';"
+                        ;
+                
+            }
+            return $this->hydb->query($sql);
+        }
+        return false;
+    }
+    
+    public function saveOrderConsignee($orderNo,$userId,$pConsignee,$payAndShip){
+        $orderRemark='';
+        $payway='';
+        $sql = "insert `order_consignee` set "
+                . "orderNo='$orderNo',"
+                . "userId='$userId',"
+                . "contact='$pConsignee[contact]',"
+                . "contactMobile='$pConsignee[mobile]',"
+                . "contactTel='$pConsignee[tel]',"
+                . "contactEmail='$pConsignee[email]',"
+                . "contactProvince='$pConsignee[province]',"
+                . "contactCity='$pConsignee[city]',"
+                . "contactCounty='$pConsignee[district]',"
+                . "contactCommunity='$pConsignee[community]',"
+                . "contactAddress='$pConsignee[address]',"
+                . "contactZipcode='$pConsignee[zipcode]',"
+                . "orderRemark='$orderRemark',"
+                . "deliveryTimeOption='$payAndShip[deliveryTimeOption]',"
+                . "deliveryTime='$payAndShip[deliveryTime]',"
+                . "callToConfirm='$payAndShip[callToConfirm]',"
+                . "payway='$payway';"
+        ;
+        return $this->hydb->query($sql);
+    }
+    
+    public function saveOrderProduct($param){
+        $shopProductItems=@$param['product']['goodsItems'];
+        $shopProductItemsCn=count($shopProductItems);
+        
+        if ($shopProductItems && $shopProductItemsCn > 0) {
+            $sql='';
+            foreach ($shopProductItems as $shopId => $pItems) {
+                if($pItems && count($pItems) > 0){
+                    foreach ($pItems as $k => $item) {
+                        if ($item['priceId'] && $item['shopId'] && $item['goodsId'] && $item['goodsName'] && $item['buyNum']) {
+                            $sql.="insert `order_product` set "
+                                    . "orderNo='$param[orderNo]',"
+                                    . "userId='$param[userId]',"
+                                    . "shopId='$shopId',"
+                                    . "priceId='$item[priceId]',"
+                                    . "productId='$item[goodsId]',"
+                                    . "productName='$item[goodsName]',"
+                                    . "productNum='$item[buyNum]',"
+                                    . "originalPrice='$item[originalPrice]',"
+                                    . "currentPrice='$item[currentPrice]',"
+                                    . "discount='$item[discount]';"
+                            ;
+                        }else{
+                            return false;
+                        }
+                    }
+                    
+                }
+            }
+            return $this->hydb->query($sql);
+        }
+        
+        return false;
+    }
+    
+    private function delOrder($orderNo,$userId) {
+        if (!$orderNo || !$userId) {
+            return false;
+        }
+        $query = "delete from `order` where userId='$userId' and orderNo = '$orderNo';";
+        $query.="delete from `order_product` where orderNo = '$orderNo' and userId='$userId';";
+        $query.="delete from `order_consignee` where orderNo = '$orderNo' and userId='$userId';";
+        $result = $this->hydb->query($query);
+        return $result;
+    }
+    
+    private function delUserCart($userId) {
+        if (!$userId) {
+            return false;
+        }
+        $query = "delete from `user_cart` where userId='$userId';";
+        $result = $this->ssodb->query($query);
+        return $result;
     }
 
 }

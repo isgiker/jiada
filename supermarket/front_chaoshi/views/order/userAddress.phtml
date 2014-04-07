@@ -8,32 +8,32 @@
     <div class="step-content">
         <div id="consignee" class="sbox-wrap"> <div class="sbox">
                 <div class="form">
+                    <?php
+                        if (isset($data['addressItems']) && $data['addressItems']) {
+                    ?>
                     <div id="consignee-list" name="consignee-list">
                         <input type="hidden" id="hidden_consignees_size" value="4">
                         <?php
-                        if (isset($data['addressItems']) && $data['addressItems']) {
                             foreach ($data['addressItems'] as $k => $item) {
                                 ?>
                                 <div class="item <?php if ($item['status'] == 1) {
                             echo ' item-selected';
                         } ?>" index="consignee_index_<?php echo $k + 1; ?>">
                                     <!--hidden 隐藏参数 开始 -->
-                                    <input type="hidden" id="hidden_consignee_id_37622519" value="37622519">
-                                    <input type="hidden" id="hidden_consignee_type_37622519" value="1">
-                                    <input type="hidden" id="hidden_consignee_name_37622519" value="姜玉民">
-                                    <input type="hidden" id="hidden_consignee_provinceName_37622519" value="">
-                                    <input type="hidden" id="hidden_consignee_cityName_37622519" value="">
-                                    <input type="hidden" id="hidden_consignee_countyName_37622519" value="">
-                                    <input type="hidden" id="hidden_consignee_townName_37622519" value="">
-                                    <input type="hidden" id="hidden_consignee_provinceId_37622519" value="10">
-                                    <input type="hidden" id="hidden_consignee_cityId_37622519" value="698">
-                                    <input type="hidden" id="hidden_consignee_countyId_37622519" value="702">
-                                    <input type="hidden" id="hidden_consignee_townId_37622519" value="46144">
-                                    <input type="hidden" id="hidden_consignee_address_37622519" value="林兴小区20号楼谷风超市">
-                                    <input type="hidden" id="hidden_consignee_email_37622519" value="longteng_jiang@sina.com">
-                                    <input type="hidden" id="hidden_consignee_mobile_37622519" value="15246762851">
-                                    <input type="hidden" id="hidden_consignee_phone_37622519" value="">
-                                    <input type="hidden" id="hidden_consignee_where_37622519" value="黑龙江哈尔滨市五常市山河屯林业局林兴小区20号楼谷风超市">
+                                    <input type="hidden" id="hidden_consignee_id_<?php echo $item['addressId']; ?>" value="<?php echo $item['addressId']; ?>">
+                                    <input type="hidden" id="hidden_consignee_name_<?php echo $item['addressId']; ?>" value="<?php echo $item['contact']; ?>">
+                                    <input type="hidden" id="hidden_consignee_provinceName_<?php echo $item['addressId']; ?>" value="<?php echo $data['areas'][$item['provinceId']]['areaName']; ?>">
+                                    <input type="hidden" id="hidden_consignee_cityName_<?php echo $item['addressId']; ?>" value="<?php echo $data['areas'][$item['cityId']]['areaName']; ?>">
+                                    <input type="hidden" id="hidden_consignee_countyName_<?php echo $item['addressId']; ?>" value="<?php echo $data['areas'][$item['districtId']]['areaName']; ?>">
+                                    <input type="hidden" id="hidden_consignee_communityName_<?php echo $item['addressId']; ?>" value="<?php echo $data['areas'][$item['communityId']]['areaName']; ?>">
+                                    <input type="hidden" id="hidden_consignee_provinceId_<?php echo $item['addressId']; ?>" value="<?php echo $item['provinceId']; ?>">
+                                    <input type="hidden" id="hidden_consignee_cityId_<?php echo $item['addressId']; ?>" value="<?php echo $item['cityId']; ?>">
+                                    <input type="hidden" id="hidden_consignee_countyId_<?php echo $item['addressId']; ?>" value="<?php echo $item['districtId']; ?>">
+                                    <input type="hidden" id="hidden_consignee_communityId_<?php echo $item['addressId']; ?>" value="<?php echo $item['communityId']; ?>">
+                                    <input type="hidden" id="hidden_consignee_address_<?php echo $item['addressId']; ?>" value="<?php echo $item['address']; ?>">
+                                    <input type="hidden" id="hidden_consignee_email_<?php echo $item['addressId']; ?>" value="<?php echo $item['email']; ?>">
+                                    <input type="hidden" id="hidden_consignee_mobile_<?php echo $item['addressId']; ?>" value="<?php echo $item['mobile']; ?>">
+                                    <input type="hidden" id="hidden_consignee_phone_<?php echo $item['addressId']; ?>" value="<?php echo $item['tel']; ?>">
                                     <!--hidden 隐藏参数 结束-->
                                     <input type="radio" class="hookbox" name="consignee_radio" id="consignee_radio_<?php echo $item['addressId']; ?>" value="<?php echo $item['addressId']; ?>" <?php if ($item['status'] == 1) {
                             echo ' checked="checked"';
@@ -49,24 +49,35 @@
                             echo $item['tel'];
                         } ?> &nbsp;
                                     </label>
-                                    <span class="item-action" style="display: inline;">				
-                                        <a href="#none" onclick="show_ConsigneeDetail('37622519')">编辑</a> &nbsp; 
-                                        <a href="#none" onclick="delete_Consignee('37622519')">删除</a>&nbsp;						
+                                    <span class="item-action" <?php if ($item['status'] == 1) {
+                            echo ' style="display: inline;"';
+                        }else{
+                            echo ' style="display: none;"';
+                        } ?>>				
+                                        <a href="#none" onclick="editConsigneeDetail('<?php echo $item['addressId']; ?>')">编辑</a> &nbsp; 
+                                        <a href="#none" onclick="delete_Consignee('<?php echo $item['addressId']; ?>')">删除</a>&nbsp;						
                                     </span>
                                 </div>
 
-        <?php
-    }
-}
-?>
-                    </div>
-
+                                <?php
+                            }
+                            ?>
+                        </div>
+                        <?php
+                    }
+                    ?>
                     <!--更多常用收货人--->
 
 
                     <!---详细收货人信息表单--->
                     <div class="item" id="use-new-address"><a name="editConsignee"></a>
-                        <input type="radio" onclick="use_NewConsignee()" class="hookbox" name="consignee_radio" id="consignee_radio_new">
+                        <input type="radio" onclick="use_NewConsignee()" class="hookbox" name="consignee_radio" id="consignee_radio_new" <?php
+                        if (isset($data['addressItems']) && count($data['addressItems'])<=0) {
+                            echo ' checked="checked"';
+                        }else{
+                            echo '';
+                        }
+                    ?>>
                         <label for="consignee_radio_new">使用新地址 </label><span id="addNumLimitNote" class="status error" style="display:none">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 当前地址数量已达上限，若要继续添加新地址，请先删除部分收货地址。</span>
                     </div>
                     <form>
@@ -137,8 +148,8 @@
                             </div>
                         </div>
                     </form>
-                    <div class="form-btn group">
-                        <a href="#none" class="btn-submit" onclick="saveConsignee()"><span id="saveConsigneeTitleDiv">保存收货人信息</span></a>
+                    <div class="form-btn group common-button">
+                        <a href="#none" class="btn-submit savebutton button" onclick="saveConsignee()"><span id="saveConsigneeTitleDiv">保存收货人信息</span></a>
                         <div class="loading loading-1" style="display:none"><b></b>正在提交信息，请等待！</div>
                     </div>
                     <div style="display:none"><input id="consignee_form_reset" name="" type="reset"></div>

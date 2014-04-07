@@ -195,9 +195,23 @@ class CartController extends Core_Controller_Api{
         $originalPriceTotal = 0;
         //商品现总价
         $currentPriceTotal = 0;
+        
+        //总的配送费，各个店铺的配送费累计
+        $deliveryFee = 0;
+        
+        //总的活动应减金额，各个店铺的活动返现累计
+        $actLower = 0;
+        
         if(isset($cartData['goodsItems']) && $cartData['goodsItems']){
             foreach($cartData['goodsItems'] as $shopId => $shopGoods){
-                //店铺循环
+                //店铺循环(这里统计各个店铺的配送费、活动、应付总金额等数据)
+                //商品总数量统计
+                $shopProductCn=0;
+                //商品原总价
+                $shopOriginalPriceTotal = 0;
+                //商品现总价
+                $shopCurrentPriceTotal = 0;
+                
                 if(isset($shopGoods[0]) && $shopGoods[0]){
                     //店铺内商品循环
                     foreach($shopGoods as $k => $p){
@@ -206,42 +220,89 @@ class CartController extends Core_Controller_Api{
                         } else {
                             $buyNum = 0;
                         }
-                        $goodsCn+=$buyNum;
+                        $cartData['goodsItems'][$shopId][$k]['buyNum']=$buyNum;
+                        //分店铺统计
+                        $shopProductCn+=$buyNum;                        
+                        $shopOriginalPriceTotal += $p['originalPrice'] * $buyNum;
+                        $shopCurrentPriceTotal += $p['currentPrice'] * $buyNum;
+                        
+                        //总
+                        $goodsCn+=$buyNum;                        
                         $originalPriceTotal += $p['originalPrice'] * $buyNum;
                         $currentPriceTotal += $p['currentPrice'] * $buyNum;
                     }
                 }
-            }
-        }
-        
-        //开始计算配送费.............................................begin
-        //暂时没有配送费以后追加计算
-        $deliveryFee = 0;
-        
-        //开始计算活动.............................................begin
-        //活动应减金额（暂时没有活动以后追加计算）
-        $lower = 0;
-        //如果活动是价格则应付金额-活动优惠价，否则该值为0；活动类型不同该值类型也不同，有可能是字符串。
-        $activity = $lower;
-        if (!is_numeric($activity)) {
-            $activity = 0;
-        }
+                
+                //开始计算配送费.............................................begin
+                //暂时没有配送费以后追加计算
+                $shopDeliveryFee=3;
+                
+                $deliveryFee+=$shopDeliveryFee;
+                
+                //开始计算活动.............................................begin
+                //活动应减金额（暂时没有活动以后追加计算）
+                $shopActLower=0;//店铺活动返现金额.
+                $shopActGiveaway='';//店铺活动赠品
+                //活动类型不同该值类型也不同，这个值也有可能是字符串。
+                $shopActivity = 20;
+                $shopActLower=$shopActivity;
+                if (!is_numeric($shopActivity)) {
+                    //如果是字符串则说明活动是满赠，返现为0;
+                    $shopActLower = 0;
+                    $shopActGiveaway=$shopActivity;
+                }
+                
+                
+                $actLower+=$shopActLower;
+                
+                //订单总金额(活动|优惠后的总商品价格，不含运费)
+                $shopOrderPriceTotal=$shopCurrentPriceTotal - $shopActLower;
 
-        //应付金额           
-        $payPriceTotal = ($currentPriceTotal - $activity) + $deliveryFee;
+                //应付金额;=订单总额+配送费           
+                $shopPayPriceTotal = $shopOrderPriceTotal + $shopDeliveryFee;
+
+                //计算节省价格;节省=商品原价-商品现价+活动价格
+                $shopJieSheng = $shopOriginalPriceTotal - $shopCurrentPriceTotal + $shopActLower;
+                
+                //最终统计结果
+                $statistics = array(
+                        'goodsCn'=>$shopProductCn,
+                        'originalPriceTotal' => Util::formatNum($shopOriginalPriceTotal),
+                        'currentPriceTotal' => Util::formatNum($shopCurrentPriceTotal),
+                        'orderPriceTotal' => Util::formatNum($shopOrderPriceTotal),
+                        'payPriceTotal' => Util::formatNum($shopPayPriceTotal),
+                        'deliveryFee' => Util::formatNum($shopDeliveryFee),
+                        'jieSheng' => Util::formatNum($shopJieSheng),
+                        'actLower' => Util::formatNum($shopActLower),
+                        'actGiveaway' => $shopActGiveaway,
+                );
+                $cartData['shop_statistics'][$shopId]=$statistics;
+            }
+        }else{
+            return $this->errorMessage('空的订单，请先去选购商品然后提交订单。');
+        }
+        
+
+
+        //订单总金额(活动|优惠后的总商品价格，不含运费)
+        $orderPriceTotal=$currentPriceTotal - $actLower;
+        
+        //应付金额;=订单总额+配送费           
+        $payPriceTotal = $orderPriceTotal + $deliveryFee;
         
         //计算节省价格;节省=商品原价-商品现价+活动价格
-        $jieSheng = $originalPriceTotal - $currentPriceTotal + $activity;
+        $jieSheng = $originalPriceTotal - $currentPriceTotal + $actLower;
         
         //最终统计结果
         $statistics = array(
                 'goodsCn'=>$goodsCn,
                 'originalPriceTotal' => Util::formatNum($originalPriceTotal),
                 'currentPriceTotal' => Util::formatNum($currentPriceTotal),
+                'orderPriceTotal' => Util::formatNum($orderPriceTotal),
                 'payPriceTotal' => Util::formatNum($payPriceTotal),
                 'deliveryFee' => Util::formatNum($deliveryFee),
                 'jieSheng' => Util::formatNum($jieSheng),
-                'lower' => Util::formatNum($lower)
+                'actLower' => Util::formatNum($actLower)
         );
         $cartData['statistics']=$statistics;
         $data=$cartData;

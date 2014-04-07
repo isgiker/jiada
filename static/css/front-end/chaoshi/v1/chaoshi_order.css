@@ -157,6 +157,17 @@ em {
     float: left;
     line-height: 28px;
 }
+.loading-2, .checkout-state {
+    height: 30px;
+    border: 1px solid #edd28b;
+    padding: 0 10px;
+    margin-top: 10px;
+    float: left;
+    line-height: 30px;
+}
+.loading-1 b, .checkout-state b {
+    margin-right: 5px;
+}
 .loading, .checkout-state {
     background: #fff;
 }
@@ -172,4 +183,373 @@ em {
     float: left;
     color: #c00;
     line-height: 26px;
+}
+#consignee .item .hookbox, #part-invoice .item .hookbox {
+    margin: 7px 5px 0 8px;
+}
+
+
+.common-button .button {
+    border: 1px solid #eee;
+    background: #fff;
+    padding: 5px 25px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    color: #333;
+    font-size: 15px;
+    display: block;
+    overflow: hidden;
+    position: relative;
+    text-decoration: none;
+    vertical-align: middle;
+}
+.common-button .button:hover {
+    border: 1px solid #ccc;
+    display: block;
+    overflow: hidden;
+    position: relative;
+    background: #a1a3a6;
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#eee));
+    background: -webkit-linear-gradient(top, #fff, #eee);
+    background: -moz-linear-gradient(top, #fff, #eee);
+    background: -ms-linear-gradient(top, #fff, #eee);
+    background: -o-linear-gradient(top, #fff, #eee);
+    background-image: -ms-linear-gradient(top, #fff 0%, #eee 100%);
+    color: #222;
+}
+
+.common-button .savebutton{
+    text-align: center;
+    width: 106px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #D53F44;
+    background: #CA181F;
+    color: #fff;
+    font-weight: bold;
+    font-family: "microsoft yahei";
+}
+.common-button .savebutton:hover{
+    border: 1px solid #D53F44;
+    background: #E01C24;
+    color: #fff;
+    font-weight: bold;
+}
+
+/*支付方式--Begin
+=============================================================================*/
+#checkout .step-complete .sbox-wrap {
+    padding: 0 44px;
+}
+#payment-ship .payment {
+    padding-bottom: 10px;
+}
+#payment-ship h3, #payment-ship .way-category h4, .step-stitle strong {
+    border-bottom: 0px;
+}
+#payment-ship h3 {
+    height: 30px;
+    border-bottom: 1px dashed #ffe6bc;
+    line-height: 30px;
+}
+#shipment h3 small{
+    font-size: 12px;
+    color: #999;
+    font-weight: 600;
+    padding: 0 5px;
+}
+#payment-ship .mc {
+    overflow: visible;
+}
+#payment-ship .item {
+    overflow: hidden;
+    zoom: 1;
+    line-height: 28px;
+}
+#payment-ship .item .label {
+    width: 250px;
+    float: left;
+}
+#payment-ship .item .hookbox {
+    margin: 7px 5px 0 8px;
+}
+#payment-ship .item .field {
+    float: left;
+    max-width: 680px;
+    _width: 680px;
+}
+#payment-ship .item .tip {
+    padding: 0 5px 0 0;
+    color: #999;
+    background: none;
+    border: none;
+    position: static;
+    z-index: inherit;
+    box-shadow: 0;
+}
+#payment-ship .item-selected {
+    background-color: #fff4d3;
+}
+.express-form{
+    margin-top: 10px;
+}
+.express-form .list {
+    padding: 2px 0;
+    overflow: hidden;
+    zoom: 1;
+    line-height: 24px;
+}
+.express-form .label {
+    width: 120px;
+    margin-right: 5px;
+    line-height: 24px;
+    text-align: right;
+}
+.express-form .field {
+    float: left;
+}
+.express-form .payment-type ul {
+    list-style: none;
+    float: left;
+}
+.express-form .payment-type li {
+    padding-right: 12px;
+    float: left;
+    overflow: hidden;
+    zoom: 1;
+    line-height: 26px;
+}
+.express-form .hookbox {
+    margin: 6px 5px 0 8px;
+}
+#payment-ship .payment-selected, #payment-ship .way-list .way-item {
+    line-height: 22px;
+}
+
+
+/*商品清单--Begin
+=============================================================================*/
+#checkout a.return-edit {
+    float: right;
+    font-size: 12px;
+    font-weight: 400;
+    padding-right: 24px;
+    text-decoration: bottom;
+}
+.checkout-steps .step-current .step-title strong, .checkout-steps .step-complete .step-title strong {
+    color: #000;
+}
+#checkout #orderList {
+    width: 900px;
+    margin: 0 auto;
+    border: 0px solid #a1a3a6;
+}
+#orderList table{
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+#orderList table thead{
+    background-color: #edd28b;    
+}
+#orderList table th{
+    border: 0px;
+    height:34px;
+    line-height: 34px;
+    text-align: center;
+}
+#orderList table td{
+    text-align: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #ddd;
+    line-height: 52px;
+}
+#orderList table .pTitle{
+    width: 50%;
+}
+#orderList table .p-goods {
+    overflow: hidden;
+    zoom: 1;
+}
+#orderList table .p-img {
+    width: 50px;
+    height: 50px;
+    margin-right: 5px;
+    border: 1px solid #ddd;
+    padding: 0;
+    float: left;
+    overflow: hidden;
+}
+#orderList table .p-img a:link, #orderList table .p-img a:visited {
+    text-decoration: none;
+}
+#orderList table .p-name a, #orderList table .p-name a:visited, #order-cart .p-name a:hover {
+    color: #005ea7;
+}
+#orderList table .p-detail {
+    float: left;
+    line-height: 16px;
+}
+#orderList table .p-name {
+    height: 32px;
+    overflow: hidden;
+    zoom: 1;
+}
+#orderList table .p-more{
+    color: #999;
+    line-height: 20px;
+}
+#orderList table .p-name, #orderList table .p-detail {
+    word-break: break-all;
+    word-wrap: break-word;
+}
+.p-img, .p-name, .p-price, .p-market, .p-detail {
+    overflow: hidden;
+}
+#orderList table td.shopInfo{
+    text-align: left;
+    height: 34px;
+    line-height: 34px;
+    border-top: 1px dashed  #ccc;
+    border-bottom: 1px dashed #ddd;
+    padding-left: 8px;
+    background-color: #eeefff;
+    padding-top: 0;
+    padding-bottom: 0px;
+}
+#orderList table td.shopInfo .shopName {
+    text-align: left;
+    color: #333;
+    font-weight: bold;
+    font-size: 14px;
+}
+#orderList table td.shopInfo .shopActive, #orderList table td.shopInfo .shopFreight {
+    color: #3e8f3e;
+}
+#orderList table td.shopInfo span {
+    float: left;
+    padding-right: 10px;
+}
+#orderList table td.pTitle{
+    text-align: left;
+}
+#orderList table td.pPrice{
+    text-align: right;
+    padding-right: 75px;
+    font-weight: bold;
+}
+
+/*Table tfoot*/
+#orderList table tfoot td{
+    border-bottom: 0;
+}
+#orderList table tfoot .summary-form {
+    overflow: hidden;
+}
+#orderList table tfoot .summary-form .item {
+    height: 28px;
+    overflow: hidden;
+    zoom: 1;
+    line-height: 28px;
+}
+#orderList table tfoot .hookbox {
+    margin: 7px 5px 0 8px;
+}
+#orderList table tfoot label, #orderList table tfoot input {
+    float: left;
+}
+
+#orderList table tfoot .statistic {
+    width: 300px;
+}
+#orderList table tfoot .statistic .list {
+    height: 24px;
+    line-height: 24px;
+    overflow: hidden;
+    zoom: 1;
+}
+#orderList table tfoot .statistic span {
+    width: 180px;
+    margin-right: 20px;
+    float: left;
+    text-align: right;
+}
+#orderList table tfoot .statistic em {
+    color: #e4393c;
+}
+#orderList table tfoot .statistic .price {
+    color: #333333;
+    float: left;
+    width: 100px;
+    text-align: right;
+}
+
+/*提交 begin*/
+.checkout-buttons {
+    width: 988px;
+    height: 50px;
+    background-color: #f5f5f5;
+    position: relative;
+    line-height: 50px;
+}
+.group {
+    zoom: 1;
+}
+.checkout-buttons .inner {
+    padding-right: 18px;
+    float: right;
+    line-height: 50px;
+}
+.checkout-buttons .total {
+    padding-right: 18px;
+    float: left;
+    line-height: 50px;
+    font-size: 14px;
+    font-weight: 700;
+}
+.checkout-buttons .total strong {
+    color: #e4393c;
+    font-size: 20px;
+    vertical-align: bottom;
+    font-weight: normal;
+}
+
+.checkout-buttons .checkout-submit {
+    /* background-color: #e00; */
+    width: 100px;
+    position: relative;
+    overflow: hidden;
+    margin-top: 4px;
+    text-align: center;
+}
+
+.checkout-buttons .checkout-submit span {
+    color: #fff;
+    font-weight:bold;
+    font-size: 18px;
+    font-family: "microsoft yahei";
+}
+
+.submit-check-info {
+    color: #FF6600;
+    height: 30px;
+    line-height: 30px;
+    top: -30px;
+    padding: 0 3px;
+    position: absolute;
+    right: 20px;
+    background-color: #FFFDEE;
+    border: 1px solid #EDD28B;
+}
+
+.submit-error {
+    position: absolute;
+    right: 20px;
+    top: -22px;
+    background: #FFE8E8;
+    color: #CC0000;
+    border: 1px solid #DB9A9A;
+    height: 20px;
+    line-height: 20px;
+    padding: 0 3px;
 }

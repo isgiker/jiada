@@ -114,7 +114,12 @@ class CartController extends Core_Controller_Www {
         //请求接口,返回json数据
         $recountResult = $this->phprpcClient->recount($parameter);
         $recountResult = json_decode($recountResult,true);
-        $this->getView()->assign('data', $recountResult['data']);
+        if(isset($recountResult['data'])){
+            $data=$recountResult['data'];
+        }else{
+            $data='';
+        }
+        $this->getView()->assign('data', $data);
     }
 
 }

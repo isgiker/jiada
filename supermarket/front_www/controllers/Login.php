@@ -66,9 +66,10 @@ class LoginController extends Core_Controller_Www {
         
         //关联用户区域信息
         $areaInfo=$this->model->getAreaInfo($userInfo['areaId']);
-
+        
+        $expire=time()+(3600*24*100);
         //方便用户再次登录时不用输入用户名
-        $cR1=$this->setCookies('uname', $data['username'],3600*24*100);
+        $cR1=$this->setCookies('uname', $data['username'],$expire);
         $cR2=$this->setCookies('uid', $userInfo['userId']);
 
         //登录时间
@@ -158,11 +159,12 @@ class LoginController extends Core_Controller_Www {
         unset($_COOKIE['uid']);
         unset($_COOKIE['_TICKET']);
         unset($_COOKIE['_USERINFO']);
+        $expire=time()-86400;
         // Nullify the cookie and make it expire
-        $delCookie1 = $this->setCookies('_TICKET', '', -86400);
-        $delCookie2 = $this->setCookies('_USERINFO', '', -86400);
-        $delCookie3 = $this->setCookies('uid', '', -86400);
-        $delCookie4 = $this->setCookies('_UIS', '', -86400);
+        $delCookie1 = $this->setCookies('_TICKET', '', $expire);
+        $delCookie2 = $this->setCookies('_USERINFO', '', $expire);
+        $delCookie3 = $this->setCookies('uid', '', $expire);
+        $delCookie4 = $this->setCookies('_UIS', '', $expire);
 
         $this->redirect('/Login');
     }

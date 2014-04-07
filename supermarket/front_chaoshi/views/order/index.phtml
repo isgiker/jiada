@@ -14,15 +14,16 @@
                 </a>
             </div>
             <div class="progress clearfix">
-                    <ul class="progress-1">
-                            <li class="step-1"><b></b>1.我的购物车</li>
-                            <li class="step-2"><b></b>2.填写核对订单信息</li>
-                            <li class="step-3">3.成功提交订单</li>
-                    </ul>
+                <ul class="progress-1">
+                    <li class="step-1"><b></b>1.我的购物车</li>
+                    <li class="step-2"><b></b>2.填写核对订单信息</li>
+                    <li class="step-3">3.成功提交订单</li>
+                </ul>
             </div>
         </div>
-        
+
         <div class="w m2">
+            <a name="consigneeFocus"></a>
             <div id="checkout">
                 <div class="mt">
                     <h2>填写并核对订单信息</h2>
@@ -39,15 +40,18 @@
                             <div id="consignee" class="sbox-wrap">
                                 <div class="sbox">
                                     <div class="s-content">
-                                        <input type="hidden" id="hideAreaIds" value="10-698-702-46144"><!--icon隐藏域-->
                                         <p>
                                             <?php
-                                                if(isset($defaultAddress) && $defaultAddress){
-                                                    echo $defaultAddress['contact'].'&nbsp;'.$defaultAddress['mobile'].'&nbsp;  &nbsp;'.$defaultAddress['email'];
+                                            if ($needSetConsignee == true) {
+                                                echo '<span class="red">请修改收货人地址。</span>';
+                                            } else {
+                                                if (isset($pConsignee) && $pConsignee) {
+                                                    echo $pConsignee['contact'] . '&nbsp;' . $pConsignee['mobile'] . '&nbsp;  &nbsp;' . $pConsignee['email'];
                                                     echo '<br>';
-                                                    echo $areas[$defaultAddress['provinceId']]['areaName'].' '.$areas[$defaultAddress['cityId']]['areaName'].' '.$areas[$defaultAddress['districtId']]['areaName'].' '.$areas[$defaultAddress['communityId']]['areaName'];
-                                                    echo '&nbsp;'.$defaultAddress['address'];
+                                                    echo $pConsignee['province'] . ' ' . $pConsignee['city'] . ' ' . $pConsignee['district'] . ' ' . $pConsignee['community'];
+                                                    echo '&nbsp;' . $pConsignee['address'];
                                                 }
+                                            }
                                             ?>
 
                                         </p>
@@ -55,22 +59,229 @@
                                 </div>						</div><!--@end div#consignee-->
                         </div>
                     </div>
-                    <div id="step-2" class="step step-complete"><a name="payAndShipFocus"></a>
+
+                    <div id="step-2" class="step step-complete">
+                        <a name="payAndShipFocus"></a>
                         <div class="step-title">
                             <div id="save-payAndShip-tip" class="step-right">
                             </div>
                             <strong>支付及配送方式</strong>
                             <span class="step-action" id="payment-ship_edit_action"><a href="#none" onclick="edit_Payment(false)">[修改]</a></span>
                         </div>
+                        <div class="step-content">
+                            <div id="payment-ship" class="sbox-wrap">
+                                <div class="sbox">
+                                    <div class="s-content payment-info">
+                                        <?php
+                                        if ($needSetPayAndShip === true) {
+                                            echo '<span class="red">请修改付款方式和配送时间。</span>';
+                                        } else {
+                                            ?>
+                                            <div class="payment-selected">
+                                                <?php echo $payModeMsg; ?>
+                                                <span class="easyPayWarning"></span>
+                                            </div>
+
+                                            <div class="way-list">
+                                                <div class="way-item">
+                                                    <?php echo $deliveryTimeMsg; ?>配送&nbsp;&nbsp;<span id="promise311tip">
+                                                        <font color="#FF6600;">
+                                                        <?php
+                                                        if ($deliveryTimeOption == 'DELIVERY_FREE_MORNING') {
+                                                            if ($hour > '05') {
+                                                                $day = $tomorrow;
+                                                            } else {
+                                                                $day = $today;
+                                                            }
+                                                        } elseif ($deliveryTimeOption == 'DELIVERY_FREE_NIGHT') {
+                                                            if ($hour > '19') {
+                                                                $day = $tomorrow;
+                                                            } else {
+                                                                $day = $today;
+                                                            }
+                                                        }
+                                                        $desc = "订单将于" . $day . $deliveryTimeMsg . "送达";
+                                                        echo $desc;
+                                                        ?>
+                                                        </font></span> &nbsp;  
+                                                    <span id="promise_jd_message"></span>
+                                                </div>
+                                                <div class="way-item">
+                                                    <?php echo $callToConfirmMsg; ?>
+                                                </div>
+
+                                            </div>
+                                            <?php
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <!--<div id="shipment"></div>-->
+                        </div>
                     </div>
+
+
+                    <div id="step-4" class="step step-complete">
+                        <div class="step-title">
+                            <a href="/cart/index" id="cartRetureUrl" class="return-edit">返回购物车</a>
+                            <strong>商品清单</strong>
+                        </div>
+                        <div class="step-content">
+                            <div id="orderList" class="sbox-wrap">
+                                <table >
+                                    <thead>
+                                    <th class="pTitle">商品名称</th>
+                                    <th class="pPrice">价格</th>
+                                    <th class="pNum">数量</th>
+                                    <th class="pStock">库存状态</th>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        foreach ($data['goodsItems'] as $shopId => $shopGoods) {
+                                            $shopInfo = $data['shops'][$shopId];
+                                            //这里以后要统计各个店铺的活动和配送费
+                                            ?>
+                                            <tr>
+                                                <td valign="top" rowspan="1" colspan="4" class="shopInfo">
+                                                    <span class="shopName"><?php echo $shopInfo['shopName']; ?></span>
+                                                    <span class="shopFreight">运费：5元(满50元免配送费)</span>
+                                                    <span class="shopActive">活动：-20(满300元立减20元)</span>
+                                                </td>
+                                            </tr>
+
+                                            <?php
+                                            //店铺循环
+                                            $goodsNum = count($shopGoods);
+                                            if (isset($shopGoods[0]) && $shopGoods[0]) {
+                                                //店铺内商品循环
+                                                foreach ($shopGoods as $k => $p) {
+                                                    if (isset($data['cartItems'][$p['priceId']]['buyNum']) && $data['cartItems'][$p['priceId']]['buyNum']) {
+                                                        $buyNum = $data['cartItems'][$p['priceId']]['buyNum'];
+                                                    } else {
+                                                        $buyNum = 0;
+                                                    }
+                                                    ?>
+                                                    <tr>
+                                                        <td width="190" valign="top" class="pTitle">
+                                                            <div class="p-goods">
+                                                                <div class="p-img"><a href="http://item.jd.com/1045683625.html" target="_blank"><img alt="" src="http://img10.360buyimg.com/n5/g14/M07/07/13/rBEhV1KvsdYIAAAAAAF63tZPKhIAAG-lQP0EwUAAXr2116.jpg"></a></div>
+                                                                <div class="p-detail">
+                                                                    <div class="p-name">
+                                                                        <a href="<?php echo '/detail?p='.$p['priceId'];?>" target="_blank">
+                                                                            <?php echo $p['goodsName'];?>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="p-more">商品编号：<?php echo $p['priceId'];?></div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td width="190" valign="top" class="pPrice">
+                                                            ¥<?php echo $p['currentPrice'];?>
+                                                        </td>
+                                                        <td width="190" valign="top" class="pNum">x <?php echo $buyNum;?></td>
+                                                        <td width="190" valign="top" class="pStock">有货</td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                            }
+                                            ?>
+
+
+
+                                            <?php
+                                        }
+                                        ?>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td valign="top" colspan="2" rowspan="1">
+                                                <div class="summary-form fl">
+                                                    <div class="item" id="stockFirstShip">
+                                                        <input type="checkbox" value="" id="use-order-1" class="hookbox">
+                                                        <label for="use-order-1">先发有货商品（如果订单部分商品缺货，优先配送有货商品）</label>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td valign="top" colspan="2" rowspan="1">
+
+                                                <div class="statistic fr">
+                                                    <div class="list"><span><em id="span-skuNum"><?php echo $data['statistics']['goodsCn'];?></em> 件商品，总商品金额：</span><em class="price" id="warePriceId">￥<?php echo $data['statistics']['currentPriceTotal'];?></em></div>
+                                                    <div class="list"><span>返现合计：</span><em class="price" id="cachBackId" v="0.00"> -￥<?php echo $data['statistics']['actLower'];?></em></div>
+                                                    <div class="list" id="showFreightPrice" ">
+                                                        <span id="freightSpan" style="color:#005EA7;">运费合计：</span> 
+                                                        <em class="price" id="freightPriceId" style="color:#FF6600;"> ￥<?php echo $data['statistics']['deliveryFee'];?></em>
+                                                    </div>
+                                                    <div class="list"><span>应付总额：</span><em id="sumPayPriceId" class="price"> ￥<?php echo $data['statistics']['payPriceTotal'];?></em></div>			
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="hideform" class="hide">
+                            <!--联系人地址-->
+                            <input name="contact" value="<?php echo $pConsignee['contact'];?>" id="hide_contact" />
+                            <input name="mobile" value="<?php echo $pConsignee['mobile'];?>" id="hide_mobile" />
+                            <input name="email" value="<?php echo $pConsignee['email'];?>" id="hide_email" />
+                            <input name="province" value="<?php echo $pConsignee['province'];?>" id="hide_province" />
+                            <input name="city" value="<?php echo $pConsignee['city'];?>" id="hide_city" />
+                            <input name="district" value="<?php echo $pConsignee['district'];?>" id="hide_district" />
+                            <input name="community" value="<?php echo $pConsignee['community'];?>" id="hide_community" />
+                            <input name="address" value="<?php echo $pConsignee['address'];?>" id="hide_address" />
+                            
+                            <!--支付及配送-->
+                            <input name="payMode" value="<?php if(isset($payMode)){echo $payMode;}else{echo '';}?>" id="hide_payMode" />
+                            <input name="deliveryTimeOption" value="<?php if(isset($deliveryTimeOption)){echo $deliveryTimeOption;}else{echo '';}?>" id="hide_deliveryTimeOption" />
+                            <input name="callToConfirm" value="<?php if(isset($callToConfirm)){echo $callToConfirm;}else{echo '';}?>" id="hide_callToConfirm" />
+                            <input name="order_payship_sing" value="<?php if(isset($order_payship_sing)){echo $order_payship_sing;}else{echo '';}?>" id="hide_order_payship_sing" />
+                            
+                            <!--商品价格-->
+                            <input name="goodsCn" value="<?php if(isset($data['statistics']['goodsCn'])){echo $data['statistics']['goodsCn'];}else{echo '';}?>" id="hide_goodsCn" />
+                            <input name="originalPriceTotal" value="<?php if(isset($data['statistics']['originalPriceTotal'])){echo $data['statistics']['originalPriceTotal'];}else{echo '';}?>" id="hide_originalPriceTotal" />
+                            <input name="currentPriceTotal" value="<?php if(isset($data['statistics']['currentPriceTotal'])){echo $data['statistics']['currentPriceTotal'];}else{echo '';}?>" id="hide_currentPriceTotal" />
+                            <input name="orderPriceTotal" value="<?php if(isset($data['statistics']['orderPriceTotal'])){echo $data['statistics']['orderPriceTotal'];}else{echo '';}?>" id="hide_orderPriceTotal" />
+                            <input name="payPriceTotal" value="<?php if(isset($data['statistics']['payPriceTotal'])){echo $data['statistics']['payPriceTotal'];}else{echo '';}?>" id="hide_payPriceTotal" />
+                            <input name="deliveryFee" value="<?php if(isset($data['statistics']['deliveryFee'])){echo $data['statistics']['deliveryFee'];}else{echo '';}?>" id="hide_deliveryFee" />
+                            <input name="actLower" value="<?php if(isset($data['statistics']['actLower'])){echo $data['statistics']['actLower'];}else{echo '';}?>" id="hide_lower" />
+                        </div>
+                        <div id="checkout-floatbar" class="checkout-buttons group">
+                            <div class="sticky-wrap">
+                                <div class="inner">
+
+                                    <span class="total">应付总额：<strong id="payPriceId">￥<?php echo $data['statistics']['payPriceTotal'];?></strong>元</span>
+                                    <span class="form-btn group common-button fr">
+                                        <a href="#none" class="checkout-submit  savebutton button" id="order-submit" onclick="submitOrder()">
+                                            <span>提交订单</span>
+                                        </a>
+                                        <div class="loading loading-2" style="display:none"><b></b>正在提交信息，请等待！</div>
+                                    </span>
+                                </div>
+                                <span id="submit_message" style="display:none" class="submit-error"></span>
+                                <div class="submit-check-info" id="submit_check_info_message" style="display:none">
+                                    <span>您需先保存<a style="color:#005EA7;" href="#payAndShipFocus">支付及配送方式</a>，再提交订单  <input type="hidden" id="anchor_info" value="payAndShipFocus"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
             </div>
-        </div>
-        
-        <script src="<?php echo '//' . $_config_domain['static'] . '/js/basic/libs/jquery.min.js'; ?>"></script>
-        <script src="<?php echo '//' . $_config_domain['static'] . '/js/front-end/chaoshi/v1/chaoshi_common.js'; ?>" type="text/javascript" ></script>
-        <script src="<?php echo '//' . $_config_domain['static'] . '/js/front-end/chaoshi/v1/chaoshi.js'; ?>" type="text/javascript" ></script>
-        <script src="<?php echo '//' . $_config_domain['static'] . '/js/front-end/chaoshi/v1/chaoshi_order.js'; ?>" type="text/javascript" ></script>
-        
+            <br />
+            <script src="<?php echo '//' . $_config_domain['static'] . '/js/basic/libs/jquery.min.js'; ?>"></script>
+            <script src="<?php echo '//' . $_config_domain['static'] . '/js/front-end/chaoshi/v1/chaoshi_common.js'; ?>" type="text/javascript" ></script>
+            <script src="<?php echo '//' . $_config_domain['static'] . '/js/front-end/chaoshi/v1/chaoshi.js'; ?>" type="text/javascript" ></script>
+            <script src="<?php echo '//' . $_config_domain['static'] . '/js/front-end/chaoshi/v1/chaoshi_order.js'; ?>" type="text/javascript" ></script>
+            <?php
+                if($needSetConsignee==true){
+                    echo '<script>editConsignee();</script>';
+                }elseif($needSetPayAndShip==true){
+                    echo '<script>edit_Payment();</script>';
+                }
+            ?>
     </body>
 </html>

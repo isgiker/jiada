@@ -79,28 +79,30 @@ var win = window,
                     pitem = $this.parents().parent('.item'),
                     cont = $this.parents('.item');
 
-            var goodsCn, originalPriceTotal, currentPriceTotal, payPriceTotal, deliveryFee, jiesheng, lower;
+            var goodsCn, originalPriceTotal, currentPriceTotal, orderPriceTotal, payPriceTotal, deliveryFee, jiesheng, actLower;
             var callback2 = function(data) {
-                if (typeof data.statistics.payPriceTotal != 'undefined') {
+                if (typeof data.statistics.orderPriceTotal != 'undefined') {
                     //商品总数量统计
                     goodsCn=data.statistics.goodsCn;
                     //统计
                     originalPriceTotal = data.statistics.originalPriceTotal;
                     currentPriceTotal = data.statistics.currentPriceTotal;
                     //合计
-                    payPriceTotal = data.statistics.payPriceTotal;
+                    orderPriceTotal = data.statistics.orderPriceTotal;
                     //节省
                     jiesheng = data.statistics.jieSheng;
                     //配送费
                     deliveryFee = data.statistics.deliveryFee;
                     
                     //活动返现金额
-                    lower=data.statistics.lower;
+                    actLower=data.statistics.actLower;
 
                     //更新应付总金额
-                    $('#finalPrice').html('￥'+payPriceTotal);
+                    $('#finalPrice').html('￥'+orderPriceTotal);
                     //更新商品现价合计
                     $('#totalSkuPrice').html('￥'+currentPriceTotal);
+                    //更新活动返现金额
+                    $('#totalRePrice').html('￥'+actLower);
                     
                     $('#selectedCount').text(goodsCn);
                 }

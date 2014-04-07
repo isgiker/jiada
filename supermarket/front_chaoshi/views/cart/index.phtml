@@ -120,14 +120,13 @@
                     </div>
                     <div class="total fr">
                         <p class="clearfix"><span class="price_hj" id="totalSkuPrice">¥<?php echo $data['statistics']['currentPriceTotal'];?></span><span>合计：</span></p>
-                        <p><span class="price_hj" id="totalRePrice">- ¥0.00</span><span>返现合计：</span></p>
-                        <p><span class="price_hj" id="totalFreightPrice">¥0.00</span><span>运费合计：</span></p>
+                        <p><span class="price_hj" id="totalRePrice">- ¥<?php echo $data['statistics']['actLower'];?></span><span>返现合计：</span></p>
                         
                     </div>
                     <div class="amout fr"><span id="selectedCount"><?php echo $data['statistics']['goodsCn'];?></span> 件商品</div>
                 </div>
                 <div class="cart-total clearfix">
-                    <div class="total fr"><span id="finalPrice">¥<?php echo $data['statistics']['payPriceTotal'];?></span>总计（含运费以结算页为准）：</div>
+                    <div class="total fr"><span id="finalPrice">¥<?php echo $data['statistics']['orderPriceTotal'];?></span>总计（不含运费）：</div>
                 </div>
                 
                 

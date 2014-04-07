@@ -485,6 +485,9 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
      */
     public function setCookies($name, $val = '', $time = 0, $path = '/', $domain = '', $secure = FALSE, $httponly = FALSE) {
         if (trim($name)) {
+            if(!$path){
+                $path='/';
+            }
             return setcookie($name, $val, $time, $path, $domain, $secure, $httponly);
         }else{
             return false;
