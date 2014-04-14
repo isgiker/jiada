@@ -27,7 +27,7 @@ class DetailController extends Core_Controller_Api{
         Yaf_Dispatcher::getInstance()->autoRender(FALSE);
         $this->_layout = false;
         $phprpcServer = new PHPRPC_Server();
-        $phprpcServer->add(array('getGoodsInfo'),  $this);
+        $phprpcServer->add(array('getGoodsInfo','getCateNodes'),  $this);
         
         $phprpcServer->start();
     }
@@ -43,11 +43,42 @@ class DetailController extends Core_Controller_Api{
             return $this->errorMessage();
         }
         
-        $data=$this->model->getGoodsInfo($priceId);
-        if(!$data){
+        //获取商品相关信息
+        $goodsInfo=$this->model->getGoodsInfo($priceId);
+        if(!$goodsInfo){
             return $this->errorMessage();
         }
-        return $this->returnData($data);
+        
+        
+        
+        
+        return $this->returnData($goodsInfo);
+    }
+    
+    /**
+     * 根据分类id获取分类节点信息
+     * @param int $cateId 分类id。
+     * @return array|json
+     */
+    public function getCateNodes($cateId) {
+        //分类信息
+        $cateInfo=$this->model->getGoodsCateInfo($cateId);
+        if($cateInfo && isset($cateInfo['parentPath'])){
+            //获取分类节点路径信息
+            $cateNodes=$this->model->getCateNodes($cateInfo['parentPath']);
+            if(!$cateNodes){
+                return $this->errorMessage();
+            }
+            $parentPath=  explode(',', $cateInfo['parentPath']);
+            $newNode=array();
+            foreach($cateNodes as $cateItem){
+                $newNode[$cateItem['cateId']]=$cateItem;
+            }
+            $data=array('nodePath'=>$parentPath,'nodeItems'=>$newNode);
+            return $this->returnData($data);
+        }else{
+            return $this->errorMessage();
+        }
     }
     
 }

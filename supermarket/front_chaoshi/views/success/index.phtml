@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>订单成功 - 家大小区超市</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="<?php echo '//' . $_config_domain['static'] . '/css/front-end/chaoshi/v1/chaoshi_success.css'; ?>">
+    </head>
+    <body>
+        <div class="w w1 header clearfix">
+            <div id="logo">
+                <a href="http://www.jd.com/">
+                    <img src="http://misc.360buyimg.com/lib/img/e/logo-201305.png" title="返回家大首页" alt="返回家大首页">
+                </a>
+            </div>
+            <div class="progress clearfix">
+                <ul class="progress-1">
+                    <li class="step-1"><b></b>1.我的购物车</li>
+                    <li class="step-2"><b></b>2.填写核对订单信息</li>
+                    <li class="step-3">3.成功提交订单</li>
+                </ul>
+            </div>
+        </div>
+        <div class="w main">
+            <div class="m m3 msop">
+                <div class="mt" id="success_tittle"><s class="icon-succ02"></s><h3 class="ftx-02">感谢您，订单提交成功！</h3>
+                </div>
+                <?php
+                $freetag = '';
+                $timeHourStart = str_pad($orderInfo['timeHourStart'], 2, 0, STR_PAD_LEFT);
+                $timeHourEnd = str_pad($orderInfo['timeHourEnd'], 2, 0, STR_PAD_LEFT);
+                $timeMinuteStart = str_pad($orderInfo['timeMinuteStart'], 2, 0, STR_PAD_RIGHT);
+                $timeMinuteEnd = str_pad($orderInfo['timeMinuteEnd'], 2, 0, STR_PAD_RIGHT);
+                $arriveTime=date('Y-m-d',$orderInfo['deliveryTime']);
+                if ($orderInfo['isNow'] == 1) {
+                    //如果是即时送
+                    $deliveryShortDesc = $orderInfo['deliveryMode'] . '配送：' . $orderInfo['timeMinuteStart'] . ' - ' . $orderInfo['timeMinuteEnd'] . '分钟送达';
+                 } else {
+                    $deliveryShortDesc = $orderInfo['deliveryMode'] . '配送：' . $arriveTime . ' ' . $timeHourStart . ':' . $timeMinuteStart . ' - ' . $timeHourEnd . ':' . $timeMinuteEnd . '送达';
+                }
+                ?>
+                <div class="mc" id="success_detail">	
+                    <input type="hidden" id="loadSuccessFlag" value="ok"><!-- 加載成功標識  -->
+                    <input type="hidden" id="skuIds" value="1015315409"><!-- 商品id串  -->
+                    <ul class="list-order">
+                        <li class="li-st">
+                            <div class="fore1">订单编号：<a href="#"><?php echo $orderInfo['orderNo'];?></a></div>
+                            <!-- 货到付款 -->
+                            <div class="fore2">付款金额：<strong class="ftx-01"><?php echo $orderInfo['payAmount'];?>元</strong></div>
+                            <div class="fore3">
+                                <?php echo $deliveryShortDesc;?>
+                                &nbsp;
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- 在线支付按钮  -->
+                    <div id="bookDiv"></div>
+                    <p class="i-tips01">
+                        您的订单已经在处理中，发货后订单内容会显示承运人联系方式，如有必要您可以联系对方
+                    </p>
+                    <p class="i-tips01">
+                        随时随地跟踪订单<a href="http://app.jd.com/">[查看详情]</a>
+                    </p>
+                </div>
+            </div>
+            <div class="o-mb">下单完成后，您可以：
+                <a href="http://jd2008.jd.com/JdHome/OrderList.aspx">查看我的订单</a>&nbsp;&nbsp;<a href="http://www.jd.com">继续购物</a></div>
+        </div>
+
+        <script src="<?php echo '//' . $_config_domain['static'] . '/js/basic/libs/jquery.min.js'; ?>"></script>
+        <script src="<?php echo '//' . $_config_domain['static'] . '/js/front-end/chaoshi/v1/chaoshi.js'; ?>" type="text/javascript" ></script>
+
+    </body>
+</html>

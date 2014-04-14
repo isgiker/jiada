@@ -13,53 +13,82 @@
                 <div style="padding-bottom:10px"></div>
                 <div class="mc form">
                     <?php
-                    if (isset($data['payMode']) && $data['payMode'] == 1) {
-                        $checked = ' checked="checked"';
-                        $classSelected = ' item-selected';
-                    } else {
-                        $checked = '';
-                        $classSelected = '';
-                    }
-                    ?>
-                    <div class="item <?php echo $classSelected;?>">
-                        <div class="label">
-                            <input type="radio" name="payMode" onclick="highlight(this)" payname="货到付款"  checked="checked" <?php echo $checked;?> id="pay-method-1" class="hookbox" value="1">
-                            <label for="pay-method-1">货到付款</label>
-                        </div>
-                        <div class="field">
-                            <span class="tip">送货上门后再收款，支持现金、POS机刷卡</span>
-                        </div>
-                        <span class="clr"></span>
-                    </div>
-                    <?php
-                    if (isset($data['payMode']) && $data['payMode'] == 2) {
-                        $checked = ' checked="checked"';
-                        $classSelected = ' item-selected';
-                    } else {
-                        $checked = '';
-                        $classSelected = '';
-                    }
-                    ?>
-                    <div class="item <?php echo $classSelected;?>">
-                        <div class="label">
-                            <input type="radio" name="payMode" onclick="highlight(this)" payname="在线支付" <?php echo $checked;?> id="pay-method-2" class="hookbox" value="2">
-                            <label for="pay-method-2">在线支付</label>
-                        </div>
-                        <div class="field">
-                            <span class="tip">即时到帐，支持绝大数银行借记卡及部分银行信用卡</span>
-                        </div>
-                        <span class="clr"></span>
-                    </div>
+                        if(isset($shopPay['shopPayMode']) && $shopPay['shopPayMode']){
+                            foreach($shopPay['shopPayMode'] as $k => $shopPayMode){
 
+                    ?>
+                    
+                    <?php
+                    if (isset($data['payMode']) && $data['payMode'] == $shopPayMode['payModeId']) {
+                        $checked = ' checked="checked"';
+                        $classSelected = ' item-selected';
+                    } else {
+                        $checked = '';
+                        $classSelected = '';
+                    }
+                    ?>
+                    <div class="item <?php echo $classSelected;?>">
+                        <div class="label">
+                            <input type="radio" name="payMode" onclick="highlight(this)" payname="<?php echo $shopPayMode['name'];?>"  <?php echo $checked;?> id="pay-method-<?php echo $shopPayMode['payModeId'];?>" class="hookbox" value="<?php echo $shopPayMode['payModeId'];?>">
+                            <label for="pay-method-<?php echo $shopPayMode['payModeId'];?>"><?php echo $shopPayMode['name'];?></label>
+                        </div>
+                        <div class="field">
+                            <span class="tip"><?php echo $shopPayMode['desc'];?></span>
+                        </div>
+                        <span class="clr"></span>
+                    </div>
+                    
+                    <?php
+                            }
+                        }
+                    ?>
                 </div>
             </div>
-            <div id="shipment">	
+            <div id="shipment">
                 <div class="way" style="padding-top:20px;">
                     <h3>配送方式 <small>家大配送，根据自身情况选择送货时段</small></h3>
                     <div class="mc form">
                         <div class="way-category" style="padding-top:5px;">
+                            <?php
+                                if($shopDelivery){
+                                    foreach($shopDelivery as $k => $item){
+                                        $freetag='';
+                                        $timeHourStart=str_pad($item['timeHourStart'],2,0,STR_PAD_LEFT);
+                                        $timeHourEnd=str_pad($item['timeHourEnd'],2,0,STR_PAD_LEFT);
+                                        $timeMinuteStart=str_pad($item['timeMinuteStart'],2,0,STR_PAD_RIGHT);
+                                        $timeMinuteEnd=str_pad($item['timeMinuteEnd'],2,0,STR_PAD_RIGHT);
+                                        if($item['isNow']==1){
+                                            //如果是即时送
+                                            $deliveryDesc='下单后'.$item['timeMinuteStart'].' - '.$item['timeMinuteEnd'].'分钟送达'.'。'.$item['fullMoneyDelivery'].'元起送，配送费'.$item['deliveryFee'].'元，满'.$item['fullMoneyFree'].'元免配送费'.'。';
+                                            $deliveryShortDesc=$item['deliveryMode'].'配送：'.$item['timeMinuteStart'].' - '.$item['timeMinuteEnd'].'分钟送达';
+                                            $arriveTime=$today;
+                                        }else{
+                                            //送达时间
+                                            if ($hour > $item['timeHourStart']) {
+                                                $arriveTimeStr='明天('.$tomorrow.')';
+                                                $arriveTime=$tomorrow;
+                                            } else {
+                                                $arriveTimeStr='今天('.$today.')';
+                                                $arriveTime=$today;
+                                            }
+                                            
+                                            if($item['deliveryFee']==0){
+                                                $freetag='免费';
+                                                $deliveryDesc='下单后'.$arriveTimeStr.$item['deliveryMode'].''.$timeHourStart.':'.$timeMinuteStart.' - '.$timeHourEnd.':'.$timeMinuteEnd.'送达'.'。'.$item['fullMoneyDelivery'].'元起送，配送费'.$item['deliveryFee'].'元。';
+                                            }else{                                                
+                                                $deliveryDesc='下单后'.$arriveTimeStr.$item['deliveryMode'].''.$timeHourStart.':'.$timeMinuteStart.' - '.$timeHourEnd.':'.$timeMinuteEnd.'送达'.'。'.$item['fullMoneyDelivery'].'元起送，配送费'.$item['deliveryFee'].'元，满'.$item['fullMoneyFree'].'元免配送费'.'。';
+                                            }
+                                            $deliveryShortDesc=$item['deliveryMode'].'配送：'.$arriveTime.' '.$timeHourStart.':'.$timeMinuteStart.' - '.$timeHourEnd.':'.$timeMinuteEnd.'送达';
+                                        }
+                                        
+                                        $item['deliveryTime']=strtotime($arriveTime);
+                                        
+                                        $shopDeliveryEncrypt= base64_encode(json_encode($item));
+                                        
+                            ?>
+                            
                             <?php 
-                            if (isset($data['deliveryTimeOption']) && $data['deliveryTimeOption'] == 'NOW') {
+                            if (isset($data['deliveryTimeOption']) && $data['deliveryTimeOption'] == $shopDeliveryEncrypt) {
                                 $checked=' checked="checked"';
                                 $classSelected=' item-selected';
                             } else {
@@ -68,14 +97,20 @@
                             } ?>
                             <div class="item <?php echo $classSelected;?>">
                                 <div class="label">
-                                    <input type="radio" name="deliveryTimeOption" onclick="highlight(this)" payname="即时配送" <?php echo $checked;?> id="deliveryTimeImmediately" class="deliveryTimeOption hookbox " value="NOW">
-                                    <label for="deliveryTimeImmediately">即时配送</label>
+                                    <input type="radio" name="deliveryTimeOption" onclick="highlight(this)" payname="<?php echo $item['deliveryMode'].$freetag;?>配送" <?php echo $checked;?> id="deliveryTimeOption<?php echo $item['dmId'];?>" class="deliveryTimeOption hookbox " value="<?php echo $shopDeliveryEncrypt;?>">
+                                    <label for="deliveryTimeOption<?php echo $item['dmId'];?>"><?php echo $item['deliveryMode'].$freetag;?>配送</label>
                                 </div>
                                 <div class="field">
-                                    <span class="tip">下单后预计15-45分钟左右送达。配送费3元，满50元免配送费</span>
+                                    <span class="tip"><?php echo $deliveryDesc;?></span>
                                 </div>
                                 <span class="clr"></span>
                             </div>
+                            
+                            <?php
+                                    }
+                                }
+                            ?>
+                            
                             <?php 
                             if (isset($data['deliveryTimeOption']) && $data['deliveryTimeOption'] == 'DELIVERY_FREE_MORNING') {
                                 $checked=' checked="checked"';

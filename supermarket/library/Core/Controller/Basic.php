@@ -155,6 +155,7 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
     public function errorMessage($msg = 'fail', $format='json') {
         $returnResult =array(
                 'result' => 'err',
+                'data' => '',
                 'status' => false,
                 'msg' => $msg,
                 'code' => -200

@@ -25,20 +25,37 @@ if (isset($_GET['fetch'])) {
 
 //上传配置
 $config = array(
-    "savePath" => ($path == "1" ? "upload/" : "upload1/"),
+    "savePath" => $imgSavePathConfig,
     "maxSize" => 1000, //单位KB
-    "allowFiles" => array(".gif", ".png", ".jpg", ".jpeg", ".bmp")
+    "allowFiles" => array("gif", "png", "jpg", "jpeg", "bmp", "webp"),
+    "fileNameFormat" => $_POST['fileNameFormat']
 );
+
+if (empty($path)) {
+
+    $path = $config['savePath'][0];
+}
+
+//上传目录验证
+if (!in_array($path, $config['savePath'])) {
+    //非法上传目录
+    echo '{"state":"\u975e\u6cd5\u4e0a\u4f20\u76ee\u5f55"}';
+    return;
+}
+
+$config[ 'savePath' ] = $path . '/';
 
 //文件上传状态,当成功时返回SUCCESS，其余值将直接返回对应字符窜并显示在图片预览框，同时可以在前端页面通过回调函数获取对应字符窜
 $state = "SUCCESS";
 
 //file_put_contents($path.'tt.txt', $_COOKIE['businessid']);
 //格式验证
-$current_type = strtolower(strrchr($_FILES["upfile"]["name"], '.'));
+$fInfo = pathinfo($_FILES["upfile"]["name"]);
+$current_type = $fInfo['extension'];
 if (!in_array($current_type, $config['allowFiles'])) {
     $state = "不允许的文件类型！";
 }
+
 //大小验证
 $file_size = 1024 * $config['maxSize'];
 if ($_FILES["upfile"]["size"] > $file_size) {
@@ -64,8 +81,8 @@ if ($state == "SUCCESS") {
 
     $fi = new File_Image();
     $servGroup = $fi->getImageServerGroup($imagesServerGroups);
-
-    $path = $fi->getImagePath('editor', 'jpg', $servGroup);
+    $imgParameter=array('imgType'=>$current_type,'imgServer'=>$servGroup);
+    $path = $fi->getImagePath($imgParameter);
     $ftp = new File_Ftp();
     $ftp->connect($config);
 
@@ -80,5 +97,5 @@ if ($state == "SUCCESS") {
 }
 
 
-echo "{'url':'" .$completeImgUrl. "','title':'" . $title . "','state':'". $state ."'}";
+echo "{'url':'" . $completeImgUrl . "','title':'" . $title . "','original':'" . $_FILES['upfile']['name'] . "','state':'" . $state . "'}";
 

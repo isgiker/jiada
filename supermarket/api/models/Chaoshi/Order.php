@@ -147,11 +147,23 @@ class Chaoshi_OrderModel extends BasicModel{
         $saveOrder=$this->saveOrder($param);
         if($saveOrder){
             //保存订单收货人信息
-            $saveConsignee=$this->saveOrderConsignee($orderNo,$param['userId'],$param['pConsignee'],$param['payAndShip']);
+            $saveConsignee=$this->saveOrderConsignee($orderNo,$param['userId'],$param['pConsignee']);
             if($saveConsignee){
                 //保存订单商品
                 $saveProduct=$this->saveOrderProduct($param);
-                if(!$saveProduct){
+                if($saveProduct){
+                    //保存订单统计数据
+                    $saveStatistics=$this->saveOrderStatistics($orderNo,$param['userId'],$param['product']['statistics'],$createTime);
+                    if($saveStatistics){
+                        //保存订单配送信息
+                        $saveOrderDelivery=$this->saveOrderDelivery($param);
+                        if(!$saveOrderDelivery){
+                            $rollback=true;
+                        }
+                    }else{
+                        $rollback=true;
+                    }
+                }else{
                     $rollback=true;
                 }
             }else{
@@ -221,9 +233,8 @@ class Chaoshi_OrderModel extends BasicModel{
         return false;
     }
     
-    public function saveOrderConsignee($orderNo,$userId,$pConsignee,$payAndShip){
+    public function saveOrderConsignee($orderNo,$userId,$pConsignee){
         $orderRemark='';
-        $payway='';
         $sql = "insert `order_consignee` set "
                 . "orderNo='$orderNo',"
                 . "userId='$userId',"
@@ -237,11 +248,7 @@ class Chaoshi_OrderModel extends BasicModel{
                 . "contactCommunity='$pConsignee[community]',"
                 . "contactAddress='$pConsignee[address]',"
                 . "contactZipcode='$pConsignee[zipcode]',"
-                . "orderRemark='$orderRemark',"
-                . "deliveryTimeOption='$payAndShip[deliveryTimeOption]',"
-                . "deliveryTime='$payAndShip[deliveryTime]',"
-                . "callToConfirm='$payAndShip[callToConfirm]',"
-                . "payway='$payway';"
+                . "orderRemark='$orderRemark';"
         ;
         return $this->hydb->query($sql);
     }
@@ -281,6 +288,58 @@ class Chaoshi_OrderModel extends BasicModel{
         return false;
     }
     
+    public function saveOrderStatistics($orderNo,$userId,$statistics,$createTime){
+        if(isset($statistics['activityRemark'])){
+            $activityRemark=$statistics['activityRemark'];
+        }else{
+            $activityRemark='';
+        }
+        if(!$orderNo || !$userId || !$statistics){
+            return false;
+        }
+        $sql="insert `order_statistics` set "
+                        . "orderNo='$orderNo',"
+                        . "userId='$userId',"
+                        . "productAmount='$statistics[currentPriceTotal]',"
+                        . "orderAmount='$statistics[orderPriceTotal]',"
+                        . "actLower='$statistics[actLower]',"
+                        . "actGiveaway='$statistics[actGiveaway]',"
+                        . "deliveryFee='$statistics[deliveryFee]',"
+                        . "payAmount='$statistics[payPriceTotal]',"
+                        . "createTime='$createTime',"
+                        . "activityRemark='$activityRemark';"
+                        ;
+        return $this->hydb->query($sql);
+    }
+    
+    public function saveOrderDelivery($param){
+        if(!$param['payAndShip']['deliveryTimeOption'] || !$param['orderNo'] || !$param['userId']){
+            return false;
+        }
+        $payAndShip=$param['payAndShip'];
+        $deliveryTimeOption = $payAndShip['deliveryTimeOption'];
+        $payway='';
+        $sql="insert `order_delivery` set "
+                        . "orderNo='$param[orderNo]',"
+                        . "userId='$param[userId]',"
+                        . "dmId='$deliveryTimeOption[dmId]',"
+                        . "deliveryMode='$deliveryTimeOption[deliveryMode]',"
+                        . "deliveryTime='$deliveryTimeOption[deliveryTime]',"
+                        . "timeHourStart='$deliveryTimeOption[timeHourStart]',"
+                        . "timeMinuteStart='$deliveryTimeOption[timeMinuteStart]',"
+                        . "timeHourEnd='$deliveryTimeOption[timeHourEnd]',"
+                        . "timeMinuteEnd='$deliveryTimeOption[timeMinuteEnd]',"
+                        . "deliveryFee='$deliveryTimeOption[deliveryFee]',"
+                        . "fullMoneyDelivery='$deliveryTimeOption[fullMoneyDelivery]',"
+                        . "fullMoneyFree='$deliveryTimeOption[fullMoneyFree]',"
+                        . "deliveryDistance='$deliveryTimeOption[deliveryDistance]',"
+                        . "isNow='$deliveryTimeOption[isNow]',"
+                        . "callToConfirm='$payAndShip[callToConfirm]',"
+                        . "payway='$payway';"
+                        ;
+        return $this->hydb->query($sql);
+    }
+    
     private function delOrder($orderNo,$userId) {
         if (!$orderNo || !$userId) {
             return false;
@@ -288,6 +347,8 @@ class Chaoshi_OrderModel extends BasicModel{
         $query = "delete from `order` where userId='$userId' and orderNo = '$orderNo';";
         $query.="delete from `order_product` where orderNo = '$orderNo' and userId='$userId';";
         $query.="delete from `order_consignee` where orderNo = '$orderNo' and userId='$userId';";
+        $query.="delete from `order_statistics` where orderNo = '$orderNo' and userId='$userId';";
+        $query.="delete from `order_delivery` where orderNo = '$orderNo' and userId='$userId';";
         $result = $this->hydb->query($query);
         return $result;
     }

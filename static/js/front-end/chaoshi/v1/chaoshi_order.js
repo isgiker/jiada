@@ -762,14 +762,12 @@ function submitOrder() {
             }else if(dataResult.result == 'ok'){
                 //如果是在线支付，跳转到支付页面
                 if(dataResult.data.payMode == 2){
-                    successUrl="http://alipay.com";
-                    window.location.href = successUrl + "?orderId=" + dataResult.data.orderNo + "&rid=" + Math.random();
+                    successUrl="/Success/index";
+                    window.location.href = successUrl + "?orderNo=" + dataResult.data.orderNo + "&rid=" + Math.random();
                     return;
                 }else{
-                    //跳转到订单中心列表
-                    successUrl = "http://order.jd.com/center/list.action";
-                    //等待拆单，定时450毫秒
-                    window.setTimeout('window.location.href=successUrl+"?rd="+Math.random();', 450);
+                    successUrl="/Success/index";
+                    window.location.href = successUrl + "?orderNo=" + dataResult.data.orderNo + "&rid=" + Math.random();
                     return;
                 }
             }

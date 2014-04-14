@@ -4,7 +4,7 @@
  * @name OrderController
  * @desc 订单信息确认（该页面必须要登录才能访问）
  */
-class OrderController extends Core_Controller_Www {
+class OrderController extends Core_Controller_Chaoshi {
 
     private $imagesConfig;
     private $fileImg;
@@ -89,13 +89,23 @@ class OrderController extends Core_Controller_Www {
 
         if (isset($_COOKIE['payMode']) && isset($_COOKIE['deliveryTimeOption']) && isset($_COOKIE['callToConfirm']) && isset($_COOKIE['order_payship_sing']) && $_COOKIE['order_payship_sing']) {
             $payModeMsg = array(1 => '货到付款', 2 => '在线支付');
-
-            $deliveryTimeMsg = array('NOW' => '即时', 'DELIVERY_FREE_MORNING' => '早上05:30－07:30', 'DELIVERY_FREE_NIGHT' => '晚上19:00－21:00');
+            
             if ($_COOKIE['callToConfirm'] == 1) {
                 $callToConfirmMsg = '送货前电话确认';
             } else {
                 $callToConfirmMsg = '';
             }
+            
+            //获取店铺的配送方式信息
+//            $param=array(
+//                'shopId'=>$this->shopId,
+//                'deliveryTimeOption'=>$_COOKIE['deliveryTimeOption']
+//            );
+//            $this->phprpcClient->useService('http://api.jiada.local/Chaoshi/Shop/index');
+//            $shopDeliveryInfo = $this->phprpcClient->getShopDeliveryInfo($param);
+//            $shopDeliveryInfo = json_decode($shopDeliveryInfo, true);
+            $shopDeliveryInfo = json_decode(base64_decode($_COOKIE['deliveryTimeOption']), true);
+            $this->getView()->assign('shopDeliveryInfo', $shopDeliveryInfo);
 
             $this->getView()->assign('payMode', $_COOKIE['payMode']);
             $this->getView()->assign('deliveryTimeOption', $_COOKIE['deliveryTimeOption']);
@@ -103,7 +113,6 @@ class OrderController extends Core_Controller_Www {
             $this->getView()->assign('order_payship_sing', $_COOKIE['order_payship_sing']);
 
             $this->getView()->assign('payModeMsg', @$payModeMsg[$_COOKIE['payMode']]);
-            $this->getView()->assign('deliveryTimeMsg', @$deliveryTimeMsg[$_COOKIE['deliveryTimeOption']]);
             $this->getView()->assign('callToConfirmMsg', $callToConfirmMsg);
             $needSetPayAndShip = false;
         } else {
@@ -154,6 +163,24 @@ class OrderController extends Core_Controller_Www {
             }
             exit;
         }
+        
+        /*获取店铺的设置信息*/
+        $param=array(
+            'shopId'=>$this->shopId
+        );
+        $this->phprpcClient->useService('http://api.jiada.local/Chaoshi/Shop/index');
+        
+        //获取店铺支付和付款方式        
+        $shopPay = $this->phprpcClient->getShopPay($param);
+        $shopPay = json_decode($shopPay, true);
+        $this->getView()->assign('shopPay', $shopPay['data']);
+        
+        //获取店铺的配送规则方式
+        $shopDelivery = $this->phprpcClient->getShopDelivery($param);
+        $shopDelivery = json_decode($shopDelivery, true);
+        $this->getView()->assign('shopDelivery', $shopDelivery['data']);
+        
+        //默认值设置
         if (isset($_COOKIE['payMode']) && $_COOKIE['payMode']) {
             $data['payMode'] = $_COOKIE['payMode'];
         } else {
@@ -162,7 +189,7 @@ class OrderController extends Core_Controller_Www {
         if (isset($_COOKIE['deliveryTimeOption']) && $_COOKIE['deliveryTimeOption']) {
             $data['deliveryTimeOption'] = $_COOKIE['deliveryTimeOption'];
         } else {
-            $data['deliveryTimeOption'] = 'NOW';
+            $data['deliveryTimeOption'] = $shopDelivery['data'][0]['dmid'];
         }
         if (isset($_COOKIE['callToConfirm']) && $_COOKIE['callToConfirm']) {
             $data['callToConfirm'] = $_COOKIE['callToConfirm'];
@@ -304,32 +331,32 @@ class OrderController extends Core_Controller_Www {
             if($_COOKIE['order_payship_sing']!=$order_payship_sing){
                 exit($this->errorMessage('您的支付或配送方式发生了变动，请重新确认后提交。'));
             }
-            $parameter['payAndShip']['payMode']=$_COOKIE['payMode'];
-            $parameter['payAndShip']['deliveryTimeOption']=$_COOKIE['deliveryTimeOption'];
-            $parameter['payAndShip']['callToConfirm']=$_COOKIE['callToConfirm'];
+                        
+            $shopDeliveryInfo = json_decode(base64_decode($_COOKIE['deliveryTimeOption']), true);
             
-            if ($_COOKIE['deliveryTimeOption'] == 'DELIVERY_FREE_MORNING') {
-                if ($hour > '05') {
-                    $day = $tomorrow;
+            if ($shopDeliveryInfo['isNow'] == 1) {
+                //如果是即时送
+                $arriveTime = $today;
+            } else {
+                //送达时间
+                if ($hour > $shopDeliveryInfo['timeHourStart']) {
+                    $arriveTime = $tomorrow;
                 } else {
-                    $day = $today;
+                    $arriveTime = $today;
                 }
-            } elseif ($_COOKIE['deliveryTimeOption'] == 'DELIVERY_FREE_NIGHT') {
-                if ($hour > '19') {
-                    $day = $tomorrow;
-                } else {
-                    $day = $today;
-                }
-            }else{
-                $day = $today;
+
+            }
+            if (strtotime($arriveTime) != $shopDeliveryInfo['deliveryTime']) {
+                exit($this->errorMessage('配送日期有变化请重新确认。'));
             }
             
-            $parameter['payAndShip']['deliveryTime']=$day;
+            $parameter['payAndShip']['payMode']=$_COOKIE['payMode'];
+            $parameter['payAndShip']['callToConfirm']=$_COOKIE['callToConfirm'];
+            $parameter['payAndShip']['deliveryTimeOption']=$shopDeliveryInfo;
         }else{
             exit($this->errorMessage('请设置您的支付及配送方式。'));
         }
-//        print_r($parameter);
-//        exit;
+
 
         //写入数据库
         $saveResult = $this->phprpcClient->submitOrder($parameter);

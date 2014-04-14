@@ -135,24 +135,69 @@
             </div>
             <div class="w">
                 <div class="breadcrumb">
-                    <strong><a href="#">食品饮料、保健食品</a></strong><span>&nbsp;&gt;&nbsp;<a href="#">饮料冲调</a>&nbsp;&gt;&nbsp;<a href="#">水</a>&nbsp;&gt;&nbsp;<a href="#">怡宝</a>&nbsp;&gt;&nbsp;<a href="#">怡宝纯净水</a></span>
+                    <?php
+                        if (isset($cateNodes['nodePath']) && $cateNodes['nodePath']) {
+                        foreach ($cateNodes['nodePath'] as $key => $cateId) {
+                            if (isset($cateNodes['nodeItems'][$cateId]['cateName'])) {
+                                if ($key == 0) {
+                                    echo '<strong><a href="#">' . $cateNodes['nodeItems'][$cateId]['cateName'] . '</a></strong>';
+                                    echo '<span>&nbsp;&gt;&nbsp;';
+                                } else {
+                                    echo '<a href="#">' . $cateNodes['nodeItems'][$cateId]['cateName'] . '</a>&nbsp;&gt;&nbsp;';
+                                }
+                                if (count($cateNodes['nodePath']) == $key + 1) {
+                                    echo '</span>';
+                                }
+                            }
+                        }
+                    }
+                    ?>
+                    
                 </div>
             </div>
             <div class="w">
                 <div id="product-intro" class="">
+                    <?php
+                        if (isset($goodsInfo['packPic']) && $goodsInfo['packPic']) {
+                            $goodsPics=explode(',', $goodsInfo['packPic']);
+                            $firstPic=$goodsPics[0];
+//                            $firstSmallPic = $fileImg_obj->generateImgUrl(array('imgSize' => '60X60', 'imgUrl' => $firstPic), $imagesConfig);
+                            $firstMediumPic = $fileImg_obj->generateImgUrl(array('imgSize' => '360X360', 'imgUrl' => $firstPic), $imagesConfig);
+                            $firstLargePic = $fileImg_obj->generateImgUrl(array('imgSize' => '800X800', 'imgUrl' => $firstPic), $imagesConfig);
+
+                        } else {
+                            $firstMediumPic='';
+                            $firstLargePic='';
+                            $goodsPic = '';
+                        }
+                    ?>
                     <div id="preview">
                         <div class="clearfix" id="content" style="margin-top:0px;margin-left:0px; height:500px;width:500px;" >
                             <div class="clearfix">
-                                <a href="<?php echo '//' . $_config_domain['static'] . '/plugin/jqzoom_ev-2.3/demos/imgProd/triumph_big1.jpg'; ?>" class="jqzoom" rel='gal1'  title="aaaaaaaaaaaa" >
-                                    <img src="<?php echo '//' . $_config_domain['static'] . '/plugin/jqzoom_ev-2.3/demos/imgProd/triumph_small1.jpg'; ?>"  title="triumph"  style="">
+                                <a href="<?php echo $firstLargePic; ?>" class="jqzoom" rel='gal1'  title="<?php echo $goodsInfo['goodsName']; ?>" >
+                                    <img src="<?php echo $firstMediumPic; ?>"  title="triumph"  style="" width="360" height="360">
                                     </a>
                                 </div>
                                 <br/>
                                 <div class="clearfix" >
                                     <ul id="thumblist" class="clearfix" >
-                                        <li><a class="zoomThumbActive" href='javascript:void(0);' rel="{gallery: 'gal1', smallimage: '<?php echo '//' . $_config_domain['static'] . '/plugin/jqzoom_ev-2.3/demos/imgProd/triumph_small1.jpg'; ?>',largeimage: '<?php echo '//' . $_config_domain['static'] . '/plugin/jqzoom_ev-2.3/demos/imgProd/triumph_big1.jpg'; ?>'}"><img src='<?php echo '//' . $_config_domain['static'] . '/plugin/jqzoom_ev-2.3/demos/imgProd/thumbs/triumph_thumb1.jpg'; ?>'  width="60" height="60"></a></li>
-                                        <li><a href='javascript:void(0);' rel="{gallery: 'gal1', smallimage: '<?php echo '//' . $_config_domain['static'] . '/plugin/jqzoom_ev-2.3/demos/imgProd/triumph_small2.jpg'; ?>',largeimage: '<?php echo '//' . $_config_domain['static'] . '/plugin/jqzoom_ev-2.3/demos/imgProd/triumph_big2.jpg'; ?>'}"><img src='<?php echo '//' . $_config_domain['static'] . '/plugin/jqzoom_ev-2.3/demos/imgProd/thumbs/triumph_thumb2.jpg'; ?>' width="60" height="60"></a></li>
-                                        <li><a  href='javascript:void(0);' rel="{gallery: 'gal1', smallimage: '<?php echo '//' . $_config_domain['static'] . '/plugin/jqzoom_ev-2.3/demos/imgProd/triumph_small3.jpg'; ?>',largeimage: '<?php echo '//' . $_config_domain['static'] . '/plugin/jqzoom_ev-2.3/demos/imgProd/triumph_big3.jpg'; ?>'}"><img src='<?php echo '//' . $_config_domain['static'] . '/plugin/jqzoom_ev-2.3/demos/imgProd/thumbs/triumph_thumb3.jpg'; ?>'  width="60" height="60"></a></li>
+                                        <?php
+                                            if($goodsPics){
+                                                foreach($goodsPics as $k=>$pic){
+                                                    $smallPic = $fileImg_obj->generateImgUrl(array('imgSize' => '60X60', 'imgUrl' => $pic), $imagesConfig);
+                                                    $mediumPic = $fileImg_obj->generateImgUrl(array('imgSize' => '360X360', 'imgUrl' => $pic), $imagesConfig);
+                                                    $largePic = $fileImg_obj->generateImgUrl(array('imgSize' => '800X800', 'imgUrl' => $pic), $imagesConfig);
+                                                    if($k==0){
+                                                        $activeClass=' class="zoomThumbActive"';
+                                                    }else{
+                                                        $activeClass='';
+                                                    }
+                                        ?>
+                                        <li><a <?php echo $activeClass;?> href='javascript:void(0);' rel="{gallery: 'gal1', smallimage: '<?php echo $mediumPic; ?>',largeimage: '<?php echo $largePic; ?>'}"><img src='<?php echo $smallPic; ?>' width="60" height="60"></a></li>
+                                        <?php                                                
+                                                }
+                                            }
+                                        ?>
                                     </ul>
                                 </div>
                         </div>
@@ -229,11 +274,7 @@
                             </div>
                             <div id="pnav_content">
                                 <div id="pnav_tab1">
-                                    <h2>Lorem ipsum sit amet</h2>
-                                    <p>Praesent risus nisi, iaculis nec condimentum vel, rhoncus vel dolor. Aenean nisi lectus, varius nec tempus id, dapibus non quam.</p>
-                                    <p>Suspendisse ac libero mauris. Cras lacinia porttitor urna, vitae molestie libero posuere et. Mauris turpis tortor, mollis non vulputate sit amet, rhoncus vitae purus.</p>
-                                    <h3>Pellentesque habitant</h3>
-                                    <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.</p>    
+                                    <?php echo $goodsInfo['goodsDesc']; ?>
                                 </div>
                                 <div id="pnav_tab2">
                                     <h2>Vivamus fringilla suscipit justo</h2>

@@ -1778,8 +1778,10 @@
                                         $catesGoods=@$items['data'];
                                         if(isset($catesGoods) && $catesGoods){
                                             foreach ($catesGoods as $item) {
-                                                if($item['packPic']){
-                                                    $goodsPic=$fileImg_obj->generateImgUrl(array('imgSize'=>'160X160','imgUrl'=>$item['packPic']), $imagesConfig);
+                                                if(isset($item['packPic']) && $item['packPic']){
+                                                    $pics=explode(',', $item['packPic']);
+                                                    $firstPic=$pics[0];
+                                                    $goodsPic=$fileImg_obj->generateImgUrl(array('imgSize'=>'160X160','imgUrl'=>$firstPic), $imagesConfig);
                                                 }else{
                                                     $goodsPic='';
                                                 }

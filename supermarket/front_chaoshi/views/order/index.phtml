@@ -84,24 +84,28 @@
 
                                             <div class="way-list">
                                                 <div class="way-item">
-                                                    <?php echo $deliveryTimeMsg; ?>配送&nbsp;&nbsp;<span id="promise311tip">
+                                                    <?php echo $shopDeliveryInfo['deliveryMode']; ?>配送&nbsp;&nbsp;<span id="promise311tip">
                                                         <font color="#FF6600;">
                                                         <?php
-                                                        if ($deliveryTimeOption == 'DELIVERY_FREE_MORNING') {
-                                                            if ($hour > '05') {
-                                                                $day = $tomorrow;
+                                                        if ($shopDeliveryInfo) {
+                                                            $timeHourStart = str_pad($shopDeliveryInfo['timeHourStart'], 2, 0, STR_PAD_LEFT);
+                                                            $timeHourEnd = str_pad($shopDeliveryInfo['timeHourEnd'], 2, 0, STR_PAD_LEFT);
+                                                            $timeMinuteStart = str_pad($shopDeliveryInfo['timeMinuteStart'], 2, 0, STR_PAD_RIGHT);
+                                                            $timeMinuteEnd = str_pad($shopDeliveryInfo['timeMinuteEnd'], 2, 0, STR_PAD_RIGHT);
+                                                            if ($shopDeliveryInfo['isNow'] == 1) {
+                                                                //如果是即时送
+                                                                $deliveryShortDesc = $shopDeliveryInfo['deliveryMode'] . '配送：' . $shopDeliveryInfo['timeMinuteStart'] . ' - ' . $shopDeliveryInfo['timeMinuteEnd'] . '分钟送达';
                                                             } else {
-                                                                $day = $today;
+                                                                //送达时间
+                                                                if ($hour > $shopDeliveryInfo['timeHourStart']) {
+                                                                    $arriveTimeStr = '明天(' . $tomorrow . ')';
+                                                                } else {
+                                                                    $arriveTimeStr = '今天(' . $today . ')';
+                                                                }
+                                                                $deliveryShortDesc = $arriveTimeStr . ' ' . $timeHourStart . ':' . $timeMinuteStart . ' - ' . $timeHourEnd . ':' . $timeMinuteEnd . '送达';
                                                             }
-                                                        } elseif ($deliveryTimeOption == 'DELIVERY_FREE_NIGHT') {
-                                                            if ($hour > '19') {
-                                                                $day = $tomorrow;
-                                                            } else {
-                                                                $day = $today;
-                                                            }
+                                                            echo $deliveryShortDesc;
                                                         }
-                                                        $desc = "订单将于" . $day . $deliveryTimeMsg . "送达";
-                                                        echo $desc;
                                                         ?>
                                                         </font></span> &nbsp;  
                                                     <span id="promise_jd_message"></span>

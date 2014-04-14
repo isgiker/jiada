@@ -36,6 +36,9 @@ class DetailController extends Core_Controller_Www {
         $goodsInfo = $this->getGoodsInfo($priceId);
         $this->getView()->assign('goodsInfo', $goodsInfo);
         
+        $cateNodes = $this->getCateNodes($goodsInfo['cateId']);
+        $this->getView()->assign('cateNodes', $cateNodes);
+        
         $this->getView()->assign('imagesConfig', $this->imagesConfig);
         $this->getView()->assign('fileImg_obj', $this->fileImg);
     }
@@ -53,6 +56,18 @@ class DetailController extends Core_Controller_Www {
         }
 
         return $goodsInfo;
+    }
+    
+    private function getCateNodes($cateId) {
+        //商品类型
+        $resultData = @json_decode($this->phprpcClient->getCateNodes($cateId), true);
+        if (isset($resultData['data']) && $resultData['data']) {
+            $cateNodes = $resultData['data'];
+        } else {
+            $cateNodes = null;
+        }
+
+        return $cateNodes;
     }
 
 }

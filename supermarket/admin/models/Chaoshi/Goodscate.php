@@ -189,10 +189,14 @@ class Chaoshi_GoodscateModel extends BasicModel{
         }
         $sql = "update goods_categary set cateName='$data[cateName]',pinyin='$data[pinyin]',parentId='$data[parentId]',parentPath='$parentPath',sort='0',status='$data[status]' where cateId=$data[cateId]";
         $result = $this->hydb->query($sql);
-        if ($result == false) {
-            $error = $db->ErrorMsg();
+        if ($result === false) {
+            $error = $this->hydb->ErrorMsg();
             die("$error");
         }
+        //成功后
+        //更新子类的节点路径
+        $this->upChild($data['cateId'],$parentPath);
+        //更新当前分类子元素数量
         $this->upChildNums($data['parentId']);
         return true;
     }
@@ -213,18 +217,72 @@ class Chaoshi_GoodscateModel extends BasicModel{
         return $result;
     }
     
+    /**
+     * 更新父类下的所有子类的节点路径parentPath和其子节点的数量
+     * @param type $cateId 当前分类id
+     * @param type $parentPath 当前父类的节点路径
+     * @return boolean
+     */
+    private function upChild($cateId, $parentPath) {
+        if(!$cateId) return false;
+        $query="select cateId,parentPath from goods_categary where  FIND_IN_SET($cateId,parentPath)";
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssocList();
+        if ($rows) {
+            $childSql='';
+            foreach($rows as $k=>$item){
+                $id = $cateId;
+                $newP = '10024,10026';
+                $str = '10025,10026,10000';
+
+                $pattern = '/(.*)' . $cateId . '/i';
+                if($parentPath){
+                    $newParentPath=$parentPath.','.$cateId;
+                }else{
+                    $newParentPath=$cateId;
+                }
+                
+                //当前子分类新的节点路径
+                $childNewParentPath = preg_replace($pattern, $newParentPath, $item['parentPath']);
+                //当前子分类新的子元素数量，子节点数量这个还跟原来的一样无需更新
+//                $childNum=$this->getCateChildNums($item['cateId']);
+//                $childSql.="update goods_categary set parentPath='$childNewParentPath',childNums='$childNum' where cateId='$item[cateId]';";
+                $childSql.="update goods_categary set parentPath='$childNewParentPath' where cateId='$item[cateId]';";
+            }
+            if($childSql){
+                return $this->hydb->query($childSql);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 更新当前分类的子元素数量
+     * @param type $cateId
+     * @return boolean
+     */
     private function upChildNums($cateId){
+        if(!$cateId) return false;        
+        $num = $this->getCateChildNums($cateId);
+        $sql = "update goods_categary set childNums='$num' where cateId=$cateId";
+        $result = $this->hydb->query($sql);
+        if ($result === false) {
+            $error = $this->hydb->ErrorMsg();
+            die("$error");
+        }
+        return true;
+    }
+    /**
+     * 获取分类下子节点的数量
+     * @param type $cateId
+     * @return boolean
+     */
+    private function getCateChildNums($cateId){
         if(!$cateId) return false;
         $query = "select count(cateId) from goods_categary where parentId=$cateId";
         $this->hydb->setQuery($query);
         $num = $this->hydb->loadResult();
-        $sql = "update goods_categary set childNums='$num' where cateId=$cateId";
-        $result = $this->hydb->query($sql);
-        if ($result == false) {
-            $error = $db->ErrorMsg();
-            die("$error");
-        }
-        return true;
+        return $num;
     }
     
     private function getParentPath($parentId){
@@ -232,15 +290,14 @@ class Chaoshi_GoodscateModel extends BasicModel{
         $this->hydb->setQuery($query);
         $newParentId = $this->hydb->loadResult();
         
-        static $parentPath = array();
+        static $parentPath = '';
         if($newParentId!=0){
             $this->getParentPath($newParentId);
-            $parentPath[] = $newParentId;
+            $parentPath = $newParentId;
         }
         
         if(!empty($parentPath)){
-            $parentPathStr = implode(',', $parentPath);
-            $result = $parentPathStr.','.$parentId;
+            $result = $parentPath.','.$parentId;
         }else{
             $result = $parentId;
         }

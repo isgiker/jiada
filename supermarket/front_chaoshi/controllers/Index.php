@@ -4,16 +4,13 @@
  * @name IndexController
  * @desc 超市首页
  */
-class IndexController extends Core_Controller_Www {
+class IndexController extends Core_Controller_Chaoshi {
 
     private $imagesConfig;
     
     private $fileImg;
     
-    private $phprpcClient;
-    
-    //首页显示该店铺（仓库）的数据;
-    private $shopId = '95396877549174785';
+    private $phprpcClient;        
 
     public function init() {
         parent::init();
@@ -29,6 +26,7 @@ class IndexController extends Core_Controller_Www {
         $this->fileImg = new File_Image();
 
         $this->phprpcClient = new PHPRPC_Client('http://api.jiada.local/Chaoshi/index/index');
+
     }
 
     public function indexAction() {
