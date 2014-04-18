@@ -83,9 +83,9 @@ class Chaoshi_GoodsModel extends BasicModel{
 
     public function add($data) {
         $time = time();
-//        $query = "insert goods set cateId='$data[cateId]',brandId='$data[brandId]',goodsName='$data[goodsName]',originalPrice='$data[originalPrice]',discount='$data[discount]',currentPrice='$data[currentPrice]',marketPrice='$data[marketPrice]',activityStartTime='$data[activityStartTime]',activityEndTime='$data[activityEndTime]',onLine='$data[onLine]',recTags='$data[recTags]',publishTime='$time';";
+        $query = "insert goods set cateId='$data[cateId]',brandId='$data[brandId]',goodsName='$data[goodsName]',originalPrice='$data[originalPrice]',discount='$data[discount]',currentPrice='$data[currentPrice]',marketPrice='$data[marketPrice]',activityStartTime='$data[activityStartTime]',activityEndTime='$data[activityEndTime]',onLine='$data[onLine]',recTags='$data[recTags]',publishTime='$time';";
         //无价格和活动
-        $query = "insert goods set cateId='$data[cateId]',brandId='$data[brandId]',goodsName='$data[goodsName]',marketPrice='$data[marketPrice]',onLine='$data[onLine]',recTags='$data[recTags]',publishTime='$time';";
+//        $query = "insert goods set cateId='$data[cateId]',brandId='$data[brandId]',goodsName='$data[goodsName]',marketPrice='$data[marketPrice]',onLine='$data[onLine]',recTags='$data[recTags]',publishTime='$time';";
 
         $result = $this->db->query($query);
         if ($result == false) {

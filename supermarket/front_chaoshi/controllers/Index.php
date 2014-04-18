@@ -64,27 +64,27 @@ class IndexController extends Core_Controller_Chaoshi {
             $catesBrand = null;
         }
 
-        //特惠商品
-        $catesGoodsResult = @json_decode($this->phprpcClient->getCatesGoods($this->shopId, '10016', 10), true);
+        //纯牛奶
+        $catesGoodsResult = @json_decode($this->phprpcClient->getCatesGoods($this->shopId, '10045', 10), true);
         if (isset($catesGoodsResult['data']) && $catesGoodsResult['data']) {
-            $goods_tehui = $catesGoodsResult['data'];
+            $goods_chun = $catesGoodsResult['data'];
         } else {
-            $goods_tehui = null;
+            $goods_chun = null;
         }
 
-        //常温奶
-        $catesGoodsResult = @json_decode($this->phprpcClient->getCatesGoods('95396877549174785', '10045', 10), true);
+        //儿童奶
+        $catesGoodsResult = @json_decode($this->phprpcClient->getCatesGoods($this->shopId, '10222', 10), true);
         if (isset($catesGoodsResult['data']) && $catesGoodsResult['data']) {
-            $goods_suannai = $catesGoodsResult['data'];
+            $goods_child = $catesGoodsResult['data'];
         } else {
-            $goods_suannai = null;
+            $goods_child = null;
         }
 
 
 
         $floor = array('catesGoods' => array(
-                '1' => array('name' => '特惠专区', 'data' => $goods_tehui),
-                '2' => array('name' => '常温奶', 'data' => $goods_suannai)
+                '1' => array('name' => '纯牛奶', 'data' => $goods_chun),
+                '2' => array('name' => '儿童奶', 'data' => $goods_child)
             ),
             'goodsType' => $goodsType,
             'catesBrand' => $catesBrand,

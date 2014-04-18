@@ -60,13 +60,13 @@ class IndexController extends Core_Controller_Api{
      */
     public function getCatesGoods($shopId, $catesId, $limit=10) {
         $catesId=trim($catesId);
-        if(!$catesId){
-            return $this->errorMessage();
+        if(!$shopId || !$catesId){
+            return $this->errorMessage('请求参数错误！');
         }
         
         $data=$this->model->getCatesGoods($shopId, $catesId, $limit);
         if(!$data){
-            return $this->errorMessage();
+            return $this->errorMessage('无数据！');
         }
         return $this->returnData($data);
     }

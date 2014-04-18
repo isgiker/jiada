@@ -32,12 +32,15 @@ class DetailController extends Core_Controller_Www {
         $this->_layout = false;
         //商品价格id
         $priceId=$this->getQuery('p', 0);
+
+        $data = $this->getGoodsInfo($priceId);
+        $this->getView()->assign('goodsInfo', $data['goodsInfo']);
+        $this->getView()->assign('goodsDetail', $data['goodsDetail']);
         
-        $goodsInfo = $this->getGoodsInfo($priceId);
-        $this->getView()->assign('goodsInfo', $goodsInfo);
-        
-        $cateNodes = $this->getCateNodes($goodsInfo['cateId']);
-        $this->getView()->assign('cateNodes', $cateNodes);
+        if(isset($data['goodsInfo']['cateId'])){
+            $cateNodes = $this->getCateNodes($data['goodsInfo']['cateId']);
+            $this->getView()->assign('cateNodes', $cateNodes);
+        }
         
         $this->getView()->assign('imagesConfig', $this->imagesConfig);
         $this->getView()->assign('fileImg_obj', $this->fileImg);
@@ -48,14 +51,16 @@ class DetailController extends Core_Controller_Www {
 
     private function getGoodsInfo($priceId) {
         //商品类型
-        $goodsInfoResult = @json_decode($this->phprpcClient->getGoodsInfo($priceId), true);
-        if (isset($goodsInfoResult['data']) && $goodsInfoResult['data']) {
-            $goodsInfo = $goodsInfoResult['data'];
+        $result = @json_decode($this->phprpcClient->getGoodsInfo($priceId), true);
+        if (isset($result['data']) && $result['data']) {
+            $goodsInfo=$result['data']['goodsInfo'];
+            $goodsDetail=$result['data']['goodsDetail'];
+            $data=array('goodsInfo'=>$goodsInfo,'goodsDetail'=>$goodsDetail);
         } else {
-            $goodsInfo = null;
+            $data = null;
         }
 
-        return $goodsInfo;
+        return $data;
     }
     
     private function getCateNodes($cateId) {

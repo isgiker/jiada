@@ -40,19 +40,19 @@ class DetailController extends Core_Controller_Api{
     public function getGoodsInfo($priceId) {
         $priceId=trim($priceId);
         if(!$priceId){
-            return $this->errorMessage();
+            return $this->errorMessage('请求参数错误！');
         }
         
         //获取商品相关信息
         $goodsInfo=$this->model->getGoodsInfo($priceId);
         if(!$goodsInfo){
-            return $this->errorMessage();
+            return $this->errorMessage('无数据！');
         }
+        $goodsDetail=$this->model->getGoodsDetail($goodsInfo['goodsId']);
         
+        $data=array('goodsInfo'=>$goodsInfo,'goodsDetail'=>$goodsDetail);
         
-        
-        
-        return $this->returnData($goodsInfo);
+        return $this->returnData($data);
     }
     
     /**

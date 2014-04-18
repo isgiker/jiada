@@ -182,7 +182,7 @@
                                 <div class="clearfix" >
                                     <ul id="thumblist" class="clearfix" >
                                         <?php
-                                            if($goodsPics){
+                                            if(isset($goodsPics) && $goodsPics){
                                                 foreach($goodsPics as $k=>$pic){
                                                     $smallPic = $fileImg_obj->generateImgUrl(array('imgSize' => '60X60', 'imgUrl' => $pic), $imagesConfig);
                                                     $mediumPic = $fileImg_obj->generateImgUrl(array('imgSize' => '360X360', 'imgUrl' => $pic), $imagesConfig);
@@ -206,7 +206,16 @@
                             <div class="product_name"><h1><?php echo $goodsInfo['goodsName']; ?></h1></div>
                             <div class="clearfix" clstag="">
                                 <ul id="summary">
-                                    <li id="summary-market"><div class="dt">参&nbsp;考&nbsp;价：</div><div class="dd"><del id="page_maprice">￥<?php echo $goodsInfo['marketPrice']; ?></del></div></li>
+                                    <?php
+                                        if(isset($goodsInfo['marketPrice']) && $goodsInfo['marketPrice']>0){
+                                    ?>
+                                    <li id="summary-market">
+                                        <div class="dt">参&nbsp;考&nbsp;价：</div>
+                                        <div class="dd"><del id="page_maprice">￥<?php echo $goodsInfo['marketPrice']; ?></del></div>
+                                    </li>
+                                    <?php
+                                        }
+                                    ?>
                                     <li id="summary-price">
                                         <div class="dt">家&nbsp;大&nbsp;价：</div>
                                         <div class="dd">
@@ -216,7 +225,7 @@
                                     <li id="summary-service" >
                                         <div class="dt">服　　务：</div>
                                         <div class="dd">
-                                            由<a href="#" target="_blank" clstag="shangpin|keycount|product|bbtn" class="hl_red">兜兜食品专营店</a>负责发货，并提供售后服务。
+                                            由<a href="#" target="_blank" clstag="shangpin|keycount|product|bbtn" class="hl_red">家大超市</a>负责发货，并提供售后服务。
                                         </div>
                                     </li>
                                     <li id="choose-btns">
@@ -274,7 +283,7 @@
                             </div>
                             <div id="pnav_content">
                                 <div id="pnav_tab1">
-                                    <?php echo $goodsInfo['goodsDesc']; ?>
+                                    <?php echo $goodsDetail['goodsDesc']; ?>
                                 </div>
                                 <div id="pnav_tab2">
                                     <h2>Vivamus fringilla suscipit justo</h2>

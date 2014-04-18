@@ -10,7 +10,7 @@ class Core_Controller_Chaoshi extends Core_Controller_Basic {
         if(isset($_COOKIE['shopId']) && $_COOKIE['shopId']){
             $this->shopId=$_COOKIE['shopId'];
         }else{
-            $this->shopId='95396877549174785';
+            $this->shopId='95481685637857325';
         }
     }
     

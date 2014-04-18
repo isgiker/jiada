@@ -542,6 +542,7 @@ class GoodsController extends Core_Controller_Admin {
                             return $this->returnResult(false, '上传至ftp成功，数据更新失败！');
                         }
                     }
+                    sleep(1);
                 } else {
                     //上传失败，删除本地相关的源图片和缩略图
                     return $this->returnResult(false, '上传至ftp失败！');

@@ -21,8 +21,23 @@ class Chaoshi_DetailModel extends BasicModel {
         if (!$priceId) {
             return false;
         }
-        $query = "select a.cateId,a.brandId,a.goodsName,a.packPic,b.priceId,b.originalPrice,c.goodsDesc,b.discount,b.currentPrice,b.marketPrice,b.status from goods a, goods_price b, goods_detail c ";
-        $query .=" where b.priceId='$priceId' and a.goodsId=b.goodsId and a.goodsId=c.goodsId";
+        $query = "select a.goodsId,a.cateId,a.brandId,a.goodsName,a.packPic,b.priceId,b.originalPrice,b.discount,b.currentPrice,b.marketPrice,b.status from goods a, goods_price b ";
+        $query .=" where b.priceId='$priceId' and a.goodsId=b.goodsId ";
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssoc();
+        return $rows;
+    }
+    
+    /**
+     * 根据商品价格id获取商品详情
+     * @param bigint|string goodsId 商品id。
+     * @return array
+     */
+    public function getGoodsDetail($goodsId) {
+        if (!$goodsId) {
+            return false;
+        }
+        $query = "select a.* from goods_detail a  where a.goodsId='$goodsId'";
         $this->hydb->setQuery($query);
         $rows = $this->hydb->loadAssoc();
         return $rows;
