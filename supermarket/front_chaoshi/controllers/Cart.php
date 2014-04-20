@@ -29,7 +29,7 @@ class CartController extends Core_Controller_Www {
         
         $this->fileImg = new File_Image();
         //接口地址
-        $this->phprpcClient = new PHPRPC_Client('http://api.jiada.local/Chaoshi/Cart/index');
+        $this->phprpcClient = new PHPRPC_Client('http://'.$this->_config->domain->api.'/Chaoshi/Cart/index');
         
         //用户信息
         $this->uid=$_COOKIE['uid'];

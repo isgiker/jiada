@@ -15,14 +15,14 @@
                 <span class="col-sm-2 nopadding">
                     <select name="status" class="form-control input-sm">
                         <option value="all" <?php
-                        if ($post['status'] == 'all') {
+                        if (isset($post['status']) && $post['status'] == 'all') {
                             echo ' selected';
                         } else {
                             echo '';
                         }
                         ?>>显示所有</option>
                         <option value="1" <?php
-                        if ((isset($post['status']) && $post['status'] == 1) || $post['status'] =='') {
+                        if ((isset($post['status']) && $post['status'] == 1) || (isset($post['status']) && $post['status'] =='')) {
                             echo ' selected';
                         } else {
                             echo '';

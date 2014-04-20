@@ -25,7 +25,7 @@ class IndexController extends Core_Controller_Chaoshi {
 
         $this->fileImg = new File_Image();
 
-        $this->phprpcClient = new PHPRPC_Client('http://api.jiada.local/Chaoshi/index/index');
+        $this->phprpcClient = new PHPRPC_Client('http://'.$this->_config->domain->api.'/Chaoshi/index/index');
 
     }
 

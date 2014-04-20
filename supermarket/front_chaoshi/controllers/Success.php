@@ -18,7 +18,7 @@ class SuccessController extends Core_Controller_Www {
         Yaf_Loader::import('phprpc/common/phprpc_date.php');
         Yaf_Loader::import('phprpc/common/xxtea.php');
         
-        $this->phprpcClient = new PHPRPC_Client('http://api.jiada.local/Chaoshi/Success/index');
+        $this->phprpcClient = new PHPRPC_Client('http://'.$this->_config->domain->api.'/Chaoshi/Success/index');
         
         //用户信息
         $this->uid=$_COOKIE['uid'];

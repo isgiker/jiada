@@ -39,7 +39,7 @@ class OrderController extends Core_Controller_Chaoshi {
         );
 
         //请求接口,获取用户购物车内的商品数据
-        $this->phprpcClient->useService('http://api.jiada.local/Chaoshi/Cart/index');
+        $this->phprpcClient->useService('http://'.$this->_config->domain->api.'/Chaoshi/Cart/index');
         $recountResult = $this->phprpcClient->recount($parameter);
         $recountResult = json_decode($recountResult, true);
         if($recountResult['result']=='err'){
@@ -53,7 +53,7 @@ class OrderController extends Core_Controller_Chaoshi {
         
 
         //获取默认收货地址
-        $this->phprpcClient->useService('http://api.jiada.local/Chaoshi/Order/index');
+        $this->phprpcClient->useService('http://'.$this->_config->domain->api.'/Chaoshi/Order/index');
         $addressData = $this->phprpcClient->getDefaultAddress($this->uid);
         $addressData = json_decode($addressData, true);
         if($addressData['result']=='err'){
@@ -101,7 +101,7 @@ class OrderController extends Core_Controller_Chaoshi {
 //                'shopId'=>$this->shopId,
 //                'deliveryTimeOption'=>$_COOKIE['deliveryTimeOption']
 //            );
-//            $this->phprpcClient->useService('http://api.jiada.local/Chaoshi/Shop/index');
+//            $this->phprpcClient->useService('http://'.$this->_config->domain->api.'/Chaoshi/Shop/index');
 //            $shopDeliveryInfo = $this->phprpcClient->getShopDeliveryInfo($param);
 //            $shopDeliveryInfo = json_decode($shopDeliveryInfo, true);
             $shopDeliveryInfo = json_decode(base64_decode($_COOKIE['deliveryTimeOption']), true);
@@ -131,7 +131,7 @@ class OrderController extends Core_Controller_Chaoshi {
      * 根据用户id获取用户收货地址（必须要登录后才能请求该接口）
      */
     public function userAddressAction() {
-        $this->phprpcClient->useService('http://api.jiada.local/Chaoshi/Order/index');
+        $this->phprpcClient->useService('http://'.$this->_config->domain->api.'/Chaoshi/Order/index');
         $result = $this->phprpcClient->getUserAddress($this->uid);
         $result = json_decode($result, true);
         $data = $result['data'];
@@ -168,7 +168,7 @@ class OrderController extends Core_Controller_Chaoshi {
         $param=array(
             'shopId'=>$this->shopId
         );
-        $this->phprpcClient->useService('http://api.jiada.local/Chaoshi/Shop/index');
+        $this->phprpcClient->useService('http://'.$this->_config->domain->api.'/Chaoshi/Shop/index');
         
         //获取店铺支付和付款方式        
         $shopPay = $this->phprpcClient->getShopPay($param);
@@ -215,7 +215,7 @@ class OrderController extends Core_Controller_Chaoshi {
             'userId' => $this->uid,
             'addressId' => $addressId
         );
-        $this->phprpcClient->useService('http://api.jiada.local/Chaoshi/Order/index');
+        $this->phprpcClient->useService('http://'.$this->_config->domain->api.'/Chaoshi/Order/index');
         $result = $this->phprpcClient->setDefaultAddress($parameter);
         exit($result);
     }
@@ -227,7 +227,7 @@ class OrderController extends Core_Controller_Chaoshi {
         Yaf_Dispatcher::getInstance()->autoRender(FALSE);
         $post = $this->getPost();
         $post['userId'] = $this->uid;
-        $this->phprpcClient->useService('http://api.jiada.local/Chaoshi/Order/index');
+        $this->phprpcClient->useService('http://'.$this->_config->domain->api.'/Chaoshi/Order/index');
         $result = $this->phprpcClient->addAddress($post);
         exit($result);
     }
@@ -236,7 +236,7 @@ class OrderController extends Core_Controller_Chaoshi {
         Yaf_Dispatcher::getInstance()->autoRender(FALSE);
         $post = $this->getPost();
         $post['userId'] = $this->uid;
-        $this->phprpcClient->useService('http://api.jiada.local/Chaoshi/Order/index');
+        $this->phprpcClient->useService('http://'.$this->_config->domain->api.'/Chaoshi/Order/index');
         $result = $this->phprpcClient->editAddress($post);
         exit($result);
     }
@@ -251,7 +251,7 @@ class OrderController extends Core_Controller_Chaoshi {
             'userId' => $this->uid,
             'addressId' => $addressId
         );
-        $this->phprpcClient->useService('http://api.jiada.local/Chaoshi/Order/index');
+        $this->phprpcClient->useService('http://'.$this->_config->domain->api.'/Chaoshi/Order/index');
         $result = $this->phprpcClient->getAddressInfo($parameter);
         exit($result);
     }
@@ -264,7 +264,7 @@ class OrderController extends Core_Controller_Chaoshi {
         );
 
         //请求接口,获取用户购物车内的商品数据============================================================
-        $this->phprpcClient->useService('http://api.jiada.local/Chaoshi/Cart/index');
+        $this->phprpcClient->useService('http://'.$this->_config->domain->api.'/Chaoshi/Cart/index');
         $recountResult = $this->phprpcClient->recount($parameter);
         $recountResult = json_decode($recountResult, true);
 
@@ -286,7 +286,7 @@ class OrderController extends Core_Controller_Chaoshi {
         }
         
         //获取默认收货地址============================================================
-        $this->phprpcClient->useService('http://api.jiada.local/Chaoshi/Order/index');
+        $this->phprpcClient->useService('http://'.$this->_config->domain->api.'/Chaoshi/Order/index');
         $addressData = $this->phprpcClient->getDefaultAddress($this->uid);
         $addressData = json_decode($addressData, true);
         if($addressData['result']=='err'){
