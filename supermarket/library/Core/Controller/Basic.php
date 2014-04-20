@@ -48,9 +48,10 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
         if ($this->_layout == true) {
 //            $this->_layoutVars['_page']=$this->getView()->_page;
             $this->_layoutVars['_ActionContent'] = parent::render($action, $tplVars);
-            //指定layout位置
-            $this->setViewPath(APPLICATION_PATH . DS . 'views');
-            $layoutFile = '../layout' . DS . 'layout';
+            //指定layout位置(linux下有问题，原因是render函数默认加上当前控制器的名称作为目录，而根目录下的views下没有改控制器目录则找不到文件，windows下是已相对路径的结果为判断条件)
+            //$this->setViewPath(APPLICATION_PATH . DS . 'views');
+            //根目录下的view layout
+            $layoutFile = '../../../../views/layout/layout';
             return parent::render($layoutFile, $this->_layoutVars);
             //当前modules下的layout
 //            return parent::render('../layout/layout', $this->_layoutVars);
