@@ -36,6 +36,7 @@ class LoginController extends Core_Controller_Www {
             $post['username']=$_COOKIE['uname'];
 
         $this->getView()->assign('post', $post);
+        $this->getView()->assign('rules', $rules);
     }
     
     private function login($data){

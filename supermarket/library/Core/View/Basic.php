@@ -112,66 +112,70 @@ class Core_View_Basic extends Yaf_View_Simple {
      */
     public function getInputAttrs($json, $key) {
         $pattern = '/attr\[(\d+)\]/';
-
-        foreach ($json as $vs) {
-            if ($key == $vs->value) {
-                $val = $vs;
-                $filed = $key;
-                break;
-            } elseif (preg_match($pattern, $key)) {
-                if ($vs->value == 'attr[]') {
+        $filed='';
+        if ($json && is_array($json)) {
+            foreach ($json as $vs) {
+                if ($key == $vs->value) {
                     $val = $vs;
                     $filed = $key;
                     break;
+                } elseif (preg_match($pattern, $key)) {
+                    if ($vs->value == 'attr[]') {
+                        $val = $vs;
+                        $filed = $key;
+                        break;
+                    }
                 }
             }
         }
         $attrs = array();
         // $filed=$val->value;
         $attrs[] = 'name="' . $filed . '"';
-        $label = $val->label;
-        $rules = $val->rules;
-        foreach ($rules as $k => $v) {
-            if (isset($v->message)) {
-                $v->message = str_replace('%s%', $label, $v->message);
-                $attrs[] = 'data-msg-' . $v->name . '="' . $v->message . '"';
-            }
-            if (isset($v->name)) {
-                $attrs[] = 'data-rule-' . $v->name . '="' . (isset($v->value) ? $v->value : 'true') . '"';
-            }
+        $label = @$val->label;
+        $rules = @$val->rules;
+        if ($rules && is_array($rules)) {
+            foreach ($rules as $k => $v) {
+                if (isset($v->message)) {
+                    $v->message = str_replace('%s%', $label, $v->message);
+                    $attrs[] = 'data-msg-' . $v->name . '="' . $v->message . '"';
+                }
+                if (isset($v->name)) {
+                    $attrs[] = 'data-rule-' . $v->name . '="' . (isset($v->value) ? $v->value : 'true') . '"';
+                }
 
-            switch ($v->name) {
-                case 'required':
-                    //$attrs[]='required';
-                    break;
-                case 'email':
-                    $attrs[] = 'type="email"';
-                    break;
-                case 'number':
-                    $attrs[] = 'type="number"';
-                    break;
-                case 'url':
-                    $attrs[] = 'type="url"';
-                    break;
-                case 'date':
-                    $attrs[] = 'type="date"';
-                    break;
-                case 'accept':
-                    $attrs[] = 'accept="' . $v->value . '"';
-                    break;
-                case 'rangelength':
-                    eval('$arrlength=' . $v->value . ';');
-                    $attrs[] = 'maxlength="' . $arrlength[1] . '"';
-                    break;
-                case 'range':
-                    eval('$arrlength=' . $v->value . ';');
-                    $attrs[] = 'min="' . $arrlength[0] . '"';
-                    $attrs[] = 'max="' . $arrlength[1] . '"';
-                    $attrs[] = 'type="range"';
-                    break;
-                default:
-                    # code...
-                    break;
+                switch ($v->name) {
+                    case 'required':
+                        //$attrs[]='required';
+                        break;
+                    case 'email':
+                        $attrs[] = 'type="email"';
+                        break;
+                    case 'number':
+                        $attrs[] = 'type="number"';
+                        break;
+                    case 'url':
+                        $attrs[] = 'type="url"';
+                        break;
+                    case 'date':
+                        $attrs[] = 'type="date"';
+                        break;
+                    case 'accept':
+                        $attrs[] = 'accept="' . $v->value . '"';
+                        break;
+                    case 'rangelength':
+                        eval('$arrlength=' . $v->value . ';');
+                        $attrs[] = 'maxlength="' . $arrlength[1] . '"';
+                        break;
+                    case 'range':
+                        eval('$arrlength=' . $v->value . ';');
+                        $attrs[] = 'min="' . $arrlength[0] . '"';
+                        $attrs[] = 'max="' . $arrlength[1] . '"';
+                        $attrs[] = 'type="range"';
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
             }
         }
         return implode(' ', $attrs);
