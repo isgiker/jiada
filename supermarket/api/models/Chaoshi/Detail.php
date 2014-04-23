@@ -21,7 +21,7 @@ class Chaoshi_DetailModel extends BasicModel {
         if (!$priceId) {
             return false;
         }
-        $query = "select a.goodsId,a.cateId,a.brandId,a.goodsName,a.packPic,b.priceId,b.originalPrice,b.discount,b.currentPrice,b.marketPrice,b.status from goods a, goods_price b ";
+        $query = "select a.goodsId,a.cateId,a.brandId,a.goodsName,a.packPic,b.priceId,b.shopId,b.originalPrice,b.discount,b.currentPrice,b.marketPrice,b.status from goods a, goods_price b ";
         $query .=" where b.priceId='$priceId' and a.goodsId=b.goodsId ";
         $this->hydb->setQuery($query);
         $rows = $this->hydb->loadAssoc();

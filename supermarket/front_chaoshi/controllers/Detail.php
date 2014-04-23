@@ -44,6 +44,7 @@ class DetailController extends Core_Controller_Www {
         
         $this->getView()->assign('imagesConfig', $this->imagesConfig);
         $this->getView()->assign('fileImg_obj', $this->fileImg);
+        $this->getView()->assign('priceId', $priceId);
     }
     
     /* 商品详情（begin）

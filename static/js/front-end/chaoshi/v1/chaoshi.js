@@ -64,7 +64,7 @@ var win = window,
     },
     upCart: function(url, data, fn) {
         cs.dataCenter.getData(url, null, function(data) {
-            var r = data;
+            
             if ('function' == typeof(fn)) {
                 fn(data);
             }
@@ -72,6 +72,26 @@ var win = window,
         });
     },
     buycart: function() {
+        $('#buyThis').bind('click change', function(event) {
+            var $this = $(this);
+            var pid=$this.attr("product");
+            var val=$("#product_amount").val();
+            var shopid=$this.attr("shopid");
+            var buyCallback = function(data) {
+                var r = confirm("商品已成功加入购物车！去购物车结算？")
+                if (r == true)
+                {
+                    location.href="/Cart/Index";
+                }
+                else
+                {
+                    return false;
+                }
+            };
+            cs.upCart('/cart/add/cartItem/' + shopid + '-' + pid + '-' + val, null, buyCallback);
+            
+            
+        });
         $('.btnMinus,.btnPlus,.cart-remove,.quantity-text,.quantity-text').bind('click change', function(event) {
             var $this = $(this),
                     btnNum = $this.parents('.quantity-form').find('.quantity-text'),
@@ -198,7 +218,7 @@ var win = window,
     },
     init: function() {
 //        this.getPosition();
-        if ($('.btnMinus,.btnPlus').length) {
+        if ($('.btnMinus,.btnPlus,#buyThis').length) {
             this.buycart();
         }
     }
@@ -207,3 +227,67 @@ win.cs = cs;
 win.onload = function() {
     cs.init();
 };
+
+
+jQuery(document).ready(function() {
+    var setAmount = {
+        min: 1,
+        max: 999,
+        reg: function(x) {
+            return new RegExp("^[1-9]\\d*$").test(x);
+        },
+        amount: function(obj, mode) {
+            var x = $(obj).val();
+            if (this.reg(x)) {
+                if (mode) {
+                    x++;
+                } else {
+                    x--;
+                }
+            } else {
+//                alert("请输入正确的数量！");
+                $(obj).val(1);
+                $(obj).focus();
+            }
+            return x;
+        },
+        reduce: function(obj) {
+            var x = this.amount(obj, false);
+            if (x >= this.min) {
+                $(obj).val(x);
+            } else {
+//                alert("商品数量最少为" + this.min);
+                $(obj).val(1);
+                $(obj).focus();
+            }
+        },
+        add: function(obj) {
+            var x = this.amount(obj, true);
+            if (x <= this.max) {
+                $(obj).val(x);
+            } else {
+//                alert("商品数量最多为" + this.max);
+                $(obj).val(9);
+                $(obj).focus();
+            }
+        },
+        modify: function(obj) {
+            var x = $(obj).val();
+            if (x < this.min || x > this.max || !this.reg(x)) {
+//                alert("请输入正确的数量！");
+                $(obj).val(1);
+                $(obj).focus();
+            }
+        }
+    };
+    $("#add").click(function() {
+        setAmount.add('#product_amount');
+    });
+    $("#reduce").click(function() {
+        setAmount.reduce('#product_amount');
+    });
+    $("#product_amount").keyup(function() {
+        setAmount.modify('#product_amount');
+    });
+
+});
