@@ -130,7 +130,7 @@ em {
 .w {
     width: 1210px;
     margin: 0 auto;
-    border: 1px solid #000;
+    /*border: 1px solid #000;*/
 }
 
 .mt h2, .smt h3 {
@@ -937,6 +937,7 @@ del {
     float: left;
     width: 210px;
     display: block;
+    min-height: 600px;
 }
 .w .left .mt, .w .right .mt {
     background-color: #f7f7f7;
