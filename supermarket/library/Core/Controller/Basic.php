@@ -51,7 +51,7 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
             //指定layout位置(linux下有问题，原因是render函数默认加上当前控制器的名称作为目录，而根目录下的views下没有改控制器目录则找不到文件，windows下是已相对路径的结果为判断条件)
             //$this->setViewPath(APPLICATION_PATH . DS . 'views');
             //根目录下的view layout
-            if($this->_ControllerName=='Index'){
+            if($this->_ModuleName=='Index'){
                 $layoutFile = '../layout/layout';
             }else{
                 $layoutFile = '../../../../views/layout/layout';
@@ -503,10 +503,15 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
     
     /**
      *  显示分页
+     * @param int $total item总数
      */
-    public function showPagination($total) {
+    public function showPagination($total, $limit=null) {
+        
+        $settingConfig = Yaf_Registry::get("_SETTINGCONFIG");
         //设置每页显示条数;
-        $limit = $this->model->limit;
+        if(!$limit){
+            $limit = $settingConfig->setting->pagelimit;
+        }        
 
         //显示全部;
         if (!$limit) {
@@ -520,6 +525,33 @@ class Core_Controller_Basic extends Yaf_Controller_Abstract {
         $page = new Pagination_Default(array('total' => $total, 'perpage' => $limit));
         $style = 1;
         return '<div class="pagination" style="margin:0px;">'.$page->show($style).'</div>';
+    }
+    
+    /**
+     * 计算分页“上一页”
+     * @param int $curPagenum 当前页
+     */
+    public function prePage($curPagenum=1){
+        if($curPagenum>1){
+            $prePage=$curPagenum-1;
+        }else{
+            $prePage=1;
+        }
+        return $prePage;
+    }
+    
+    /**
+     * 计算分页“上一页”
+     * @param int $curPagenum  当前页
+     * @param int $totalpage 总页数
+     */
+    public function nextPage($curPagenum=1, $totalpage=1){
+        if($totalpage > $curPagenum){
+            $nextPage=$curPagenum+1;
+        }else{
+            $nextPage=1;
+        }
+        return $nextPage;
     }
 
 }

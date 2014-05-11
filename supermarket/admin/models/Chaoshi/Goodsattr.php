@@ -53,7 +53,7 @@ class Chaoshi_GoodsattrModel extends BasicModel {
 
     public function add($data) {
         $time = time();
-        $query = "insert goods_attribute set goodsCateId='$data[goodsCateId]',attrCateId='$data[attrCateId]',attrName='$data[attrName]',attrInputType='$data[attrInputType]',attrValues='$data[attrValues]',isRequired='$data[isRequired]',sort='$data[sort]',createTime='$time';";
+        $query = "insert goods_attribute set goodsCateId='$data[goodsCateId]',attrCateId='$data[attrCateId]',attrName='$data[attrName]',attrInputType='$data[attrInputType]',attrValues='$data[attrValues]',searchTerms='$data[searchTerms]',isRequired='$data[isRequired]',sort='$data[sort]',createTime='$time';";
         $result = $this->db->query($query);
         if ($result == false) {
             $error = $db->ErrorMsg();
@@ -63,7 +63,7 @@ class Chaoshi_GoodsattrModel extends BasicModel {
     }
 
     public function edit($data) {
-        $query = "update goods_attribute set goodsCateId='$data[goodsCateId]',attrCateId='$data[attrCateId]',attrName='$data[attrName]',attrInputType='$data[attrInputType]',attrValues='$data[attrValues]',isRequired='$data[isRequired]',sort='$data[sort]' where attrId=$data[attrId];";
+        $query = "update goods_attribute set goodsCateId='$data[goodsCateId]',attrCateId='$data[attrCateId]',attrName='$data[attrName]',attrInputType='$data[attrInputType]',attrValues='$data[attrValues]',searchTerms='$data[searchTerms]',isRequired='$data[isRequired]',sort='$data[sort]' where attrId=$data[attrId];";
         $result = $this->db->query($query);
         if ($result == false) {
             $error = $db->ErrorMsg();

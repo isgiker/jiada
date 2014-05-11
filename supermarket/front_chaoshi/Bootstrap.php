@@ -57,7 +57,7 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
 
     public function _initView(Yaf_Dispatcher $dispatcher) {
         //在这里注册自己的view控制器，例如smarty,firekylin
-        $objView = new Core_View_Basic(null);
+        $objView = new Core_View_Chaoshi(null);
         $dispatcher->setView($objView);
     }
 

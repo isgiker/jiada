@@ -38,8 +38,8 @@ class Pagination_Default {
     var $last_page = 'Last'; //尾页
     var $pre_bar = '<<'; //上一分页条
     var $next_bar = '>>'; //下一分页条
-    var $format_left = '[';
-    var $format_right = ']';
+    var $format_left = '';
+    var $format_right = '';
     var $is_ajax = false; //是否支持AJAX分页模式 
 
     /**
@@ -223,7 +223,7 @@ class Pagination_Default {
                 $this->last_page = '尾页';
                 $this->next_page = '下页';
                 $this->pre_page = '上页';
-                return '共'.$this->totalpage.'页 '.$this->first_page() .' '. $this->pre_page().' '.$this->nowbar() . $this->next_page().' '.$this->last_page();
+                return '<span>共'.$this->totalpage.'页</span> '.$this->first_page() .' '. $this->pre_page().' '.$this->nowbar() . $this->next_page().' '.$this->last_page();
                 break;
             case '2':
                 $this->next_page = '下一页';

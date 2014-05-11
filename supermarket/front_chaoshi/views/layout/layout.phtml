@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <?php
+        if (isset($_page['title']) && $_page['title']) {
+            $title = $_page['title']; //this->_layouttitle;
+        } else {
+            $title = '家大超市-家大' . $_config_domain['nowww'] . '.在你身边';
+        }
+
+        $static_domain = $_config_domain['static'];
+        ?>
+        <title><?php echo $title; ?></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="<?php echo '//' . $_config_domain['static'] . '/css/front-end/chaoshi/v1/chaoshi_common.css'; ?>">
+        <link rel="stylesheet" href="<?php echo '//' . $_config_domain['static'] . '/css/front-end/chaoshi/v1/chaoshi_list.css'; ?>">
+        <!--action page additional files-->
+        <?php
+        if (isset($_page['static_css_files']) && is_array($_page['static_css_files'])) {
+            echo $this->_view->_css($_page['static_css_files']);
+        }
+        ?>
+
+        <!--全局js文件-->
+        <script src="//<?php echo $static_domain;?>/js/basic/libs/jquery.min.js"></script>
+        
+    </head>
+    <body>
+        <div id="wrap">
+            <!--top-Header-menu-->
+            <?php include_once 'layout_header.phtml'; ?>
+            <!--close-top-Header-menu-->
+
+
+            <!--Action boxes-->
+            <?php
+            echo $_ActionContent;
+            ?>
+            <!--End Action boxes-->
+            <!--Footer-part-->
+            <?php include_once 'layout_footer.phtml'; ?>
+
+        </div>
+
+        <!-- /wrap end-->
+
+
+        <!--action page additional files-->
+        <?php
+            if (isset($_page['static_js_files']) && is_array($_page['static_js_files'])) {
+                echo $this->_view->_js($_page['static_js_files']);
+            }
+        ?>
+        
+
+    </body>
+
+
+</html>

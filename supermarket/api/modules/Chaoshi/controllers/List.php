@@ -27,7 +27,7 @@ class ListController extends Core_Controller_Api{
         Yaf_Dispatcher::getInstance()->autoRender(FALSE);
         $this->_layout = false;
         $phprpcServer = new PHPRPC_Server();
-        $phprpcServer->add(array('getCategaryList','getCategaryChild','getProductList'),  $this);
+        $phprpcServer->add(array('getCategaryList','getCategaryChild','getProductList','getProductListTotal','getProductAttr'),  $this);
         
         $phprpcServer->start();
     }
@@ -91,5 +91,39 @@ class ListController extends Core_Controller_Api{
         }
         
         return $this->returnData($pList);
+    }
+    
+    public function getProductListTotal($param) {
+        if(!$param || !is_array($param) || !$param['shopId'] || !$param['cateId']){
+            return $this->errorMessage('请求参数错误！');
+        }
+        
+        //获取商品列表
+        $total=$this->model->getProductListTotal($param);
+        if(!$total){
+            return $this->errorMessage('无数据！');
+        }
+        
+        return $this->returnData($total);
+    }
+    
+    /**
+     * 获取当前商品分类的商品属性（检索项）
+     * @param int $cateId 商品分类id。
+     * @return array|json
+     */
+    public function getProductAttr($cateId) {
+        $cateId=trim($cateId);
+        if(!$cateId){
+            return $this->errorMessage('请求参数错误！');
+        }
+        
+        //获取商品相关信息
+        $data=$this->model->getProductAttr($cateId);
+        if(!$data){
+            return $this->errorMessage('无数据！');
+        }
+        
+        return $this->returnData($data);
     }
 }

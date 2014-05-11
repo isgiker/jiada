@@ -40,8 +40,10 @@ class BasicModel{
 
     /* 计算分页每次开始位置 */
 
-    public function setLimitStart() {
-        $pageNum = $this->_Request->getQuery('p'); //获取当前页码；
+    public function setLimitStart($pageNum=null) {
+        if(!$pageNum){
+            $pageNum = $this->_Request->getQuery('p'); //获取当前页码；
+        }
         if (!$pageNum) {
             $this->limitstart = 0;
         } else {
@@ -52,7 +54,6 @@ class BasicModel{
     /* 获取当前分页开始位置 */
 
     public function getLimitStart() {
-        $this->setLimitStart();
         return $this->limitstart;
     }
     
