@@ -30,7 +30,7 @@ class IndexController extends Core_Controller_Chaoshi {
     }
 
     public function indexAction() {
-        $this->_layout = false;
+        $this->_layout = true;
 
         //楼层
         $floor = array();
@@ -38,10 +38,26 @@ class IndexController extends Core_Controller_Chaoshi {
         $f1 = $this->floor1();
         $floor[1] = array('floorName' => '奶制品', 'floorData' => $f1);
 
+        
         $this->getView()->assign('floor', $floor);
 
+        //图片
         $this->getView()->assign('imagesConfig', $this->imagesConfig);
         $this->getView()->assign('fileImg_obj', $this->fileImg);
+        
+        //This page add css、js files .
+        $_page=array(
+            'static_css_files' => [
+                ['path'=>'/css/front-end/chaoshi/v1/chaoshi_header.css','attr'=>''],
+                ['path'=>'/css/front-end/chaoshi/v1/chaoshi_index.css','attr'=>''],
+                ['path'=>'/plugin/slidebox/css/jquery.slideBox.css','attr'=>'']
+            ],
+            'static_js_files' => [                
+                ['path'=>'/plugin/slidebox/js/jquery.slideBox.min.js','attr'=>['charset'=>'utf8']],
+                ['path'=>'/js/front-end/chaoshi/v1/chaoshi_index.js','attr'=>['charset'=>'utf8']],
+            ]
+        );
+        $this->getView()->assign("_page", $_page);
     }
 
     /* F1-奶制品（begin）

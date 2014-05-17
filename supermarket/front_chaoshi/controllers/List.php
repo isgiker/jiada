@@ -134,6 +134,7 @@ class ListController extends Core_Controller_Chaoshi {
         //This page add css、js files .
         $_page=array(
             'static_css_files' => [
+                ['path'=>'/css/front-end/chaoshi/v1/chaoshi_header.css','attr'=>''],
                 ['path'=>'/css/front-end/chaoshi/v1/chaoshi_list.css','attr'=>'']
             ],
             'static_js_files' => [

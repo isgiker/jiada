@@ -8,3 +8,4 @@ $('#mini_cart dl').hover(
             $('.cart_open').hide();
         }
 );
+$('#_ALLSORT').hide();
