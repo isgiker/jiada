@@ -65,33 +65,43 @@
 </div>
 <div class="clr"></div>
 <div class="w w1" >
-    <div class="floor" data-floor="1">
+    <?php
+                        
+        if(isset($floor) && $floor && is_array($floor)){
+            foreach ($floor as $key => $f) {
+    ?>
+    <div class="floor" data-floor="<?php echo $key;?>">
         <div class="m m1">
             <div class="mt">
-                <h2>牛奶乳品</h2>
+                <h2><?php echo $f['floorName'];?></h2>
             </div>
             <div class="mc">
                 <div class="catalogue">
                     <ul>
-                        <li><a href="http://channel.jd.com/furniture.html">家具</a></li>
-                        <li><a href="http://www.360buy.com/products/1620-1623-000.html">灯具照明</a></li>
-                        <li><a href="http://www.360buy.com/products/1620-1625-000.html">家用清洁</a></li>
-                        <li><a href="http://www.360buy.com/products/1620-1624-000.html">居家日用</a></li>
-                        <li><a href="http://www.360buy.com/products/6196-6219-000.html">水具/酒具</a></li>
-                        <li><a href="http://www.360buy.com/products/6196-6197-000.html">烹饪锅具</a></li>
-                        <li><a href="http://channel.jd.com/6196-6214.html">厨房配件</a></li>
-                        <li><a href="http://www.360buy.com/products/6196-6227-000.html">餐具</a></li>
-                        <li><a href="http://list.jd.com/1620-1621-1626.html">床品套件</a></li>
-                        <li><a href="http://list.jd.com/1620-1621-1632-0-0-0-0-0-0-0-1-1-1-1-1-72-4137-0.html">蚊帐</a></li>
-                        <li><a href="http://list.jd.com/1620-1621-1627-0-0-0-0-0-0-0-1-1-1-1-1-72-4137-0.html">夏被</a></li>
-                        <li><a href="http://list.jd.com/1620-1621-11963-0-0-0-0-0-0-0-1-1-1-1-1-72-4137-0.html">凉席</a></li>
-                        <li><a href="http://channel.jd.com/decoration.html">家装建材</a></li>
-                        <li><a href="http://channel.jd.com/pet.html">宠物生活</a></li>
-                        <li><a href="http://channel.jd.com/9192-9196.html">成人用品</a></li>
-                        <li><a href="http://list.jd.com/1620-1625-1671-0-0-0-0-0-0-0-1-1-1-1-1-72-4137-0.html">生活用纸</a></li>
+                        <?php
+                            //商品类型
+                            if (isset($f['floorData']['goodsType']) && $f['floorData']['goodsType']) {
+                                foreach ($f['floorData']['goodsType'] as $item) {
+                                    $nodes=$item['parentPath'].','.$item['cateId'];
+                            ?>
+                                    <li><a href="<?php echo "/List?cat={$nodes}";?>" target="_blank"><?php echo $item['cateName']; ?></a></li>
+                            <?php
+                                }
+                            }
+                        ?>
+                        <?php
+                            //品牌
+                            if (isset($f['floorData']['catesBrand']) && $f['floorData']['catesBrand']) {
+                                foreach ($f['floorData']['catesBrand'] as $item) {
+                            ?>
+                                    <li><a href="javascript:void();" ><?php echo $item['brandName']; ?></a></li>
+                            <?php
+                                }
+                            }
+                        ?>
                     </ul>
                     <span class="ad">
-			<a target="_blank" title="" href="#">
+			<a target="_blank" title="" href="javascript:void();">
                             <img width="209" height="155" alt="家居馆" src="http://img12.360buyimg.com/da/g1/M04/00/04/rBEGD1NwLrMIAAAAAABNox2pR4EAABaOwLDEigAAE27922.jpg" class="err-product">
                         </a>
                     </span>
@@ -103,100 +113,70 @@
             <div class="tab-arrow" style="left: 0px;"><b></b></div>
             <div class="mt">
                 <ul class="index_nav">
-                    <li><a class="hover" href="javascript:void(0);" data-id="0">纯牛奶</a></li>
-                    <li><a href="javascript:void(0);" data-id="1">酸奶</a></li>
-                    <li><a href="javascript:void(0);" data-id="2">儿童奶</a></li>
+                        <?php
+                        if (isset($f['floorData']['catesGoods']) && $f['floorData']['catesGoods']) {
+                            foreach ($f['floorData']['catesGoods'] as $k => $item) {
+                                if ($k == 0) {
+                                    $curr_class = ' hover';
+                                } else {
+                                    $curr_class = '';
+                                }
+                                ?>
+                                <li><a class="<?php echo $curr_class; ?>" href="javascript:void(0);" data-id="<?php echo $k;?>"><?php echo $item['name']; ?></a></li>
+                                <?php
+                            }
+                        }
+                        ?>
                 </ul>
             </div>
             <div class="mc">
-                <div class="plist" id="nav_content_1_0">
+                <?php
+                if (isset($f['floorData']['catesGoods']) && $f['floorData']['catesGoods']) {
+                    foreach ($f['floorData']['catesGoods'] as $k=>$items) {
+                        if($k==0){
+                            $curr_display=' block;';
+                        }  else {
+                            $curr_display=' none;';
+                        }
+                ?>
+                <div class="plist" id="nav_content_<?php echo $key; ?>_<?php echo $k;?>" style="display:<?php echo $curr_display;?>;">
                     <ul>
+                        <?php
+                            $catesGoods=@$items['data'];
+                            if(isset($catesGoods) && $catesGoods){
+                                foreach ($catesGoods as $item) {
+                                    if(isset($item['packPic']) && $item['packPic']){
+                                        $pics=explode(',', $item['packPic']);
+                                        $firstPic=$pics[0];
+                                        $goodsPic=$fileImg_obj->generateImgUrl(array('imgSize'=>'160X160','imgUrl'=>$firstPic), $imagesConfig);
+                                    }else{
+                                        $goodsPic='';
+                                    }
+                        ?>
                         <li>
                             <div class="p-img ld">
-                                <a target="_blank" href="http://item.jd.com/1093776931.html" title="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                    <img src="http://www.taobz.com/upload/store/goods/3/3_587dce3980d6bdc19701fe98cb576ab1.jpg_small.jpg" height="160" width="160" alt="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
+                                <a target="_blank" href="<?php echo '/detail?p='.$item['priceId'];?>" title="<?php echo $item['goodsName'];?>">
+                                    <img src="<?php echo $goodsPic;?>" height="160" width="160" alt="<?php echo $item['goodsName'];?>">
                                 </a>
                             </div>
                             <div class="p-name">
-                                <a target="_blank" href="http://item.jd.com/1093776931.html" title="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                    爆款限时抢 罗莱LOVO全棉高支斜纹四件套
+                                <a target="_blank" href="<?php echo '/detail?p='.$item['priceId'];?>" title="<?php echo $item['goodsName'];?>">
+                                    <?php echo $item['goodsName'];?>
                                 </a>
                             </div>
-                            <div class="p-price"><del>¥499.80</del><span>¥499.80</span></div>
+                            <div class="p-price"><del>¥<?php echo $item['originalPrice'];?></del><span>¥<?php echo $item['currentPrice'];?></span></div>
                             
                         </li>
-                        <li>
-                            <div class="p-img ld">
-                                <a target="_blank" href="http://item.jd.com/1093776931.html" title="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                    <img src="http://www.taobz.com/upload/store/goods/3/3_587dce3980d6bdc19701fe98cb576ab1.jpg_small.jpg" height="160" width="160" alt="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                </a>
-                            </div>
-                            <div class="p-name">
-                                <a target="_blank" href="http://item.jd.com/1093776931.html" title="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                    爆款限时抢 罗莱LOVO全棉高支斜纹四件套
-                                </a>
-                            </div>
-                            <div class="p-price">¥<span>499.80</span></div>
-                            
-                        </li>
-                        <li>
-                            <div class="p-img ld">
-                                <a target="_blank" href="http://item.jd.com/1093776931.html" title="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                    <img src="http://www.taobz.com/upload/store/goods/3/3_587dce3980d6bdc19701fe98cb576ab1.jpg_small.jpg" height="160" width="160" alt="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                </a>
-                            </div>
-                            <div class="p-name">
-                                <a target="_blank" href="http://item.jd.com/1093776931.html" title="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                    爆款限时抢 罗莱LOVO全棉高支斜纹四件套
-                                </a>
-                            </div>
-                            <div class="p-price">¥<span>499.80</span></div>
-                            
-                        </li>
-                        <li>
-                            <div class="p-img ld">
-                                <a target="_blank" href="http://item.jd.com/1093776931.html" title="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                    <img src="http://www.taobz.com/upload/store/goods/3/3_587dce3980d6bdc19701fe98cb576ab1.jpg_small.jpg" height="160" width="160" alt="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                </a>
-                            </div>
-                            <div class="p-name">
-                                <a target="_blank" href="http://item.jd.com/1093776931.html" title="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                    爆款限时抢 罗莱LOVO全棉高支斜纹四件套
-                                </a>
-                            </div>
-                            <div class="p-price">¥<span>499.80</span></div>
-                            
-                        </li>
-                        <li class="lastItem">
-                            <div class="p-img ld">
-                                <a target="_blank" href="http://item.jd.com/1093776931.html" title="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                    <img src="http://www.taobz.com/upload/store/goods/3/3_587dce3980d6bdc19701fe98cb576ab1.jpg_small.jpg" height="160" width="160" alt="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                </a>
-                            </div>
-                            <div class="p-name">
-                                <a target="_blank" href="http://item.jd.com/1093776931.html" title="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                    爆款限时抢 罗莱LOVO全棉高支斜纹四件套
-                                </a>
-                            </div>
-                            <div class="p-price">¥<span>499.80</span></div>
-                            
-                        </li>
-                        <li>
-                            <div class="p-img ld">
-                                <a target="_blank" href="http://item.jd.com/1093776931.html" title="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                    <img src="http://www.taobz.com/upload/store/goods/3/3_587dce3980d6bdc19701fe98cb576ab1.jpg_small.jpg" height="160" width="160" alt="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                </a>
-                            </div>
-                            <div class="p-name">
-                                <a target="_blank" href="http://item.jd.com/1093776931.html" title="爆款限时抢 罗莱LOVO全棉高支斜纹四件套">
-                                    爆款限时抢 罗莱LOVO全棉高支斜纹四件套
-                                </a>
-                            </div>
-                            <div class="p-price">¥<span>499.80</span></div>
-                            
-                        </li>
+                        <?php
+                            }
+                        }
+                        ?>
                     </ul>
                 </div>
+                <?php
+                    }
+                }
+                ?>
                 <div class="plist" id="nav_content_1_1" style="display: none;">
                     <ul>
                         <li>
@@ -219,7 +199,10 @@
         </div>
         <div class="clr"></div>
     </div>
-    
+    <?php
+            }
+        }
+    ?>
     <div class="floor" data-floor="2">
         <div class="m m1">
             <div class="mt">

@@ -13,6 +13,7 @@ class IndexController extends Core_Controller_Www {
     
     public function indexAction() {
         $this->_layout = false;
+        $this->redirect('//'.$this->_config->domain->chaoshi.'/Index');
     }
 
 

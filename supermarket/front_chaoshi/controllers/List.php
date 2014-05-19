@@ -39,7 +39,7 @@ class ListController extends Core_Controller_Chaoshi {
         $catesId=explode(',', $catesId);
         
         //分页
-        $pageNum=$this->getQuery('p');
+        $pageNum=$this->getQuery('p',1);
         
         //排序sort
         $sort=$this->getQuery('sort');
@@ -109,11 +109,20 @@ class ListController extends Core_Controller_Chaoshi {
             $pagination = $this->showPagination($total, $limit);
         }else{
             $pList=array();
+            $total = 0;            
+            $totalpage = 0;
+            $prePage=0;
+            $nextPage=0;
+            $pagination = '';
         }
         
         //商品分类
         $this->getView()->assign('catList', $catList);
         $this->getView()->assign('catesId', $catesId);
+        
+        //全部分类
+        $allCategary=$this->getAllCategary(0);
+        $this->getView()->assign('allCategary', $allCategary);
         
         //商品列表、检索、分页
         $this->getView()->assign('sort', $sort);
@@ -142,6 +151,19 @@ class ListController extends Core_Controller_Chaoshi {
             ]
         );
         $this->getView()->assign("_page", $_page);
+    }
+    
+    private function getAllCategary($cateId=0) {
+        //全部商品分类
+        $phprpcClient = new PHPRPC_Client('http://'.$this->_config->domain->api.'/Chaoshi/index/index');
+        $result = @json_decode($phprpcClient->getAllCategary($cateId), true);
+        if (isset($result['data']) && $result['data']) {
+            $data=$result['data'];
+        } else {
+            $data = null;
+        }
+
+        return $data;
     }
     
     private function getCategaryList($cateId) {

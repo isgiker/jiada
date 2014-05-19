@@ -31,18 +31,18 @@ class UserPlugin extends Yaf_Plugin_Abstract {
     }
 
     public function preDispatch(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {
-        $_config=Yaf_Registry::get('_CONFIG');
-        
-        if (!$this->isLogin()) {
-            //Index模块里的控制器不受登录限制
-            if($request->module=='Index' && $request->controller=='Setcookie'){
-     
-            }else{
-                $currentUrl='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-                header("Location:http://".$_config->domain->www."/Login?ref=$currentUrl");
-                exit;
-            }
-        }
+//        $_config=Yaf_Registry::get('_CONFIG');
+//        
+//        if (!$this->isLogin()) {
+//            //Index模块里的控制器不受登录限制
+//            if($request->module=='Index' && $request->controller=='Setcookie'){
+//     
+//            }else{
+//                $currentUrl='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+//                header("Location:http://".$_config->domain->www."/Login?ref=$currentUrl");
+//                exit;
+//            }
+//        }
     }
 
     public function postDispatch(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {

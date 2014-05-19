@@ -5,13 +5,60 @@ class Core_Controller_Chaoshi extends Core_Controller_Basic {
     //显示该店铺（仓库）的数据;
     public $shopId;
     
+    //需要登录的页面设置true
+    public $mustLogin=false;
+    
     public function init() {
         parent::init();
+        if($this->mustLogin===true){
+            if (!$this->isLogin()) {
+                //Index模块里的控制器不受登录限制
+                if($this->_ModuleName=='Index' && $this->_ControllerName=='Setcookie'){
+
+                }else{
+                    $currentUrl='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+                    header("Location:http://".$this->_config->domain->www."/Login?ref=$currentUrl");
+                    exit;
+                }
+            }
+        }
+        
         if(isset($_COOKIE['shopId']) && $_COOKIE['shopId']){
             $this->shopId=$_COOKIE['shopId'];
         }else{
             $this->shopId='95481685637857325';
         }
+    }
+    
+    /**
+     * 判断是否登录
+     * @return boolean
+     */
+    public function isLogin() {
+        if (isset($_COOKIE['uid']) && isset($_COOKIE['lt']) && isset($_COOKIE['_TICKET']) && isset($_COOKIE['_USERINFO'])  && isset($_COOKIE['_UIS']) 
+                && $_COOKIE['uid'] && $_COOKIE['lt'] && $_COOKIE['_TICKET'] && $_COOKIE['_USERINFO'] && $_COOKIE['_UIS']) {
+            
+            //票据结构:用户id|浏览器代理信息|用户ip地址|行业拼音|用户socket端口号;
+            $ticketParam=array(
+                'uid'=>@$_COOKIE['uid'],
+                'lt'=>@$_COOKIE['lt']
+            );
+            $cookieTicket = $_COOKIE['_TICKET'];
+            $cookieUserInfoSign = $_COOKIE['_UIS'];
+
+            //服务端生成ticket
+            $ticket = $this->setTicket($ticketParam);
+            $uis = $this->getSign($_COOKIE['_USERINFO']);
+
+            //服务端和客户端ticket比较
+            if ($ticket === $cookieTicket && $uis==$cookieUserInfoSign) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        return false;
     }
     
     /**

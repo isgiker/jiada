@@ -13,6 +13,34 @@ class Chaoshi_IndexModel extends BasicModel{
     }
     
     /**
+     * 获取分类路径节点信息
+     * @param int $cateId 分类id
+     * @return array
+     */
+    public function getAllCategary($cateId=0) {
+        if (!$cateId)
+            $cateId=0;
+        $query = "select cateId,cateName,parentId,parentPath from goods_categary where parentId=$cateId";
+        $query .=" and status = 1";
+        $query .=" order by sort asc,cateId desc ";
+        $this->hydb->setQuery($query);
+        $rows = $this->hydb->loadAssocList();
+
+        //递归调用;	
+        static $newrows = array();
+        if($rows){
+            foreach ($rows as $key => $item) {
+                $newrows[$item['parentId']][$item['cateId']]=$item;
+
+                $this->getAllCategary($item['cateId']);
+            }
+        }
+
+        return $newrows;
+    }
+    
+    
+    /**
      * 获取分类下的商品类型
      * @param int $cateId 分类id
      * @param int $limit 条数
@@ -22,7 +50,7 @@ class Chaoshi_IndexModel extends BasicModel{
         if(!$cateId || !$limit){
             return false;
         }
-        $query = "select a.cateId,a.cateName,a.pinyin from goods_categary a where FIND_IN_SET('$cateId',a.parentPath) and a.childNums=0 and a.status=1";
+        $query = "select a.cateId,a.cateName,a.pinyin,a.parentPath from goods_categary a where FIND_IN_SET('$cateId',a.parentPath) and a.childNums=0 and a.status=1";
         $query .=" order by a.sort asc,a.createTime desc ";
         $query .=' limit 0, '.$limit;
 
@@ -72,6 +100,12 @@ class Chaoshi_IndexModel extends BasicModel{
         return $rows;
     }
     
-    
+    public function strToArr($str, $delimiter = '.',$v) {
+    $arr = array_reverse(explode($delimiter, $str));
+    $res = array();
+    foreach ($arr as $k => $v) {
+        $res = array($v => $k ? $res : $v);
+    } return $res;
+}
 
 }

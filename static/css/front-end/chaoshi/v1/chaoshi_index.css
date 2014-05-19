@@ -373,10 +373,11 @@ em {
 }
 .m2 .mc{
     height: 482px;
+    overflow: hidden;
 }
 .m2 .mc .plist li{
-    border-right: 1px dashed #CCCCCC;
-    border-bottom: 1px dashed #CCCCCC;
+    border-right: 1px solid #F1F1F1;
+    border-bottom: 1px solid #F1F1F1;
     height: 230px;
     padding: 5px 0;
     overflow: hidden;

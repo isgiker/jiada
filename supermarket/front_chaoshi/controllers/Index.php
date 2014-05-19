@@ -10,7 +10,9 @@ class IndexController extends Core_Controller_Chaoshi {
     
     private $fileImg;
     
-    private $phprpcClient;        
+    private $phprpcClient; 
+    
+    public $mustLogin=false;
 
     public function init() {
         parent::init();
@@ -31,12 +33,16 @@ class IndexController extends Core_Controller_Chaoshi {
 
     public function indexAction() {
         $this->_layout = true;
+        
+        //全部分类
+        $allCategary=$this->getAllCategary(0);
+        $this->getView()->assign('allCategary', $allCategary);
 
         //楼层
         $floor = array();
 
         $f1 = $this->floor1();
-        $floor[1] = array('floorName' => '奶制品', 'floorData' => $f1);
+        $floor[1] = array('floorName' => '牛奶乳品', 'floorData' => $f1);
 
         
         $this->getView()->assign('floor', $floor);
@@ -58,6 +64,18 @@ class IndexController extends Core_Controller_Chaoshi {
             ]
         );
         $this->getView()->assign("_page", $_page);
+    }
+    
+    private function getAllCategary($cateId=0) {
+        //全部商品分类
+        $result = @json_decode($this->phprpcClient->getAllCategary($cateId), true);
+        if (isset($result['data']) && $result['data']) {
+            $data=$result['data'];
+        } else {
+            $data = null;
+        }
+
+        return $data;
     }
 
     /* F1-奶制品（begin）
@@ -99,8 +117,8 @@ class IndexController extends Core_Controller_Chaoshi {
 
 
         $floor = array('catesGoods' => array(
-                '1' => array('name' => '纯牛奶', 'data' => $goods_chun),
-                '2' => array('name' => '儿童奶', 'data' => $goods_child)
+                '0' => array('name' => '纯牛奶', 'data' => $goods_chun),
+                '1' => array('name' => '儿童奶', 'data' => $goods_child)
             ),
             'goodsType' => $goodsType,
             'catesBrand' => $catesBrand,
@@ -108,5 +126,7 @@ class IndexController extends Core_Controller_Chaoshi {
 
         return $floor;
     }
+    
+    
 
 }

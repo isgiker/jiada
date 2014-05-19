@@ -27,7 +27,7 @@ class IndexController extends Core_Controller_Api{
         Yaf_Dispatcher::getInstance()->autoRender(FALSE);
         $this->_layout = false;        
         $phprpcServer = new PHPRPC_Server();
-        $phprpcServer->add(array('getGoodsType','getCatesGoods','getCatesBrand'),  $this);
+        $phprpcServer->add(array('getGoodsType','getCatesGoods','getCatesBrand','getAllCategary'),  $this);
         
         $phprpcServer->start();
     }
@@ -88,5 +88,20 @@ class IndexController extends Core_Controller_Api{
             return $this->errorMessage();
         }
         return $this->returnData($data);
+    }
+    
+    /**
+     * 递归获取商品分类id的子类列表
+     * @param int $cateId 商品分类id。
+     * @return array|json
+     */
+    public function getAllCategary($cateId=0) {
+        //获取商品相关信息
+        $catList=$this->model->getAllCategary($cateId);
+        if(!$catList){
+            return $this->errorMessage('无数据！');
+        }
+        
+        return $this->returnData($catList);
     }
 }

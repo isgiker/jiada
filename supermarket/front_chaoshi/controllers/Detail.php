@@ -29,7 +29,7 @@ class DetailController extends Core_Controller_Www {
     }
     
     public function indexAction() {
-        $this->_layout = false;
+        $this->_layout = true;
         //商品价格id
         $priceId=$this->getQuery('p', 0);
 
@@ -45,6 +45,21 @@ class DetailController extends Core_Controller_Www {
         $this->getView()->assign('imagesConfig', $this->imagesConfig);
         $this->getView()->assign('fileImg_obj', $this->fileImg);
         $this->getView()->assign('priceId', $priceId);
+//        $this->display('index2.phtml');
+        //This page add css、js files .
+        $_page=array(
+            'static_css_files' => [
+                ['path'=>'/css/front-end/chaoshi/v1/chaoshi_header.css','attr'=>''],
+                ['path'=>'/css/front-end/chaoshi/v1/chaoshi_detail.css','attr'=>''],
+                ['path'=>'/plugin/jqzoom_ev-2.3/css/jquery.jqzoom.css','attr'=>'']
+            ],
+            'static_js_files' => [
+                ['path'=>'/js/front-end/chaoshi/v1/chaoshi.js','attr'=>['charset'=>'utf8']],
+                ['path'=>'/js/front-end/chaoshi/v1/chaoshi_detail.js','attr'=>['charset'=>'utf8']],
+                ['path'=>'/plugin/jqzoom_ev-2.3/js/jquery.jqzoom-core.js','attr'=>['charset'=>'utf8']]
+            ]
+        );
+        $this->getView()->assign("_page", $_page);
     }
     
     /* 商品详情（begin）

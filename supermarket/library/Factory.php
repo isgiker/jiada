@@ -34,27 +34,31 @@ class Factory {
         return $db;
     }
     
-    public static function getMongoDBO($dbNode = 'development') {
-        $config = new Yaf_Config_Ini(CONFIG_PATH . DS . "mongodb.ini", $dbNode);
-        $dbOption = array(
-            'driver' => $config->db->driver,
-            'host' => $config->db->host,
-            'user' => $config->db->user,
-            'pass' => $config->db->pass,
-            'dbname' => $config->db->dbname,
-            'dbprefix' => $config->db->dbprefix,
-            'charset' => $config->db->charset,
-            'debug' => $config->db->debug,
-            'persist' => $config->db->charset,
-            'mongo_persist_key' => $config->db->charset
-        );
-
-        $db = Db_Adapter::getMongoInstance($dbOption);
-        if ($error = $db->ErrorMsg()) {
-            die("$error");
+    public static function getRedisDBO($dbNode = 'development_redis') {
+        $config = new Yaf_Config_Ini(CONFIG_PATH . DS . "databases.ini", $dbNode);
+        $redis = new Redis(); 
+        if(!$config->db->host){
+            $host='127.0.0.1';
+        }else{
+            $host=$config->db->host;
         }
-
-        return $db;
+        
+        if(!$config->db->port){
+            $port=6379;
+        }else{
+            $port=$config->db->port;
+        }
+        
+        if(!$config->db->timeout){
+            $timeout=45;
+        }else{
+            $timeout=$config->db->timeout;
+        }
+        
+        
+        $redis->connect($host,$port,$timeout);
+        $redis->auth($config->db->dbpass);
+        return $redis;
     }
 
     public static function getZendDBO($dbNode = 'development') {

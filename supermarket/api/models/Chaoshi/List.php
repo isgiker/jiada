@@ -14,8 +14,8 @@ class Chaoshi_ListModel extends BasicModel {
 
     /**
      * 获取分类路径节点信息
-     * @param string $cateIds 分类id，逗号分隔
-     * @return type
+     * @param int $cateId 分类id
+     * @return array
      */
     public function getCategaryList($cateId) {
         if (!$cateId)

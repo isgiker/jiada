@@ -5,7 +5,7 @@
  * @desc 订单信息确认（该页面必须要登录才能访问）
  */
 class OrderController extends Core_Controller_Chaoshi {
-
+    public $mustLogin=true;
     private $imagesConfig;
     private $fileImg;
     private $phprpcClient;

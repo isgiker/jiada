@@ -309,6 +309,7 @@
     z-index:999;
     border: solid #eee;
     border-width: 0 1px 1px;
+    background-color: #fff;
 }
 #categorys .mc .item,#categorys .mc .hover,#categorys .mc .item:hover{
     position: relative;
@@ -335,13 +336,14 @@
     line-height:35px; 
 }
 #categorys .mc .item h2 a:after,.hover h2 a:after{
-    content:url("http://static.jiada.local/img/basic/glyphicons_223_chevron-right.png");
+    content:url("http://static.jiada.local/img/basic/chevron-right2.png");
     vertical-align:middle;
     position: relative;
-    bottom: -6px;
+    right:-15px;
+    bottom: 0px;
     height: 5px;
     width: 5px;
-    padding-left: 92px;
+    /*padding-left: 92px;*/
 }
 #categorys .mc .item h2 a:hover{
     text-decoration:none;
