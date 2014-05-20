@@ -32,8 +32,17 @@ class CartController extends Core_Controller_Www {
         $this->phprpcClient = new PHPRPC_Client('http://'.$this->_config->domain->api.'/Chaoshi/Cart/index');
         
         //用户信息
-        $this->uid=$_COOKIE['uid'];
-        $this->userKey=$_COOKIE['user-key'];
+        if(isset($_COOKIE['uid'])){
+            $this->uid=$_COOKIE['uid'];
+        }else{
+            $this->uid=0;
+        }
+        if(isset($_COOKIE['user-key'])){
+            $this->userKey=$_COOKIE['user-key'];
+        }else{
+            $this->userKey=0;
+        }
+        
         
     }
     
