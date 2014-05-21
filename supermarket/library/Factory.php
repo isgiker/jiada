@@ -34,7 +34,7 @@ class Factory {
         return $db;
     }
     
-    public static function getRedisDBO($dbNode = 'development_redis') {
+    public static function getRedisDBO($dbNode = 'product_redis') {
         $config = new Yaf_Config_Ini(CONFIG_PATH . DS . "databases.ini", $dbNode);
         $redis = new Redis(); 
         if(!$config->db->host){

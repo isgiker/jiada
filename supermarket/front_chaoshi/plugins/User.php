@@ -17,8 +17,9 @@ class UserPlugin extends Yaf_Plugin_Abstract {
             $IP = Util::getIP();
             //时间|浏览器代理信息|用户ip地址
             $userKey = sha1($time . $_SERVER['HTTP_USER_AGENT'] . $IP);
-
-            setcookie('user-key', $userKey, null, null, null, null, true);
+            
+            $expire=time()+(3600*24*100);
+            setcookie('user-key', $userKey, $expire, '/', null, null, true);
         }
     }
 
