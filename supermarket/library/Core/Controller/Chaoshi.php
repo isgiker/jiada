@@ -1,6 +1,8 @@
 <?php
 
 class Core_Controller_Chaoshi extends Core_Controller_Basic {
+    
+    const cryptKey= '~!@#*w.(KLH)^F/,W6[jIi]-%kXz+K_w3%+=';
 
     //显示该店铺（仓库）的数据;
     public $shopId;
@@ -17,6 +19,7 @@ class Core_Controller_Chaoshi extends Core_Controller_Basic {
 
                 }else{
                     $currentUrl='http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+                    $currentUrl=urlencode($currentUrl);
                     header("Location:http://".$this->_config->domain->www."/Login?ref=$currentUrl");
                     exit;
                 }
@@ -59,6 +62,45 @@ class Core_Controller_Chaoshi extends Core_Controller_Basic {
         }
 
         return false;
+    }
+    
+     /*
+     * 构建客户端唯一ID,并进行加密;
+     * @param int $userId 用户id
+     */
+    public function setTicket($ticketParam) {
+        $ticket = $this->buildTicket($ticketParam);
+        if(!$ticket){
+            return false;
+        }
+        $cryptKey = strrev(md5(self::cryptKey));
+        $ticket = strrev(sha1($ticket)).$cryptKey;
+        $ticket = sha1($ticket);
+        return $ticket;
+    }
+
+    /**
+     * 对字符串进行前面,和密码加密的方式一样
+     * @param type $string
+     */
+    public function getSign($string){
+        $cryptKey = strrev(md5(self::cryptKey));
+        $string = strrev(sha1($string)).$cryptKey;
+        $strSign = sha1($string);
+        return $strSign;
+    }
+
+    /**
+     * 构建原始票据结构:用户id|登录时间|浏览器代理信息|用户ip地址;
+     * @param int $userId 用户id
+     */
+    public function buildTicket($ticketParam) {
+        if (!$ticketParam['uid'] || !$ticketParam['lt'])
+            return false;
+
+        $IP = Util::getIP();
+        $ticket = $ticketParam['uid'].'|'.$ticketParam['lt'].'|'.$_SERVER['HTTP_USER_AGENT'].'|'.$IP;
+        return $ticket;
     }
     
     /**

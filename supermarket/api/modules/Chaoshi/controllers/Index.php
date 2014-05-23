@@ -8,6 +8,7 @@
 class IndexController extends Core_Controller_Api{
     public $_config;
     protected $model;
+     protected $redisModel;
 
     public function init() {
         parent::init();
@@ -19,6 +20,7 @@ class IndexController extends Core_Controller_Api{
         Yaf_Loader::import('phprpc/common/phprpc_date.php');
         Yaf_Loader::import('phprpc/common/xxtea.php');
         $this->model = new Chaoshi_IndexModel();
+        $this->redisModel = new RedisModel();
     }
     
     public function indexAction() {
@@ -97,11 +99,24 @@ class IndexController extends Core_Controller_Api{
      */
     public function getAllCategary($cateId=0) {
         //获取商品相关信息
-        $catList=$this->model->getAllCategary($cateId);
-        if(!$catList){
-            return $this->errorMessage('无数据！');
+        
+        //如果缓存过期或无数据则调用Mysql数据
+        $cacheAllCates = $this->redisModel->getAllCategary();
+        if (!$cacheAllCates) {
+            $catList = $this->model->getAllCategary($cateId);
+            if (!$catList) {
+                return $this->errorMessage('无数据！');
+            }else{
+                //写入缓存
+                $data=$this->returnData($catList);
+                $this->redisModel->setAllCategary($data);
+            }
+            
+            
+        }else{
+            return $cacheAllCates;
         }
         
-        return $this->returnData($catList);
+        
     }
 }

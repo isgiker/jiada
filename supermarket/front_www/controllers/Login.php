@@ -122,7 +122,14 @@ class LoginController extends Core_Controller_Www {
 
         if($cR1 && $cR2 && $cR3 && $cR4 && $cR5 && $cR6){
             //这里一定要用js跳转，目前暂跳转到超市首页，日后会跳转到小区主页
-            $this->jsLocation(null,'//'.$this->_config->domain->chaoshi.'/Index');
+            $ref=$this->getQuery('ref',0);
+            if($ref){
+                //来源地址
+                $this->jsLocation(null,$ref);
+            }else{
+                $this->jsLocation(null,'//'.$this->_config->domain->chaoshi.'/Index');
+            }
+            
         }else{
             $error = 'Cookie写入失败！';
             return $error;

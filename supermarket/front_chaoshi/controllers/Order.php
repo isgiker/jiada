@@ -188,7 +188,7 @@ class OrderController extends Core_Controller_Chaoshi {
         }
         if (isset($_COOKIE['deliveryTimeOption']) && $_COOKIE['deliveryTimeOption']) {
             $data['deliveryTimeOption'] = $_COOKIE['deliveryTimeOption'];
-        } else {
+        } elseif(isset($shopDelivery['data'][0]['dmid'])) {
             $data['deliveryTimeOption'] = $shopDelivery['data'][0]['dmid'];
         }
         if (isset($_COOKIE['callToConfirm']) && $_COOKIE['callToConfirm']) {
