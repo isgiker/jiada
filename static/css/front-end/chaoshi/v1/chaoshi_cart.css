@@ -17,10 +17,10 @@ body {
     visibility: hidden;
 }
 .fl {
-float: left;
+    float: left;
 }
 .fr {
-float: right;
+    float: right;
 }
 a {
     color: #666;
@@ -31,10 +31,10 @@ a:hover {
     text-decoration: underline;
 }
 a img {
-border: 0;
+    border: 0;
 }
 img {
-vertical-align: middle;
+    vertical-align: middle;
 }
 /*全局---End
 =============================================================================*/
@@ -44,44 +44,44 @@ vertical-align: middle;
     border: 0px solid #000;
 }
 .header {
-padding: 20px 0 10px;
+    padding: 20px 0 10px;
 }
 .w1 {
-margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 #logo {
-padding-left: 5px;
-float: left;
+    padding-left: 5px;
+    float: left;
 }
 .progress {
-padding-top: 6px;
+    padding-top: 6px;
 }
 .progress .progress-1 {
-background: url("http://misc.360buyimg.com/purchase/cart/skin/i/step1.png") no-repeat;
-width: 481px;
-padding-top: 23px;
-overflow: hidden;
-height: 23px;
-float: right;
-list-style: none;
+    background: url("../../../../img/chaoshi/step1.png") no-repeat;
+    width: 481px;
+    padding-top: 23px;
+    overflow: hidden;
+    height: 23px;
+    float: right;
+    list-style: none;
 }
 .progress li.step-1 {
-color: #7abd54;
+    color: #7abd54;
 }
 .progress li {
-width: 160px;
-height: 23px;
-float: left;
-color: #bce8a3;
-line-height: 23px;
-text-align: center;
+    width: 160px;
+    height: 23px;
+    float: left;
+    color: #bce8a3;
+    line-height: 23px;
+    text-align: center;
 }
 .progress li.step-2 {
-color: #aaaaaa;
-width: 161px;
+    color: #aaaaaa;
+    width: 161px;
 }
 .progress li.step-3 {
-color: #aaaaaa;
+    color: #aaaaaa;
 }
 
 /*购物车---Begin
@@ -151,13 +151,13 @@ color: #aaaaaa;
     background-color: #fff;
 }
 .cart-tbody .shopInfo {
-height: 34px;
-line-height: 34px;
-border-top: 1px solid #ccc;
-border-bottom: 1px solid #ddd;
-padding-left: 8px;
-background-color: #dbeefd;
-display: block;
+    height: 34px;
+    line-height: 34px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ddd;
+    padding-left: 8px;
+    background-color: #dbeefd;
+    display: block;
 }
 .cart-tbody .shopInfo span{
     float:left;
@@ -181,7 +181,7 @@ display: block;
     background-color: #fffdee!important;
 }
 .cart-tbody .item-last {
-border-bottom: 0;
+    border-bottom: 0;
 }
 .cart-tbody .item_form {
     height: 52px;
@@ -301,77 +301,77 @@ border-bottom: 0;
 /*Cart tbody End*/
 
 .cart-toolbar, .cart-total {
-clear: both;
+    clear: both;
 }
 
 .cart-toolbar {
-padding: 5px 10px;
-line-height: 22px;
+    padding: 5px 10px;
+    line-height: 22px;
 }
 .cart-toolbar .total {
-width: 180px;
-display: block;
+    width: 180px;
+    display: block;
 }
 .cart-toolbar .total p {
-clear: both;
+    clear: both;
 }
 .cart-toolbar .total span {
-float: right;
-font-family: Verdana,Arial;
-text-align: right;
+    float: right;
+    font-family: Verdana,Arial;
+    text-align: right;
 }
 .cart-toolbar .price_hj{
     width: 110px;    
 }
 .cart-toolbar .amout {
-padding-right: 10px;
+    padding-right: 10px;
 }
 .cart-toolbar .amout span {
-color: #e4393c;
-font-family: Verdana,Arial;
+    color: #e4393c;
+    font-family: Verdana,Arial;
 }
 
 .cart-toolbar .control .delete {
-margin-right: 12px;
+    margin-right: 12px;
 }
 .cart-toolbar .control span {
-height: 22px;
-float: left;
+    height: 22px;
+    float: left;
 }
 .cart-toolbar .control .delete b {
-width: 9px;
-height: 9px;
-margin-top: 6px;
-background-position: 0 0;
+    width: 9px;
+    height: 9px;
+    margin-top: 6px;
+    background-position: 0 0;
 }
 .cart-toolbar .control b {
-margin-right: 4px;
-float: left;
-overflow: hidden;
-line-height: 0;
-font-size: 0;
-background: url("http://misc.360buyimg.com/purchase/cart/skin/i/control-icon-1.gif") no-repeat;
+    margin-right: 4px;
+    float: left;
+    overflow: hidden;
+    line-height: 0;
+    font-size: 0;
+    background: url("http://misc.360buyimg.com/purchase/cart/skin/i/control-icon-1.gif") no-repeat;
 }
 .cart-total {
-padding: 10px 10px;
-background-color: #f7f7f7;
+    padding: 10px 10px;
+    background-color: #f7f7f7;
 }
 .cart-total .total {
-width: auto;
-margin-left: 10px;
-line-height: 30px;
-font-weight: 700;
+    width: auto;
+    margin-left: 10px;
+    line-height: 30px;
+    font-weight: 700;
 }
 .cart-total .total span {
-float: right;
-color: #e4393c;
-font-size: 20px;
-font-weight: 400;
-font-family: Verdana,Arial;
+    float: right;
+    color: #e4393c;
+    font-size: 20px;
+    font-weight: 400;
+    font-family: Verdana,Arial;
 }
 
 .cart-button {
-padding: 10px 0 0;
+    padding: 10px 0 0;
 }
 
 

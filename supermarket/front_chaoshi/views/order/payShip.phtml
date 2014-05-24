@@ -111,43 +111,7 @@
                                 }
                             ?>
                             
-                            <?php 
-                            if (isset($data['deliveryTimeOption']) && $data['deliveryTimeOption'] == 'DELIVERY_FREE_MORNING') {
-                                $checked=' checked="checked"';
-                                $classSelected=' item-selected';
-                            } else {
-                                $checked='';
-                                $classSelected='';
-                            } 
-                            ?>
-                            <div class="item <?php echo $classSelected;?>">
-                                <div class="label">
-                                    <input type="radio" name="deliveryTimeOption" onclick="highlight(this)" payname="早上05:30－07:30配送" <?php echo $checked;?> id="deliveryTimeMorning" class="deliveryTimeOption hookbox" value="DELIVERY_FREE_MORNING">
-                                    <label for="deliveryTimeMorning">早上05:30－07:30配送</label>
-                                </div>
-                                <div class="field">
-                                    <span class="tip">下单后<?if($hour > '05'){echo $tomorrow;}else{echo $today;};?>早上05:30－07:30送达。无购物金额限制，选择这个时间段可以享受免费配送</span>
-                                </div>
-                                <span class="clr"></span>
-                            </div>
-                            <?php 
-                            if (isset($data['deliveryTimeOption']) && $data['deliveryTimeOption'] == 'DELIVERY_FREE_NIGHT') {
-                                $checked=' checked="checked"';
-                                $classSelected=' item-selected';
-                            } else {
-                                $checked='';
-                                $classSelected='';
-                            } ?>
-                            <div class="item <?php echo $classSelected;?>">
-                                <div class="label">
-                                    <input type="radio" name="deliveryTimeOption" onclick="highlight(this)" payname="晚上19:00－21:00配送" <?php echo $checked;?>  id="deliveryTimeNight" class="deliveryTimeOption hookbox" value="DELIVERY_FREE_NIGHT" >
-                                    <label for="deliveryTimeNight">晚上19:00－21:00配送</label>
-                                </div>
-                                <div class="field">
-                                    <span class="tip">下单后<?if($hour > '19'){echo $tomorrow;}else{echo $today;};?>晚上19:00－21:00送达。无购物金额限制，选择这个时间段可以享受免费配送</span>
-                                </div>
-                                <span class="clr"></span>
-                            </div>
+                            
                             <div class="express-form">
 
                                 <div class="list payment-type" id="jd-before-notify">

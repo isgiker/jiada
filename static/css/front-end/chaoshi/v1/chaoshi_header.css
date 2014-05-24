@@ -336,7 +336,7 @@
     line-height:35px; 
 }
 #categorys .mc .item h2 a:after,.hover h2 a:after{
-    content:url("http://static.jiada.local/img/basic/chevron-right2.png");
+    content:url("../../../../img/basic/chevron-right2.png");
     vertical-align:middle;
     position: relative;
     right:-15px;
@@ -498,7 +498,7 @@
     padding-left: 5px;
 }
 #mini_cart dt a:before{
-    content:url("http://static.jiada.local/img/basic/glyphicons_202_shopping_cart.png");
+    content:url("../../../../img/basic/glyphicons_202_shopping_cart.png");
     vertical-align:middle;
     position: relative;
     bottom: -6px;

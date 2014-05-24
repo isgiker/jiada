@@ -70,7 +70,16 @@ img {
     padding-top: 6px;
 }
 .progress .progress-1 {
-    background: url("http://misc.360buyimg.com/purchase/cart/skin/i/step1.png") no-repeat;
+    background: url("../../../../img/chaoshi/step1.png") no-repeat;
+    width: 481px;
+    padding-top: 23px;
+    overflow: hidden;
+    height: 23px;
+    float: right;
+    list-style: none;
+}
+.progress .progress-2 {
+    background: url(../../../../img/chaoshi/step2.png) no-repeat;
     width: 481px;
     padding-top: 23px;
     overflow: hidden;
