@@ -1,0 +1,173 @@
+<!--global_top_bar begin-->
+<div id="top_navbar">
+    <div class="container">
+        <div class="textInfo">
+            <p class="loginInfo">您好，欢迎来到“东贸国际花园”小区超市！<a href="#" target="_top">请登录</a><a href="#" target="_top">免费注册</a></p>
+        </div>
+        <div class="topmenu">
+            <ul class="sn-quick-menu">
+                <li class="sn-mysite menu-item">
+                    <div class="sn-menu">
+                        <a class="menu-hd" href="#">我的家大<b></b></a>
+                        <div class="menu-bd" role="menu" aria-hidden="true">
+                            <div class="menu-bd-panel" id="myTaobaoPanel">
+                                <a href="#" target="_top" rel="nofollow">我的订单</a>
+                                <a href="#" target="_top" rel="nofollow">个人中心</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <ul class="sn-quick-menu">
+                <li class="sn-mysite menu-item">
+                    <div class="sn-menu">
+                        <a class="menu-hd" href="#">客户服务<b></b></a>
+                        <div class="menu-bd" role="menu" aria-hidden="true">
+                            <div class="menu-bd-panel" id="myTaobaoPanel">
+                                <a href="#" target="_top" rel="nofollow">投诉中心</a>
+                                <a href="#" target="_top" rel="nofollow">客户服务</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+<!--top_navbar end-->
+
+<div class="w" id="header">
+    <div id="logo">
+        <a href="<?php echo '//' . $_config_domain['www'];?>" hidefocus="true" clstag="homepage|keycount|home2013|02a">
+            <img src="http://<?php echo '//' . $_config_domain['static'];?>/img/basic/logo.png" height="60" alt="家大">
+        </a>
+    </div>
+    <div id="search">
+        <div class="i-search ld">
+            <ul id="shelper" class="hide"></ul>
+            <div class="form">
+                <input type="text" class="text" accesskey="s" id="key" autocomplete="off" onkeydown="javascript:if (event.keyCode == 13)
+                                        search('key');" style="color: rgb(153, 153, 153);">
+                <input type="button" value="搜索" class="button" onclick="search('key');
+                                    return false;">
+            </div>
+        </div>
+        <div id="hotwords"><strong>热门搜索：</strong><a href="http://search.jd.com/Search?keyword=%E5%92%96%E5%95%A1&amp;enc=utf-8&amp;area=1" target="_blank">咖啡</a><a href="http://www.360buy.com/products/1320-1581-1589.html" target="_blank">新疆</a><a href="http://search.360buy.com/Search?keyword=左旋肉碱&amp;psort=3&amp;page=2&amp;ev=" target="_blank">左旋肉碱</a><a href="http://search.360buy.com/Search?keyword=钙尔奇" target="_blank">钙尔奇</a><a href="http://search.jd.com/search?keyword=%BA%EC%BE%C6&amp;qr=&amp;qrst=UNEXPAND&amp;et=&amp;rt=1&amp;area=1&amp;wtype=1" target="_blank">红酒</a><a href="http://search.360buy.com/Search?keyword=%BD%C0%D2%E6%BD%C0" target="_blank">嚼益嚼</a><a href="http://search.360buy.com/search?keyword=黄飞红&amp;cid=1591" target="_blank">黄飞红</a></div>
+    </div>
+</div>
+<!--header end-->
+
+<div class="w">
+    <div id="nav">
+        <div id="categorys" class="">
+            <div class="mt ld">
+                <h2><a href="#">全部商品分类<b></b></a></h2>
+            </div>
+            <?php 
+                if(isset($allCategary) && $allCategary){
+            ?>
+            <div id="_ALLSORT" class="mc">
+                <div class="mc">
+                    <?php
+                    $i=1;
+                    foreach ($allCategary[0] as $key => $topItems) {
+                        $childItems=$allCategary[$topItems['cateId']];
+                        if($i%2==0){
+                            $h2Class='';                            
+                        }else{
+                            $h2Class=' bg_gray';
+                        }
+                        $i++;
+                    ?>
+                    <div class="item" onmouseover="this.className = 'hover';" onmouseout="this.className = 'item';">
+                        <h2 class="<?php echo $h2Class;?>"><a href="javascript:void(0);" target="_blank"><?php echo $topItems['cateName'];?></a><b></b></h2>
+
+                        <div class="out">
+                            <div class="subview">
+                                <div class="left">
+                                    <?php
+                                        foreach ($childItems as $subItems) {
+                                            $items=$allCategary[$subItems['cateId']];
+                                            $nodes=$topItems['cateId'].','.$subItems['cateId'];
+                                    ?>
+                                    <div class="subview-li">
+                                        <h4>
+                                            <a href="<?php echo "/List?cat={$nodes}";?>" target="_blank"><?php echo $subItems['cateName'];?></a>
+                                        </h4>
+                                        <p>
+                                            <?php
+                                                foreach ($items as $item) {
+                                                    $nodes=$topItems['cateId'].','.$subItems['cateId'].','.$item['cateId'];
+                                            ?>
+                                            <a href="<?php echo "/List?cat={$nodes}";?>" target="_blank"><?php echo $item['cateName'];?></a>
+                                            <?php
+                                                }
+                                            ?>
+                                        </p>
+                                    </div>
+                                    <?php
+                                            }
+                                    ?>
+                                    
+                                    <div class="promo">
+                                        <div class="promo-brands">
+                                            <h4>品牌</h4>
+                                            <p>
+                                                <a href="#" title="卡夫" data-spm-anchor-id="a3204.7139825.1996500281.267">卡夫</a>
+                                                <a href="" title="洋河" data-spm-anchor-id="a3204.7139825.1996500281.268">洋河</a>
+                                                <a href="" title="德芙" data-spm-anchor-id="a3204.7139825.1996500281.269">德芙</a>
+                                                <a href="" title="百草味" data-spm-anchor-id="a3204.7139825.1996500281.270">百草味</a>
+                                                <a href="" title="雀巢" >雀巢</a>
+                                                <a href="" title="光明" data-spm-anchor-id="a3204.7139825.1996500281.272">光明</a>
+                                            </p>
+                                        </div>
+                                        <div class="promo-acts">
+                                            <h4>品牌活动</h4>
+                                            <p>
+                                                <a href="ll=29" title="格力高全场大促" >格力高全场大促</a>
+                                                <a href="ll=29" title="南方进京大促" >南方进京大促</a> 
+                                            </p>
+                                        </div>
+                                        <a class="promo-banner" href="" >
+                                            <img src="http://gtms01.alicdn.com/tps/i1/T1BTlJFBXqXXcP5D2n-196-90.jpg">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                    }
+                    ?>
+                    
+                </div>
+            </div>
+            <?php
+                }
+            ?>
+        </div>
+        <div id="treasure"></div>
+        <ul id="navitems">
+            <li class="" id="nav-home"><a href="http://www.jd.com/">首页</a></li>
+            <li class="" id="nav-fashion"><a href="http://fashion.jd.com/">服装城</a></li>
+            <li class="" id="nav-tuan"><a href="http://tuan.jd.com/" target="_blank">团购</a></li>
+
+        </ul>
+        <div class="fr" id="mini_cart">
+            <dl class="cart_close">
+                <dt class="ld"><s></s><span class="shopping"><span id="shopping-amount">2</span></span><a href="<?php echo '//' . $_config_domain['chaoshi'] . '/Cart/Index'; ?>" id="settleup-url">去购物车结算</a> <b></b> </dt>
+                <dd>
+                    <div class="prompt">
+                        <div class="loading-style1"><b></b>加载中，请稍候...</div>
+                    </div>
+                </dd>
+            </dl>
+            <dl class="cart_open hover" style="display: none;">
+                <dt class="ld"><s></s><span class="shopping"><span id="shopping-amount">2</span></span><a href="<?php echo '//' . $_config_domain['chaoshi'] . '/Cart/Index'; ?>" id="settleup-url">去购物车结算</a> <b></b> </dt>
+                <dd><div id="settleup-content"><div class="smt"><h4 class="fl">最新加入的商品</h4></div><div class="smc"><ul id="mcart-sigle">  <li>      <div class="p-img fl"><a href="http://item.jd.com/1073111.html" target="_blank"><img src="http://img11.360buyimg.com/n5/g14/M05/15/0F/rBEhVVMYNaMIAAAAAAJZCsxVAHYAAJsBwDNvtoAAlki337.jpg" width="50" height="50" alt=""></a></div>      <div class="p-name fl"><a href="http://item.jd.com/1073111.html" title="雀巢 优活饮用水5L*4瓶 整箱" target="_blank">雀巢 优活饮用水5L*4瓶 整箱</a></div>      <div class="p-detail fr ar">          <span class="p-price"><strong>￥43.00</strong>×2</span>          <br>           <a class="delete" data-id="1073111" data-type="RemoveProduct" href="#delete">删除</a>      </div>  </li></ul><ul id="mcart-gift"></ul><ul id="mcart-mz">  <li class="dt">      <div class="fl"><span class="hl-orange">满赠</span>              购满99元，即可领取赠品      </div>      <div class="fr"><em>小计：￥49.00</em></div>      <div class="clr"></div>  </li>   <li>      <div class="p-img fl"><a href="http://item.jd.com/1016437159.html" target="_blank"><img src="http://img14.360buyimg.com/n5/g10/M00/06/0A/rBEQWVEwQ84IAAAAAAFT0-Gx4-sAABO_QBnSLgAAVPr332.jpg" width="50" height="50" alt=""></a></div>      <div class="p-name fl"><span></span><a href="http://item.jd.com/1016437159.html" title="幸运谷有机三黑组合（绿芯心黑豆410g+黑米490g+黑芝麻340g）补肾谷物杂粮" target="_blank">幸运谷有机三黑组合（绿芯心黑豆410g+黑米490g+黑芝麻340g）补肾谷物杂粮</a></div>      <div class="p-detail fr ar">          <span class="p-price"><strong>￥49.00</strong>×1</span>          <br>           <a class="delete" data-id="1016437159|176895343" data-type="RemoveSuit" href="#delete">删除</a>      </div>   </li></ul></div><div class="smb ar">共<b>3</b>件商品　共计<strong>￥ 135.00</strong><br><a href="http://cart.jd.com/cart/cart.html?r=1395274819130" title="去购物车结算" id="btn-payforgoods">去购物车结算</a></div></div></dd>
+            </dl>
+
+        </div>
+    </div>
+</div>

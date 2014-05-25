@@ -150,7 +150,7 @@ class LoginController extends Core_Controller_Www {
         if(!$data){
             $data=$_POST;
         }
-        $front_domains = array('chaoshi' => $this->_config->domain->chaoshi);
+        $front_domains = array('chaoshi' => $this->_config->domain->chaoshi,'my' => $this->_config->domain->my);
         $q=$data['userId'].'|'.$data['loginTime'];
         
         $html = '';
