@@ -12,8 +12,9 @@ class Core_Controller_Chaoshi extends Core_Controller_Basic {
     
     public function init() {
         parent::init();
+        $isLogin=$this->isLogin();
         if($this->mustLogin===true){
-            if (!$this->isLogin()) {
+            if (!$isLogin) {
                 //Index模块里的控制器不受登录限制
                 if($this->_ModuleName=='Index' && $this->_ControllerName=='Setcookie'){
 
@@ -31,6 +32,17 @@ class Core_Controller_Chaoshi extends Core_Controller_Basic {
         }else{
             $this->shopId='95481685637857325';
         }
+        
+        
+        //html page vari
+        $this->getView()->assign("isLogin", $isLogin);
+        
+        if(isset($_COOKIE['_USERINFO']) && $_COOKIE['_USERINFO']){
+            $_USERINFO= unserialize(base64_decode($_COOKIE['_USERINFO']));
+        }else{
+            $_USERINFO='';
+        }
+        $this->getView()->assign("_USERINFO", $_USERINFO);
     }
     
     /**

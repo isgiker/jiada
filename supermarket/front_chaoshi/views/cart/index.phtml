@@ -140,8 +140,19 @@
                 </div>
             </div>
             <?php
-                }else{
+                }elseif($isLogin){
             ?>
+            
+            <div class="cart-inner cart-empty">
+                <div class="message">
+                            <p>
+                                    购物车内暂时没有商品，您可以<a href="/">去首页</a>挑选喜欢的商品
+                            </p>
+                </div>
+            </div>
+            <?php
+                }else{
+             ?>
             <div class="cart-inner cart-empty">
                 <div class="message">
                             <ul>
@@ -153,7 +164,6 @@
             <?php
                 }
              ?>
-            
             <!--cart inner end-->
             <div class="cart-button clearfix">
                 <a href='/' class='button fl continue'>继续购物</a>

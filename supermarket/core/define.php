@@ -7,7 +7,7 @@ $hostArr = ['admin'=>'admin', 'business'=>'business','my'=>'my','api'=>'api','ww
 /**
  * $modules=['application目录'=>'站点模块,模块,模块']
  */
-$modules = ['admin' => 'Index,Default,Chaoshi,Demo', 'business' => 'Index,Default,Chaoshi','my' => 'Index,Chaoshi','api' => 'Index,Chaoshi','front_www' => 'Index,Default,Chaoshi','front_chaoshi' => 'Index'];
+$modules = ['admin' => 'Index,Default,Chaoshi,Demo', 'business' => 'Index,Default,Chaoshi','my' => 'Index,Chaoshi','api' => 'Index,Chaoshi,My','front_www' => 'Index,Default,Chaoshi','front_chaoshi' => 'Index'];
 $curHost = explode('.', $host);
 if (isset($hostArr[$curHost[0]]) && $hostArr[$curHost[0]]) {
     $applicationName=$hostArr[$curHost[0]];

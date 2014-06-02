@@ -146,5 +146,385 @@ em {
 
 /**开始
 ==============================================================================*/
+.main .m {
+    float: left;
+}
+.main .left {
+    display: block;
+    width: 210px;
+    /*border: 1px solid #333;*/ 
+}
+.main .right {
+    position: relative;
+    width: 998px;
+    /*border: 1px solid #333;*/ 
+}
 
 
+.main .left .mod_personal_menu {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+}
+.main .left .mod_personal_menu .services_personal_center {
+    border: 1px #F4F4F4 solid;
+    border-top: none;
+    overflow: hidden;
+
+    background: url(../../../../img/chaoshi/personal_menu_bg.jpg) repeat 0 0;
+    border: 1px #F4F4F4 solid;
+    border-top: none;
+    overflow: hidden;
+    padding: 0 0 0 7px;
+}
+.main .left .mod_personal_menu .services_personal_center dl {
+    margin: 0 auto;
+    padding: 0;
+    width: 190px;
+    overflow: hidden;
+    padding: 7px 0;
+}
+
+.main .left .mod_personal_menu .services_personal_center dl dt {
+    line-height: 2em;
+}
+
+.main .left .mod_personal_menu .services_personal_center dl .tit_big {
+    color: #333;
+    font-family: 'Microsoft YaHei';
+    font-size: 14px;
+    margin: 0 0 0 10px;
+}
+.main .left .mod_personal_menu .services_personal_center dl .tit_big:before{
+    content:".";
+    padding-right: 5px;
+    font-size: 2em;
+    height: 20px;
+    position: relative;
+    bottom: 4px;
+}
+
+.main .left .mod_personal_menu .services_personal_center dl dd {
+    margin: 1px auto 0;
+    width: 190px;
+    line-height: 26px;
+}
+
+.main .left .mod_personal_menu .services_personal_center dl dd hr {
+    border: none;
+    border-top: 1px dotted #DFDFDF;
+    clear: both;
+    content: "";
+    height: 0;
+    width: 100%;
+}
+
+.main .left .mod_personal_menu .services_personal_center dl dd a {
+    display: inline-block;
+    width: 145px;
+    font-family: SimSun;
+    font-size: 12px;
+    color: #666;
+    text-decoration: none;
+    padding: 0 0 0 30px;
+}
+
+.main .left  .mod_personal_menu .services_personal_center dl dd a.selected {
+    color: #E60012;
+}
+.main .left  .mod_personal_menu .services_personal_center dl dd a.selected:after {
+    color: #E60012;
+    content:"->";
+    float: right;
+}
+
+.main .left  .mod_personal_menu .services_personal_center dl dd a:hover {
+    color: #E60012;
+}
+
+.main .left  .mod_personal_info {
+    width: 100%;
+    height: 95px;
+    /*border-bottom: 1px #E58763 solid;*/
+    /*background-color: #FF966E;*/
+    background-color:#FF7979;
+}
+.main .left .mod_personal_info .user_img {
+    float: left;
+    display: inline;
+    width: 72px;
+    height: 72px;
+    margin: 14px 0 0 10px;
+    overflow: hidden;
+}
+.main .left .mod_personal_info .user_img a {
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    width: 72px;
+    height: 72px;
+    overflow: hidden;
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.main .left .mod_personal_info .user_img img {
+    width: 72px;
+    height: 72px;
+    border: none;
+    overflow: hidden;
+}
+
+.main .left .mod_personal_info .user_img a span {
+    position: absolute;
+    z-index: 2;
+    left: 0px;
+    top: 0px;
+    width: 72px;
+    height: 72px;
+    overflow: hidden;
+    /*background: url(http://image.yihaodianimg.com/member/member/images/menu/yuan24.png) no-repeat;*/
+    /*_background: url(http://image.yihaodianimg.com/member/member/images/menu/yuan8.png) no-repeat;*/
+}
+.main .left .mod_personal_info .user_img a span u {
+    margin: 23px;
+    display: none;
+    line-height: 1.2em;
+    text-decoration: none;
+}
+
+.main .left .mod_personal_info .user_info {
+    display: inline;
+    float: left;
+    height: 60px;
+    line-height: 32px;
+    margin: 7px 0 0 5px;
+    overflow: hidden;
+    padding: 10px 0 0;
+    width: 113px;
+}
+.main .left .mod_personal_info .user_info p {
+    margin: 0px;
+    padding: 0px;
+}
+.main .left .mod_personal_info .user_info p strong {
+    font-family: Tahoma;
+    font-size: 14px;
+    color: #ffffff;
+}
+.main .left .mod_personal_info .user_info p strong a {
+    font-family: Tahoma;
+    font-size: 14px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.main .left .mod_personal_info .user_info .pV1 a {
+    color: #efefef;
+    /* display: inline-block; */
+    font-family: Tahoma;
+    font-size: 12px;
+    /*font-weight: bold;*/
+    height: 22px;
+    text-decoration: none;
+    text-indent: -999em;
+    width: 51px;
+}
+
+/**/
+.main .right .content{
+    padding-left: 15px;
+}
+
+.main .right .content .mod_order_head {
+    color: #666;
+    position: relative;
+    z-index: 4;
+}
+.main .right .content .mod_order_head .tit {
+    color: #666;
+    font-size: 18px;
+    font-family: 'Microsoft YaHei';
+    font-weight: normal;
+    padding: 10px 0 0 10px;
+}
+
+.main .right .content .mod_order_head .recpt_bor {
+    position: relative;
+    margin-top: 10px;
+    border-top: 1px solid #EEE;
+}
+
+.main .right .content .mod_order_list{    
+
+}
+.main .right .content .mod_order_list .order{
+    border: 1px solid #EEE;
+    margin: 10px 0;
+    position: relative;
+    background-color: #FAFAFA;  
+}
+
+.order_left,.order_right{
+    float:left;
+    height: auto;    
+    min-height: 200px;
+}
+.order_left{
+    width: 800px;
+    background-color: #fff;
+    border-right: 1px solid #EEE;
+}
+.main .right .content .mod_order_list .order_right{
+    width: 180px;
+    background-color: #FAFAFA;
+}
+.main .right .content .mod_order_list .order_right .ordering_time{
+    padding: 5px 0 0 10px;
+}
+.main .right .content .mod_order_list  .ordering_time .year {
+    font-size: 12px;
+    font-family: 'Century Gothic';
+    color: #666;
+}
+.main .right .content .mod_order_list  .ordering_time .month {
+    font-size: 16px;
+    font-family: 'Century Gothic';
+    color: #333;
+    margin-left: 20px;
+    margin-right: 6px;
+    width: 50px;
+}
+
+.main .right .content .mod_order_list .order_right .order_num {
+    background-color: #FFF7D1;
+    border: 1px solid #EAEAEA;
+    bottom: 0;
+    color: #666;
+    font-family: SimSun;
+    font-size: 12px;
+    line-height: 1.5em;
+    margin: 10px;
+    padding: 5px;
+    text-align: left;
+    text-decoration: none;
+    width: 150px;
+}
+.main .right .content .mod_order_list .order_right .order_operating{
+    padding-top: 20px;
+    position:absolute;
+    _position:absolute;
+    bottom : 10px;
+    padding-left:10px;
+}
+
+.default_btn{
+    width: 150px;
+    text-align: center;
+    border: 1px solid #eee;
+    background: #fff;
+    padding: 6px 0px;
+    box-shadow: rgba(255,255,255,0.4) 0 0px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+    font-size: 14px;
+    display: block;
+    overflow: hidden;
+    position: relative;
+    text-decoration: none;
+    vertical-align: middle;
+    margin: 10px auto 0;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.main .right .content .mod_order_list .order_right .order_amount{
+    padding: 0 0 0 10px ;
+}
+.main .right .content .mod_order_list .order_right .order_amount .price_sen {
+    color: #e60012;
+    font-size: 14px;
+    font-weight: bold;
+}
+.main .right .content .mod_order_list .order_right .order_amount .price {
+    font-size: 18px;
+    font-family: Tahoma;
+    color: #e60012;
+    font-weight: normal;
+}
+
+.main .right .content .mod_order_list .order_left .order_link {
+    color: #999;
+    width: 100%;
+    padding: 15px 0 0 15px;
+    overflow: hidden;
+}
+.main .right .content .mod_order_list .order_left .order_link .black_line {
+padding: 0 0 0 20px;
+font-family: SimSun;
+font-size: 12px;
+color: #333;
+}
+.main .right .content .mod_order_list .order_left a.icon_order {
+    background-color: #FFA07C;
+    border-radius: 2px;
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
+    width: 44px;
+    font-family: SimSun;
+    font-size: 12px;
+    color: #fff;
+    font-style: normal;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+}
+.main .right .content .mod_order_list .order_left  font {
+    padding: 0 8px;
+    font-size: 12px;
+}
+
+.order_screen_list{
+    display: inline-block;
+    height: auto;
+    margin: 20px 0 0 20px;
+}
+.order_screen_list .pa{
+    float: left;
+    display: block;
+    height: 72px;
+    width: 72px;
+    border: 3px #fff solid;
+    margin-right: 3px;
+    text-align: center;
+}
+
+.order_screen_list .pa img {
+    width: 60px;
+    height: 60px;
+    margin: 6px;
+    overflow: hidden;
+}
+
+.order_screen_list .pa strong {
+font-weight: normal;
+color: #e60012;
+font-size: 12px;
+font-family: 'Microsoft YaHei';
+padding: 0 5px 0 0;
+}
+
+ .main .right .content .mod_order_list .order_left hr {
+border: none;
+border-top: 1px dotted #DFDFDF;
+clear: both;
+content: "";
+zoom: 1;
+height: 0;
+width: 98%;
+overflow: hidden;
+margin: 15px 0 0 5px;
+}

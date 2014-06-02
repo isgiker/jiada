@@ -8,12 +8,12 @@
     <body>
         <div class="w w1 header clearfix">
             <div id="logo">
-                <a href="http://www.jd.com/">
-                    <img src="http://misc.360buyimg.com/lib/img/e/logo-201305.png" title="返回家大首页" alt="返回家大首页">
+                <a href="<?php echo '//' . $_config_domain['www'];?>" hidefocus="true" clstag="homepage|keycount|home2013|02a">
+                    <img src="http://<?php echo '//' . $_config_domain['static'];?>/img/basic/logo.png" height="60" alt="家大" title="返回家大首页">
                 </a>
             </div>
             <div class="progress clearfix">
-                <ul class="progress-1">
+                <ul class="progress-3">
                     <li class="step-1"><b></b>1.我的购物车</li>
                     <li class="step-2"><b></b>2.填写核对订单信息</li>
                     <li class="step-3">3.成功提交订单</li>
@@ -57,13 +57,15 @@
                     <p class="i-tips01">
                         您的订单已经在处理中，发货后订单内容会显示承运人联系方式，如有必要您可以联系对方
                     </p>
+                    <!--
                     <p class="i-tips01">
-                        随时随地跟踪订单<a href="http://app.jd.com/">[查看详情]</a>
+                        随时随地跟踪订单<a href="#">[查看详情]</a>
                     </p>
+                    -->
                 </div>
             </div>
             <div class="o-mb">下单完成后，您可以：
-                <a href="http://jd2008.jd.com/JdHome/OrderList.aspx">查看我的订单</a>&nbsp;&nbsp;<a href="http://www.jd.com">继续购物</a></div>
+                <a href="<?php echo '//' . $_config_domain['my'] . '/Chaoshi/Index/index'; ?>">查看我的订单</a>&nbsp;&nbsp;<a href="<?php echo '//' . $_config_domain['www']; ?>">继续购物</a></div>
         </div>
 
         <script src="<?php echo '//' . $_config_domain['static'] . '/js/basic/libs/jquery.min.js'; ?>"></script>

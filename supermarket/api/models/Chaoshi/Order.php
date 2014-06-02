@@ -318,7 +318,10 @@ class Chaoshi_OrderModel extends BasicModel{
         }
         $payAndShip=$param['payAndShip'];
         $deliveryTimeOption = $payAndShip['deliveryTimeOption'];
-        $payway='';
+        if(!isset($deliveryTimeOption[isNow]) || !$deliveryTimeOption[isNow]){
+            $deliveryTimeOption[isNow]=0;
+        }
+        $payway=0;
         $sql="insert `order_delivery` set "
                         . "orderNo='$param[orderNo]',"
                         . "userId='$param[userId]',"
@@ -337,7 +340,9 @@ class Chaoshi_OrderModel extends BasicModel{
                         . "callToConfirm='$payAndShip[callToConfirm]',"
                         . "payway='$payway';"
                         ;
-        return $this->hydb->query($sql);
+        $result = $this->hydb->query($sql);
+        $this->setErrorMsg($this->hydb->getErrorMsg());
+        return $result;
     }
     
     private function delOrder($orderNo,$userId) {

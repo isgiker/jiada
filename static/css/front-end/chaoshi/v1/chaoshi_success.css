@@ -56,8 +56,8 @@ img {
 .progress {
     padding-top: 6px;
 }
-.progress .progress-1 {
-    background: url("http://misc.360buyimg.com/purchase/cart/skin/i/step1.png") no-repeat;
+.progress .progress-3 {
+    background: url("../../../../img/chaoshi/step3.png") no-repeat;
     width: 481px;
     padding-top: 23px;
     overflow: hidden;

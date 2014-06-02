@@ -24,6 +24,11 @@ $(".index_nav a").mouseenter(function() {
         curNavContent.show();
     }
 
+    //当前a标签颜色
+    $(this).parents().find('a').removeClass('hover');
+    //为当前元素添加class
+    $(this).addClass("hover");
+
 });
 //图片轮播
 $('#flash1').slideBox({

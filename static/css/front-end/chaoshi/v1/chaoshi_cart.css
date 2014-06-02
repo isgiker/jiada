@@ -442,6 +442,9 @@ img {
 .cart-empty .message li {
     line-height: 26px;
 }
+.cart-empty .message p {
+    line-height: 98px;
+}
 .cart-empty a, .cart-empty a:visited, .cart-empty a:hover {
     color: #005ea7;
 }

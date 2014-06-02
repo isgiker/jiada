@@ -28,5 +28,10 @@ class IndexController extends Core_Controller_My {
         );
         $this->getView()->assign("_page", $_page);
     }
+    //
+    public function demoAction(){
+        $model=new demoModel();
+        $model->aaa();
+    }
 
 }

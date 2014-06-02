@@ -2,7 +2,17 @@
 <div id="top_navbar">
     <div class="container">
         <div class="textInfo">
-            <p class="loginInfo">您好，欢迎来到“东贸国际花园”小区超市！<a href="#" target="_top">请登录</a><a href="#" target="_top">免费注册</a></p>
+            <?php
+                if($isLogin){
+            ?>
+            <p class="loginInfo">您好，<?php echo $_USERINFO['userName'];?>！欢迎来到家大社区超市！ <a href="<?php echo '//' . $_config_domain['www'].'/Login/logout';?>" target="_top">【退出】</a></p>
+            <?php
+                }else{
+            ?>
+            <p class="loginInfo">您好，欢迎来到“家大”社区超市！<a href="<?php echo '//' . $_config_domain['www'].'/Login';?>" target="_top">请登录</a><a href="#" target="_top">免费注册</a></p>
+            <?php
+                }
+            ?>
         </div>
         <div class="topmenu">
             <ul class="sn-quick-menu">
@@ -11,8 +21,8 @@
                         <a class="menu-hd" href="#">我的家大<b></b></a>
                         <div class="menu-bd" role="menu" aria-hidden="true">
                             <div class="menu-bd-panel" id="myTaobaoPanel">
-                                <a href="#" target="_top" rel="nofollow">我的订单</a>
-                                <a href="#" target="_top" rel="nofollow">个人中心</a>
+                                <a href="<?php echo '//' . $_config_domain['my'].'/Chaoshi/Order/index';?>" target="_top" rel="nofollow">我的订单</a>
+                                <a href="<?php echo '//' . $_config_domain['my'].'/Index';?>" target="_top" rel="nofollow">个人中心</a>
                             </div>
                         </div>
                     </div>
@@ -40,7 +50,7 @@
 <div class="w" id="header">
     <div id="logo">
         <a href="<?php echo '//' . $_config_domain['www'];?>" hidefocus="true" clstag="homepage|keycount|home2013|02a">
-            <img src="http://<?php echo '//' . $_config_domain['static'];?>/img/basic/logo.png" height="60" alt="家大">
+            <img src="http://<?php echo '//' . $_config_domain['static'];?>/img/basic/logo.png" height="60" alt="家大" title="返回家大首页">
         </a>
     </div>
     <div id="search">

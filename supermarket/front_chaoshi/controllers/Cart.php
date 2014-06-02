@@ -4,7 +4,7 @@
  * @name CartController
  * @desc 超市购物车
  */
-class CartController extends Core_Controller_Www {
+class CartController extends Core_Controller_Chaoshi {
     private $imagesConfig;
     
     private $fileImg;
@@ -129,6 +129,7 @@ class CartController extends Core_Controller_Www {
             $data='';
         }
         $this->getView()->assign('data', $data);
+        $this->getView()->assign('isLogin', $this->isLogin());
     }
 
 }

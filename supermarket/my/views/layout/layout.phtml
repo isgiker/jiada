@@ -31,12 +31,20 @@
             <?php include_once 'layout_header.phtml'; ?>
             <!--close-top-Header-menu-->
 
-
-            <!--Action boxes-->
-            <?php
-            echo $_ActionContent;
-            ?>
-            <!--End Action boxes-->
+            <div class="clr"></div>
+            <div class="w main ">
+                <div class="m left">
+                    <?php include_once 'layout_left.phtml'; ?>
+                </div>
+                <div class="m right">
+                    <!--Action boxes-->
+                    <?php
+                    echo $_ActionContent;
+                    ?>
+                    <!--End Action boxes-->
+                </div>
+            </div>
+            
             <!--Footer-part-->
             <?php include_once 'layout_footer.phtml'; ?>
 

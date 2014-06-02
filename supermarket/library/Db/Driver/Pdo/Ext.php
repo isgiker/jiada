@@ -26,8 +26,8 @@ class Db_Driver_Pdo_Ext extends Db_Adapter {
             $this->_resource = $dbh;
 
             if ($this->_debug) {
-                /* 修改默认的错误显示级别 */
-                $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                /* 修改默认的错误显示级别 ERRMODE_EXCEPTION抛出错误终止程序，ERRMODE_WARNING抛出错误但不终止程序，ERRMODE_SILENT不抛出错误*/
+                $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
             }
         } catch (PDOException $e) {
             $this->_errorNum = $e->getCode();
