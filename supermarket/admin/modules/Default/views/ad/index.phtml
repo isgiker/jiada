@@ -1,0 +1,97 @@
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index" ?>">广告管理</a> </li>
+    <li class="active">列表</li>
+</ul>
+
+
+<div class="widget-list">
+    <form name="jform" id="jform" action="" method="post" class="form-horizontal">
+        
+        
+        <div class="widget-content ">
+            <div class="search">
+                <span class="col-sm-2 nopadding">
+                    <input type="text" name="keyworld" value="<?php
+                        if (isset($post['keyworld']) && $post['keyworld']) {
+                            echo $post['keyworld'];
+                        } else {
+                            echo '';
+                        }
+                        ?>" class="form-control input-sm" />
+                </span>
+
+                <span>
+                    <button type="submit" name="jsubmit" value="search" class="btn btn-default btn-sm" >检索</button>
+                </span>
+            </div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                        <th>广告主</th>
+                        <th>广告标题</th>
+                        <th>广告内容</th>
+                        <th>尺寸</th>
+                        <th>模块类型</th>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if (is_array($data) && !empty($data)) {
+                        foreach ($data as $key => $item) {
+                            $imgSize=$item['sizeLong'].'X'.$item['sizeWidth'];
+                            if(isset($item['adContent']) && $item['adContent']){
+                                        
+                                        $pic=$fileImg_obj->generateImgUrl(array('imgUrl'=>$item['adContent']), $imagesConfig);
+                                    }else{
+                                        $pic='';
+                                    }
+                            ?>
+                            <tr>
+                                <td  style="vertical-align: middle;" class="checkids"><input type="checkbox" name="checkIds[]" value="<?php echo $item['adId']; ?>"/></td>
+                                <td style="vertical-align: middle;"><?php echo $item['advertiserName']; ?></td>
+                                <td  style="vertical-align: middle;"><?php echo $item['adTitle']; ?></td>
+                                <td  style="vertical-align: middle;">
+                                    <?php
+                                        if($pic){
+                                            echo '<a href="'.$item['adLink'].'"><img src="'.$pic.'" width="100px;" /></a>';
+                                        }
+                                    ?>
+                                </td>
+                                <td  style="vertical-align: middle;"><?php echo $imgSize; ?></td>
+                                <td  style="vertical-align: middle;"><?php echo $item['moduleName']; ?></td>
+                                
+                                <td  style="vertical-align: middle;"><?php echo date('Y-m-d H:i:s', $item['startTime']); ?></td>
+                                <td  style="vertical-align: middle;"><?php echo date('Y-m-d H:i:s', $item['endTime']); ?></td>
+                                
+                                <td  style="vertical-align: middle;">
+                                    <a href="/Default/Ad/edit/adId/<?php echo $item['adId']; ?>" class="btn btn-xs btn-default" role="button">修改</a>
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                    } else {
+                        ?>
+                        <tr>
+                            <td colspan="18">无数据！</td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="18"><?php echo $pagination; ?></td>
+                    </tr>
+
+                </tfoot>
+            </table>
+        </div>
+    </form>
+</div>

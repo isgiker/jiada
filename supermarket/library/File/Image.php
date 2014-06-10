@@ -91,7 +91,12 @@ class File_Image {
         $tmpName = substr($imgUrl, strrpos($imgUrl, '_') + 1);
         $serverGroupName = pathinfo($tmpName)['filename'];
 
-        $imgDomain = $imagesConfig->$serverGroupName->ftp->slave1->domain;
+        if(isset($imagesConfig->$serverGroupName->ftp->slave1->domain)){
+            $imgDomain = $imagesConfig->$serverGroupName->ftp->slave1->domain;
+        }else{
+            $imgDomain = '';
+        }
+        
         $completeImgUrl = '//' . $imgDomain . $imgUrl;
         return $completeImgUrl;
     }

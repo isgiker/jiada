@@ -22,7 +22,7 @@ class UserPlugin extends Yaf_Plugin_Abstract {
 
     public function preDispatch(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {
         if (!$this->isLogin()) {
-            if($request->module=='Index' && $request->controller == 'Login'){
+            if($request->module=='Index' && ($request->controller == 'Login' || $request->controller == 'Ajax')){
      
             }else{
                 header("Location:/Login");

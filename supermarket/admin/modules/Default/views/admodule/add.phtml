@@ -1,0 +1,134 @@
+
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index" ?>">广告模块管理</a> </li>
+    <li class="active">添加</li>
+</ul>
+
+
+<!--End-breadcrumbs-->
+<div class="widget-box">
+    <div class="widget-title">
+        <h5>Ad Module-info</h5>
+    </div>
+    <div class="widget-content nopadding">
+        <form name="form" id="form" action="" method="post" class="form-horizontal validate">
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 页面名称 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="pageName" <?php echo $this->_view->getInputAttrs($rules, 'pageName') ?> id="pageName" value="<?php if (isset($post['pageName'])) echo $post['pageName'] ?>" class="form-control input-sm" placeholder="模块所在页面名称" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['pageName'])) {
+                            $this->_view->showValidateError($error['pageName']);
+                        }
+                        ?>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label">页面地址 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="pageLink" id="pageLink" value="<?php if (isset($post['pageLink'])) echo $post['pageLink'] ?>" class="form-control input-sm" placeholder="模块页面url地址" />
+                    
+                </div>
+
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 广告模块名称 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="moduleName" <?php echo $this->_view->getInputAttrs($rules, 'moduleName') ?> id="moduleName" value="<?php if (isset($post['moduleName'])) echo $post['moduleName'] ?>" class="form-control input-sm" placeholder="广告模块名称" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['moduleName'])) {
+                            $this->_view->showValidateError($error['moduleName']);
+                        }
+                        ?>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 模块类型 :</label>
+                <div class="col-sm-10">
+                        <select name="moduleType" id="moduleType"  <?php echo $this->_view->getInputAttrs($rules, 'moduleType') ?> class="form-control input-sm">
+                            <option value="" selected>选择模块类型</option>
+                            <?php
+                                $moduleType=array(1=>'图片',2=>'动态图片',3=>'文字',4=>'视频',);
+                                if($moduleType){
+                                    foreach ($moduleType as $k => $v) {
+                                      if($k == $post['moduleType']){
+                                          $selected = ' selected';
+                                      }else{
+                                          $selected = '';
+                                      }
+                            ?>
+                                <option value="<?php echo $k;?>" <?php echo $selected;?>><?php echo $v;?></option>
+                                <?php
+                              
+                                    }
+                                }
+                            ?>
+ 
+                        </select>
+                    
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['moduleType'])) {
+                            $this->_view->showValidateError($error['moduleType']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 尺寸（长） :</label>
+                <div class="col-sm-10">
+                    <input type="number" name="sizeLong" <?php echo $this->_view->getInputAttrs($rules, 'sizeLong') ?> id="sizeLong" value="<?php if (isset($post['sizeLong'])) echo $post['sizeLong'] ?>" class="form-control input-sm" placeholder="长" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['sizeLong'])) {
+                            $this->_view->showValidateError($error['sizeLong']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 尺寸（宽） :</label>
+                <div class="col-sm-10">
+                    <input type="number" name="sizeWidth" <?php echo $this->_view->getInputAttrs($rules, 'sizeWidth') ?> id="tel" value="<?php if (isset($post['sizeWidth'])) echo $post['sizeWidth'] ?>" class="form-control input-sm" placeholder="宽" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['sizeWidth'])) {
+                            $this->_view->showValidateError($error['sizeWidth']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 最大数量 :</label>
+                <div class="col-sm-10">                    
+                    <input type="number" name="maxList" id="maxList" <?php echo $this->_view->getInputAttrs($rules, 'maxList');?> value="<?php if (isset($post['maxList'])) echo $post['maxList'] ?>" class="form-control input-sm" placeholder="最大广告列表数量" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['maxList'])) {
+                            $this->_view->showValidateError($error['maxList']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-actions">
+                <button type="submit" name="jsubmit" value="save" class="btn btn-success">保存</button>
+                <button type="reset" name="jsubmit" value="reset" class="btn btn-primary">重置</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,96 @@
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index" ?>">广告模块管理</a> </li>
+    <li class="active">列表</li>
+</ul>
+
+
+<div class="widget-list">
+    <form name="jform" id="jform" action="" method="post" class="form-horizontal">
+        
+        
+        <div class="widget-content ">
+            <div class="search">
+                <span class="col-sm-2 nopadding">
+                    <input type="text" name="keyworld" value="<?php
+                        if (isset($post['keyworld']) && $post['keyworld']) {
+                            echo $post['keyworld'];
+                        } else {
+                            echo '';
+                        }
+                        ?>" class="form-control input-sm" />
+                </span>
+
+                <span>
+                    <button type="submit" name="jsubmit" value="search" class="btn btn-default btn-sm" >检索</button>
+                </span>
+            </div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                        <th>广告模块名称</th>
+                        <th>页面名称</th>
+                        <th>页面url地址</th>
+                        
+                        <th>模块类型</th>
+                        <th>长</th>
+                        <th>宽</th>
+                        <th>最大数量</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if (is_array($data) && !empty($data)) {
+                        foreach ($data as $key => $item) {
+                            ?>
+                            <tr>
+                                <td class="checkids"><input type="checkbox" name="checkIds[]" value="<?php echo $item['admId']; ?>"/></td>
+                                <td><a href="/Default/Admodule/edit/admId/<?php echo $item['admId']; ?>"><?php echo $item['moduleName']; ?></a></td>
+                                <td><?php echo $item['pageName']; ?></td>
+                                <td><?php echo $item['pageLink']; ?></td>
+                                <td>
+                                    <?php 
+                                            switch ($item['moduleType']) {
+                                                case 1:
+                                                    echo '图片';
+                                                    break;
+                                                case 2:
+                                                    echo '动态图片';
+                                                    break;
+                                                case 3:
+                                                    echo '文字';
+                                                    break;
+                                                case 4:
+                                                    echo '视频';
+                                                    break;
+                                            }
+                                        ?>
+                                </td>
+                                <td><?php echo $item['sizeLong']; ?></td>
+                                <td><?php echo $item['sizeWidth']; ?></td>
+                                <td><?php echo $item['maxList']; ?></td>
+                                
+                            </tr>
+                            <?php
+                        }
+                    } else {
+                        ?>
+                        <tr>
+                            <td colspan="8">无数据！</td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="8"><?php echo $pagination; ?></td>
+                    </tr>
+
+                </tfoot>
+            </table>
+        </div>
+    </form>
+</div>

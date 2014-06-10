@@ -1,0 +1,83 @@
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index" ?>">广告主管理</a> </li>
+    <li class="active">列表</li>
+</ul>
+
+
+<div class="widget-list">
+    <form name="jform" id="jform" action="" method="post" class="form-horizontal">        
+        
+        <div class="widget-content ">
+            <div class="search">
+                <span class="col-sm-2 nopadding">
+                    <input type="text" name="keyworld" value="<?php
+                        if (isset($post['keyworld']) && $post['keyworld']) {
+                            echo $post['keyworld'];
+                        } else {
+                            echo '';
+                        }
+                        ?>" class="form-control input-sm" />
+                </span>
+
+                <span>
+                    <button type="submit" name="jsubmit" value="search" class="btn btn-default btn-sm" >检索</button>
+                </span>
+            </div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="title-table-checkbox" name="title-table-checkbox" /></th>
+                        <th>广告主</th>
+                        <th>客户类型</th>
+                        <th>联系人</th>                        
+                        <th>联系人手机</th>
+                        <th>联系人电话</th>
+                        <th>投放价格</th>                                                
+                        <th>录入时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if (is_array($data) && !empty($data)) {
+                        foreach ($data as $key => $item) {
+                            ?>
+                            <tr>
+                                <td class="checkids"><input type="checkbox" name="checkIds[]" value="<?php echo $item['advertiserId']; ?>"/></td>
+                                <td><?php echo $item['advertiserName']; ?></td>
+                                <td><?php echo $item['advertiserType']; ?></td>
+                                <td><?php echo $item['contact']; ?></td>
+                                <td><?php echo $item['mobile']; ?></td>
+                                <td><?php echo $item['tel']; ?></td>
+                                <td><?php echo $item['price']; ?></td>
+                                
+                                <td><?php echo date('Y-m-d H:i',$item['createTime']); ?></td>
+                                <td>
+                                    <a href="/Default/Advertiser/edit/advertiserId/<?php echo $item['advertiserId']; ?>" class="btn btn-xs btn-default" role="button">修改</a>
+                                    <a href="/Default/Ad/add/advertiserId/5" class="btn btn-xs btn-default" role="button">添加广告</a>
+                                </td>
+                                
+                            </tr>
+                            <?php
+                        }
+                    } else {
+                        ?>
+                        <tr>
+                            <td colspan="18">无数据！</td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="18"><?php echo $pagination; ?></td>
+                    </tr>
+
+                </tfoot>
+            </table>
+        </div>
+    </form>
+</div>

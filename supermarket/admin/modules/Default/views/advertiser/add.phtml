@@ -1,0 +1,115 @@
+
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index" ?>">广告主管理</a> </li>
+    <li class="active">添加</li>
+</ul>
+
+
+<!--End-breadcrumbs-->
+<div class="widget-box">
+    <div class="widget-title">
+        <h5>Advertiser-info</h5>
+    </div>
+    <div class="widget-content nopadding">
+        <form name="form" id="form" action="" method="post" class="form-horizontal validate">
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 客户类型 :</label>
+                <div class="col-sm-10">
+                        <select name="advertiserType" id="advertiserType"  <?php echo $this->_view->getInputAttrs($rules, 'advertiserType') ?> class="form-control input-sm">
+                            <option value="" selected>选择客户类型</option>
+                            <?php
+                                $advertiserType=array('INSIDE'=>'站内商家','OUTSIDE'=>'站外商家');
+                                if($advertiserType){
+                                    foreach ($advertiserType as $k => $v) {
+                                      if($k == $post['advertiserType']){
+                                          $selected = ' selected';
+                                      }else{
+                                          $selected = '';
+                                      }
+                            ?>
+                                <option value="<?php echo $k;?>" <?php echo $selected;?>><?php echo $v;?></option>
+                                <?php
+                              
+                                    }
+                                }
+                            ?>
+ 
+                        </select>
+                    
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['advertiserType'])) {
+                            $this->_view->showValidateError($error['advertiserType']);
+                        }
+                        ?>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 广告主 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="advertiserName" id="advertiserName" <?php echo $this->_view->getInputAttrs($rules, 'advertiserName') ?>  value="<?php if (isset($post['advertiserName'])) echo $post['advertiserName'] ?>" class="form-control input-sm" placeholder="广告投放主名称" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['advertiserName'])) {
+                            $this->_view->showValidateError($error['advertiserName']);
+                        }
+                        ?>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label">价格 :</label>
+                <div class="col-sm-10">                    
+                    <input type="number" name="price" id="price" value="<?php if (isset($post['price'])){ echo $post['price'];}else{echo 0;} ?>" class="form-control input-sm" placeholder="广告投放价格" />
+
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 联系人 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="contact" <?php echo $this->_view->getInputAttrs($rules, 'contact') ?> id="contact" value="<?php if (isset($post['contact'])) echo $post['contact'] ?>" class="form-control input-sm" placeholder="联系人" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['contact'])) {
+                            $this->_view->showValidateError($error['contact']);
+                        }
+                        ?>
+                    </div>
+                </div>
+
+            </div>
+            
+            
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 联系人手机 :</label>
+                <div class="col-sm-10">
+                    <input type="number" name="mobile" <?php echo $this->_view->getInputAttrs($rules, 'mobile') ?> id="mobile" value="<?php if (isset($post['mobile'])) echo $post['mobile'] ?>" class="form-control input-sm" placeholder="手机" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['mobile'])) {
+                            $this->_view->showValidateError($error['mobile']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"> 联系人电话 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="tel" id="tel" value="<?php if (isset($post['tel'])) echo $post['tel'] ?>" class="form-control input-sm" placeholder="联系人电话" />
+
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" name="jsubmit" value="save" class="btn btn-success">保存</button>
+                <button type="reset" name="jsubmit" value="reset" class="btn btn-primary">重置</button>
+            </div>
+        </form>
+    </div>
+</div>

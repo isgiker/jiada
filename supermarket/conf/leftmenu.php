@@ -21,6 +21,15 @@ $leftMenu = array(
             '管理员管理'=>'/Default/Admin/index',
             '新增管理员'=>'/Default/Admin/add'
             ),
+        '广告管理中心'=>array(
+            '广告模块'=>'/Default/Admodule/index',
+            '添加广告模块'=>'/Default/Admodule/add',
+            '1'=>'keep_spacing',
+            '广告主'=>'/Default/Advertiser/index',
+            '添加广告主'=>'/Default/Advertiser/add',
+            '2'=>'keep_spacing',
+            '广告列表'=>'/Default/Ad/index'
+            ),
     ),
     'Chaoshi'=>array(
         '店铺管理中心'=>array(

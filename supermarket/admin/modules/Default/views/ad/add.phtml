@@ -1,0 +1,198 @@
+
+<!--breadcrumbs-->
+<ul class="breadcrumb" contenteditable="false">
+    <li><a href="javascript:void(0);"  title="Go to Home">主页</a> </li>
+    <li><a href="<?php echo "/$_ModuleName/$_ControllerName/index" ?>">广告列表</a> </li>
+    <li class="active">添加</li>
+</ul>
+
+
+<!--End-breadcrumbs-->
+<div class="widget-box">
+    <div class="widget-title">
+        <h5>Ad List-info</h5>
+    </div>
+    <div class="widget-content nopadding">
+        <form name="form" id="form" action="" method="post" class="form-horizontal validate" novalidate="novalidate">
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 广告主 :</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><?php echo $advertiserName; ?></p>
+                </div>
+
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 广告位置 :</label>
+                <div class="col-sm-10">
+                    <select name="admId" id="admId"  <?php echo $this->_view->getInputAttrs($rules, 'admId') ?> class="form-control input-sm">
+                        <option value="" selected>选择广告位置</option>
+                        <?php
+                        if ($admodules) {
+                            foreach ($admodules as $k => $v) {
+                                if ($v['admId'] == $post['admId']) {
+                                    $selected = ' selected';
+                                } else {
+                                    $selected = '';
+                                }
+                                ?>
+                                <option value="<?php echo $v['admId']; ?>" <?php echo $selected; ?>><?php echo $v['moduleName']; ?></option>
+                                <?php
+                            }
+                        }
+                        ?>
+
+                    </select>
+                    
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['admId'])) {
+                            $this->_view->showValidateError($error['admId']);
+                        }
+                        ?>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 广告标题 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="adTitle" <?php echo $this->_view->getInputAttrs($rules, 'adTitle') ?> id="adTitle" value="<?php if (isset($post['adTitle'])) echo $post['adTitle'] ?>" class="form-control input-sm" placeholder="广告标题" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['adTitle'])) {
+                            $this->_view->showValidateError($error['adTitle']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 广告内容 :</label>
+                <div class="col-sm-10">
+
+                    <p class="help-block">请上图片，支持上传2M内的jpg、gif、png图片。<span id="msize"></span></p>
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['adContent'])) {
+                            $this->_view->showValidateError($error['adContent']);
+                        }
+                        ?>
+                    </div>
+                </div>
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="button" id="uploadButton" value="上传" />
+                    <input type="hidden" name="adContent" id="adContent" value="">
+
+                </div>
+                <div class="col-sm-offset-2 col-sm-10">
+                    <p id="J_imageView" class="form-control-static">
+                        <img id="img" class="thumbnail" style="max-width:100px;max-height:100px" src="//static.chihuobao365.com/img/graylogo_200X200.jpg" alt="菜品默认图">
+                    </p>
+                    
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 广告链接 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="adLink" <?php echo $this->_view->getInputAttrs($rules, 'adLink') ?> id="adLink" value="<?php if (isset($post['adLink'])) echo $post['adLink'] ?>" class="form-control input-sm" placeholder="广告连接地址" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['adLink'])) {
+                            $this->_view->showValidateError($error['adLink']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 开始投放 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="startTime" <?php echo $this->_view->getInputAttrs($rules, 'startTime') ?> id="startTime" value="<?php if (isset($post['startTime'])) echo $post['startTime'] ?>" class="form-control input-sm" placeholder="开始时间" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['startTime'])) {
+                            $this->_view->showValidateError($error['startTime']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 结束投放 :</label>
+                <div class="col-sm-10">
+                    <input type="text" name="endTime" <?php echo $this->_view->getInputAttrs($rules, 'endTime') ?> id="endTime" value="<?php if (isset($post['endTime'])) echo $post['endTime'] ?>" class="form-control input-sm" placeholder="结束时间" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['endTime'])) {
+                            $this->_view->showValidateError($error['endTime']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group control-group">
+                <label class="col-sm-2 control-label"><b class="bold red">*</b> 广告排序 :</label>
+                <div class="col-sm-10">                    
+                    <input type="number" name="sort" id="maxList" <?php echo $this->_view->getInputAttrs($rules, 'sort'); ?> value="<?php if (isset($post['sort'])) {
+                            echo $post['sort'];
+                        } else {
+                            echo 0;
+                        } ?>" class="form-control input-sm" placeholder="排序" />
+                    <div class="showmsg">
+                        <?php
+                        if (isset($error['sort'])) {
+                            $this->_view->showValidateError($error['sort']);
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-actions">
+                <button type="submit" name="jsubmit" value="save" class="btn btn-success">保存</button>
+                <button type="reset" name="jsubmit" value="reset" class="btn btn-primary">重置</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="//<?php echo $_config_domain['static'];?>/plugin/kindeditor/kindeditor.js?v=1.01" charset="utf8" type="text/javascript"></script>
+<script src="//<?php echo $_config_domain['static'];?>/plugin/kindeditor/lang/zh_CN.js?v=1.01" charset="utf8" type="text/javascript"></script>
+<script src="//<?php echo $_config_domain['static'];?>/plugin/datetimepicker/js/jquery.datetimepicker.js"></script>
+<script>
+$('#startTime').datetimepicker({
+    lang:'ch',
+    format:'Y-m-d H:i',
+    step:1
+});
+$('#endTime').datetimepicker({
+    lang:'ch',
+    format:'Y-m-d H:i',
+    step:1
+});
+</script>
+<script>
+KindEditor.ready(function(K) {
+        var uploadbutton = K.uploadbutton({
+                button : K('#uploadButton')[0],
+                fieldName : 'imgFile',
+                url : '/Ajax/uploadimg?dir=image',
+                afterUpload : function(data) {
+                        if (data.error === 0) {
+                                var url = K.formatUrl(data.url, 'absolute');
+                                K('#adContent').val(data.path);
+                                $("#img").attr("src", 'http://' + _SITE_.admin + url);
+                        } else {
+                                alert(data.message);
+                        }
+                },
+                afterError : function(str) {
+                        alert('自定义错误信息: ' + str);
+                }
+        });
+        uploadbutton.fileBox.change(function(e) {
+                uploadbutton.submit();
+        });
+});
+</script>

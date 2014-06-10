@@ -7,7 +7,9 @@
         } else {
             $title = '家大.小区服务-数据后台管理系统';
         }
-
+        $sites['static']=$_config_domain['static'];
+        $sites['admin']=$_config_domain['admin'];
+        $sites['business']=$_config_domain['business'];
         $static_domain = $_config_domain['static'];
         ?>
         <title><?php echo $title;?></title>
@@ -29,6 +31,9 @@
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <script src="//<?php echo $static_domain;?>/js/basic/libs/jquery.min.js"></script>
         <script src="//<?php echo $static_domain;?>/plugin/bootstrap303/js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            var _SITE_ = <?php echo json_encode($sites); ?>;
+        </script>
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
             <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>

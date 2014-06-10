@@ -90,3 +90,31 @@ $("select.linkage").change(function() {
 //        $(next).trigger('change');
     });
 });
+
+
+/*广告位置 begin======================================================================*/
+$("#admId").change(function() {
+    var admId = $(this).val();
+    var size;
+    $.getJSON('/Default/Admodule/ajax_adminfo/admId/'+admId, function(data) {
+        var sizeLong,sizeWidth,html;
+        if(data.sizeLong){
+            sizeLong = data.sizeLong;
+        }else{
+            sizeLong = '';
+        }
+        if(data.sizeWidth){
+            sizeWidth = data.sizeWidth;
+        }else{
+            sizeWidth = '';
+        }
+
+        html=' ';
+        if(sizeLong && sizeWidth){
+            size=sizeLong+'X'+sizeWidth; 
+            html='尺寸'+size;            
+        }
+        $('#msize').html(html);
+        
+    });
+});
